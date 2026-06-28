@@ -32,6 +32,9 @@
   .who{display:flex;align-items:baseline;gap:1.1rem;flex-wrap:wrap}
   .who .name{font-size:clamp(1.8rem,3.4vw,2.8rem);font-weight:900;letter-spacing:-.02em}
   .who .studio{font-size:1.05rem;font-weight:700;color:var(--muted)}
+  .bio{font-size:clamp(1.05rem,1.8vw,1.4rem);font-weight:600;color:#2c2f2b;margin-top:1.2vh;max-width:66ch;line-height:1.4}
+  .bio b{color:var(--ink);font-weight:800}
+  .src{font-size:.82rem;font-weight:600;color:var(--muted);margin-top:.9rem;line-height:1.4;max-width:64ch}
 
   .row{display:grid;grid-template-columns:auto 1fr;gap:1.4rem 1.8rem;align-items:start;border-top:1.5px solid var(--hair);padding-top:2.4vh}
   .row .lab{font-size:.78rem;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;padding-top:.4rem;white-space:nowrap}
@@ -64,15 +67,19 @@
     <div class="body">
       <div>
         <div class="kick">Who is behind it</div>
-        <div class="who"><span class="name">Alexandre Geng</span><span class="studio">O'XYZ Studio · I build and ship AI agents into production</span></div>
+        <div class="who"><span class="name">Alexandre Geng</span></div>
+        <p class="bio"><b>Founder and software developer</b> at O'XYZ Studio. We ship software, and for the past four months, a <b>vertical AI agent for the French justice system</b>.</p>
       </div>
       <div class="row">
         <div class="lab">The problem</div>
-        <p>The most valuable software has <b>no way in</b>: no API, no DOM, no MCP. Citrix health records, mainframe green-screens, twenty-year-old desktop apps. Computer-use is the only door, but one agent is <span class="r">wrong about 1 in 5</span>, and it forgets everything between runs.</p>
+        <div>
+          <p>The most valuable software has <b>no way in</b>: no API, no DOM, no MCP. Citrix health records, mainframe green-screens, twenty-year-old desktop apps. Computer-use is the only door, but one agent is <span class="r">wrong about 1 in 5</span>, and it forgets everything between runs.</p>
+          <div class="src">OSWorld benchmark: the best computer-use models cap near 80%, so about 1 in 5 is wrong. On complex workflows it is far worse (UI-CUBE, UiPath).</div>
+        </div>
       </div>
       <div class="row">
         <div class="lab">Why me</div>
-        <p>I ship agents for a living, and I keep hitting the same wall: they are <b>unreliable</b>, and they have <b>no shared memory</b>. VECHE is the layer I built to cross it.</p>
+        <p>Shipping into a domain like that, I hit the same wall every time: agents are <b>unreliable</b>, and they have <b>no shared memory</b>. VECHE is the layer I built to cross it.</p>
       </div>
     </div>
     <footer>
