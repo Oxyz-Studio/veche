@@ -30,6 +30,29 @@
   .act{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s}
   .act.show{opacity:1;pointer-events:auto}
 
+  /* Twin Test overlay - the pixels-only node-identity proof */
+  #twintest{position:absolute;inset:0;background:var(--paper);z-index:6;display:none;flex-direction:column;padding:.6vh 0;gap:1.1vh}
+  #twintest.show{display:flex}
+  .tt-title{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;text-align:center}
+  .tt-title b{color:var(--ink)}
+  .tt-row{flex:1;display:grid;grid-template-columns:1fr minmax(120px,auto) 1fr minmax(120px,auto) 1fr;align-items:stretch;gap:1.1vw;min-height:0}
+  .tt-card{border:1.5px solid var(--ink);min-height:0;display:flex;flex-direction:column;background:#000;position:relative}
+  .tt-card .shot{flex:1;min-height:0;background:#000;overflow:hidden}
+  .tt-card img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .tt-cap{background:var(--ink);color:var(--paper);padding:.4rem .6rem;flex:none}
+  .tt-cap .l{font-size:.84rem;font-weight:800;line-height:1.1}
+  .tt-cap .s{font-size:.72rem;font-weight:600;color:#d4d4cd;margin-top:.1rem}
+  .tt-card.anchor{outline:3px solid var(--ink);outline-offset:-3px}
+  .tt-ref{position:absolute;top:0;left:0;background:var(--ink);color:var(--paper);font-size:.58rem;font-weight:800;letter-spacing:.06em;padding:.16rem .45rem;z-index:2}
+  .tt-gap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem}
+  .tt-cos{font-size:clamp(1.8rem,3.4vw,3rem);font-weight:900;line-height:.85;font-variant-numeric:tabular-nums}
+  .tt-rel{font-size:.72rem;font-weight:700;color:var(--muted)}
+  .tt-verdict{font-size:.78rem;font-weight:800;padding:.3rem .55rem;border:1.5px solid;text-align:center;line-height:1.15}
+  .tt-merge .tt-cos{color:var(--truth)} .tt-merge .tt-verdict{color:var(--truth);border-color:var(--truth)}
+  .tt-split .tt-cos{color:var(--wrong)} .tt-split .tt-verdict{color:var(--wrong);border-color:var(--wrong)}
+  .tt-foot{flex:none;text-align:center;font-size:.84rem;font-weight:600;color:var(--ink);padding:0 2vw;line-height:1.3}
+  .tt-foot b{color:var(--truth)} .tt-foot i{font-style:normal;color:var(--wrong)}
+
   #act1{display:grid;grid-template-columns:1.5fr 1fr;gap:2.4vw;align-items:center;height:100%}
   .bigvideo{border:1.5px solid var(--ink);background:#000;height:100%;overflow:hidden;display:flex;align-items:center}
   .bigvideo video{width:100%;height:100%;object-fit:contain}
@@ -70,6 +93,11 @@
   .herobadge .h{font-weight:800;color:var(--wrong);font-size:.92rem}
   .herobadge .s{font-size:.76rem;color:var(--ink);font-weight:500;margin-top:.25rem;line-height:1.35}
   .herobadge .r{font-weight:800;margin-top:.4rem;font-size:.86rem} .herobadge .r b{color:var(--wrong)} .herobadge .r i{color:var(--truth);font-style:normal}
+  .herobadge.heal{border-color:var(--truth)} .herobadge.heal .h{color:var(--truth)}
+  .herobadge.heal .r b{color:var(--muted)} .herobadge.heal .r i{color:var(--truth)}
+  .cell.confirming{outline:3px solid var(--truth);outline-offset:-3px}
+  .noderect.promote{animation:promote 1.4s ease}
+  @keyframes promote{0%{stroke:#b9b9b0}50%{stroke:var(--truth);stroke-width:7}100%{stroke:var(--truth)}}
   .coverage{position:absolute;left:1rem;top:1rem;background:var(--paper);border:1.5px solid var(--ink);padding:.6rem .75rem;opacity:0;transition:opacity .4s;z-index:3}
   .coverage.show{opacity:1}
   .coverage .ct{font-size:.74rem;font-weight:800} .coverage .ct b{color:var(--truth)}
@@ -117,7 +145,7 @@
 
   <div class="acts">
     <section class="act" id="act1">
-      <div class="bigvideo"><video id="coldvid" src="recording/videos/a1.mp4" muted playsinline></video></div>
+      <div class="bigvideo"><video id="coldvid" src="recording_deep/videos/a1.webm" muted playsinline></video></div>
       <div class="coldm">
         <div class="big" id="coldTok">0</div><div class="lab">tokens · re-perceiving every screen</div>
         <div class="grid2">
@@ -135,10 +163,11 @@
         <svg id="map" viewBox="0 0 1000 760" preserveAspectRatio="xMidYMid meet"></svg>
         <div class="mapstat"><b id="mapNodes">0</b> screens mapped<br><span id="mapShared"></span></div>
         <div class="herobadge" id="herobadge">
-          <div class="h">⚠ agent a3 misread this screen</div>
-          <div class="s">consensus overruled it. K-agreement keeps the screen two agents confirmed, and quarantines the false claim.</div>
-          <div class="r">a3 trust&nbsp; <b>0.50</b> → <i>0.33</i></div>
+          <div class="h">⚠ one agent diverged on this transition</div>
+          <div class="s">trusted agents agree on the real destination. Reliability-weighted K-agreement keeps the majority and quarantines the lone claim.</div>
+          <div class="r"><b>low-trust dissenter</b> &nbsp;overruled by&nbsp; <i>the trusted majority</i></div>
         </div>
+        <div class="herobadge heal" id="healbadge"></div>
         <div class="coverage" id="coverage"></div>
         <div class="maplog" id="maplog"></div>
         <div class="nodeinfo" id="nodeinfo"></div>
@@ -150,7 +179,7 @@
       <div class="a3grid">
         <div class="a3panel">
           <div class="a3lbl"><span class="mname em">Gemini 2.5 Computer Use</span><span class="mtag">frontier model · re-perceives every screen</span></div>
-          <div class="a3vid"><video id="coldop" src="recording/videos/cold_op.mp4" muted playsinline></video></div>
+          <div class="a3vid"><video id="coldop" src="recording_deep/videos/cold_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
             <div><span class="num cold" id="a3cold">0</span><span class="su">tokens</span></div>
             <div><span class="n2" id="a3coldt">0.0s</span><span class="su">time</span></div>
@@ -159,7 +188,7 @@
         </div>
         <div class="a3panel">
           <div class="a3lbl"><span class="mname ok">Gemma 4</span><span class="mtag">lightweight model · just reads the shared map</span></div>
-          <div class="a3vid"><video id="mapop" src="recording/videos/mapped_op.mp4" muted playsinline></video></div>
+          <div class="a3vid"><video id="mapop" src="recording_deep/videos/mapped_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
             <div><span class="num mapped" id="a3map">0</span><span class="su">tokens</span></div>
             <div><span class="n2 ok" id="a3mapt">0.0s</span><span class="su">time</span></div>
@@ -168,6 +197,12 @@
         </div>
       </div>
     </section>
+
+    <div id="twintest">
+      <div class="tt-title">node identity <b>· the twin test</b> &nbsp;·&nbsp; same screen, or not? decided from pixels alone</div>
+      <div class="tt-row" id="ttrow"></div>
+      <div class="tt-foot" id="ttfoot"></div>
+    </div>
   </div>
 
   <div class="sponsors" id="sponsors"></div>
@@ -177,10 +212,10 @@
   </footer>
 </div>
 
-<script src="recording/data.js"></script>
+<script src="recording_deep/data.js"></script>
 <script>
 const R=window.RECORDING,SP=R.sponsors,TOT=R.totals;
-const mp4=v=>'recording/videos/'+(v||'').replace('.webm','.mp4');
+const mp4=v=>'recording_deep/videos/'+(v||'');  // deep capture ships .webm (Chrome plays it natively)
 
 const SPONS=[["gemini","Gemini 2.5 Computer Use",SP.gemini.count,SP.gemini.metric],["voyage","Voyage multimodal-3",SP.voyage.count,SP.voyage.metric],
   ["atlas","MongoDB Atlas",SP.atlas.count,SP.atlas.metric],["gemma","Gemma 4 · operator",SP.gemma.count,SP.gemma.metric],["do","DigitalOcean","host",SP.digitalocean.metric]];
@@ -208,13 +243,14 @@ function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAt
 const mapg=el('g',{});svg.appendChild(mapg);
 let view={k:1,tx:0,ty:0},drag=null;
 function applyView(){mapg.setAttribute('transform',`translate(${view.tx} ${view.ty}) scale(${view.k})`);}
-// per-node metadata (for hover info)
-const nodeMeta={};allNodes.forEach(n=>nodeMeta[n.id]={seen_by:n.seen_by,out:0,in:0});
+// per-node metadata (for hover info) + feature label derived from pixels
+const nodeMeta={};allNodes.forEach(n=>nodeMeta[n.id]={seen_by:n.seen_by,out:0,in:0,label:n.label||''});
+const nodeLabel={};allNodes.forEach(n=>nodeLabel[n.id]=n.label||n.id);
 allEdges.forEach(e=>{if(nodeMeta[e.from])nodeMeta[e.from].out++;if(nodeMeta[e.to])nodeMeta[e.to].in++;});
 function showInfo(id,cx,cy){const m=nodeMeta[id];if(!m)return;
-  nodeinfo.innerHTML=`<div class="ni-id">${id}</div><div class="ni-r">seen by <b>${m.seen_by.join(', ')}</b> · ${m.seen_by.length} agent${m.seen_by.length>1?'s':''}</div><div class="ni-r">${m.out} transitions out · ${m.in} in</div>`;
+  nodeinfo.innerHTML=`<div class="ni-id">${m.label||id}</div><div class="ni-r" style="color:#9a9a92">${id} · feature read from pixels</div><div class="ni-r">seen by <b>${m.seen_by.join(', ')}</b> · ${m.seen_by.length} agent${m.seen_by.length>1?'s':''}</div><div class="ni-r">${m.out} transitions out · ${m.in} in</div>`;
   nodeinfo.style.left=Math.min(cx+14,svg.clientWidth-235)+'px';nodeinfo.style.top=Math.min(cy+14,svg.clientHeight-72)+'px';nodeinfo.classList.add('show');}
-allNodes.forEach(n=>{const im=new Image();im.src='recording/frames/'+n.frame;}); // preload thumbnails
+allNodes.forEach(n=>{const im=new Image();im.src='recording_deep/frames/'+n.frame;}); // preload thumbnails
 let greenCount=0;
 function setShared(){document.getElementById('mapShared').innerHTML=greenCount?`<span style="color:var(--truth)">${greenCount} confirmed by ≥2 agents</span>`:'';}
 const ACT={click_at:'click',click:'click',go_back:'back',go_forward:'forward',navigate:'open',open_web_browser:'open',type_text_at:'type',type:'type',key_combination:'key',scroll_document:'scroll',scroll_at:'scroll',wait_5_seconds:'wait'};
@@ -226,11 +262,12 @@ function greenNode(id){const rc=mapg.querySelector(`rect[data-rect="${id}"]`);if
 function addNode(id){if(drawn.has(id))return;drawn.add(id);const p=pos[id],n=allNodes.find(x=>x.id===id);if(!n)return;
   mapg.appendChild(el('rect',{x:p.x-TH/2,y:p.y-TH/2,width:TH,height:TH,fill:'#fff',stroke:'#0d0d0d','stroke-width':'2','data-rect':id,class:'noderect'}));
   const img=el('image',{x:p.x-TH/2,y:p.y-TH/2,width:TH,height:TH,preserveAspectRatio:'xMidYMid slice'});
-  img.setAttribute('href','recording/frames/'+n.frame);img.setAttributeNS('http://www.w3.org/1999/xlink','href','recording/frames/'+n.frame);
+  img.setAttribute('href','recording_deep/frames/'+n.frame);img.setAttributeNS('http://www.w3.org/1999/xlink','href','recording_deep/frames/'+n.frame);
   img.style.cursor='pointer';
   img.addEventListener('mousemove',ev=>{if(drag)return;ev.stopPropagation();const r=svg.getBoundingClientRect();showInfo(id,ev.clientX-r.left,ev.clientY-r.top);});
   img.addEventListener('mouseleave',()=>nodeinfo.classList.remove('show'));
   mapg.appendChild(img);
+  if(n.label){const lt=el('text',{x:p.x,y:p.y+TH/2+15,'text-anchor':'middle','font-size':'12.5','font-weight':'700',fill:'#0d0d0d','paint-order':'stroke',stroke:'#fff','stroke-width':'4.5','data-flabel':id});lt.style.pointerEvents='none';lt.textContent=n.label;mapg.appendChild(lt);}
   document.getElementById('mapNodes').textContent=drawn.size;}
 function log(cls,ag,txt){const d=document.createElement('div');d.className='logline'+(cls?' '+cls:'');d.innerHTML=`<span class="ag">${ag}</span>${txt}`;maplog.appendChild(d);maplog.scrollTop=maplog.scrollHeight;}
 function resetMap(){mapg.innerHTML='';drawn.clear();greenCount=0;maplog.innerHTML='';document.getElementById('mapNodes').textContent='0';document.getElementById('mapShared').innerHTML='';}
@@ -260,8 +297,8 @@ function playBuild(done){
   buildTimer=setInterval(()=>{
     if(i>=seq.length){clearInterval(buildTimer);buildTimer=null;if(done)done();return;}
     const s=seq[i++]; cnt.g=(cnt.g||0)+1; spSet('gemini',Math.min(cnt.g,SP.gemini.count)); if(i%2===0)spPulse('gemini');
-    if(s.type==='new'){ addNode(s.node); spSet('voyage',(cnt.v=(cnt.v||0)+1)); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('',s.ag,`mapped a new screen → ${s.node}`); }
-    else if(s.type==='merge'){ greenNode(s.node); spPulse('voyage'); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('merge',s.ag,`recognized ${s.node}, confirmed by 2 agents ✓`); }
+    if(s.type==='new'){ addNode(s.node); spSet('voyage',(cnt.v=(cnt.v||0)+1)); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('',s.ag,`mapped a new screen → ${nodeLabel[s.node]}`); }
+    else if(s.type==='merge'){ greenNode(s.node); spPulse('voyage'); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('merge',s.ag,`recognized ${nodeLabel[s.node]}, confirmed by 2 agents ✓`); }
     else { spSet('atlas',(cnt.a=(cnt.a||0)+1)); }
     if(s.from){const ed=allEdges.find(e=>e.from===s.from&&e.to===s.node)||{};addEdge(s.from,s.node,ed.confirmations||1,ed.label);}
   },230);
@@ -273,6 +310,8 @@ function showFinal(){ if(buildTimer){clearInterval(buildTimer);buildTimer=null;}
 
 const grid=document.getElementById('grid');
 R.agents.forEach(a=>{if(!a.video)return;const c=document.createElement('div');c.className='cell';c.id='cell-'+a.id;c.innerHTML=`<video src="${mp4(a.video)}" muted loop playsinline></video><span class="tag">${a.id} · Gemini</span><span class="trust" id="trust-${a.id}">trust 0.50</span>`;grid.appendChild(c);});
+// odd agent count: let the last tile fill the empty cell so the 2-col grid has no gap
+(function(){const cells=grid.querySelectorAll('.cell');if(cells.length%2===1)cells[cells.length-1].style.gridColumn='1 / -1';})();
 function playGrid(){grid.querySelectorAll('video').forEach(v=>{v.play().catch(()=>{});});}
 function resetTrust(){R.agents.forEach(a=>{const t=document.getElementById('trust-'+a.id);if(t){t.textContent='trust 0.50';t.className='trust';}const c=document.getElementById('cell-'+a.id);if(c)c.classList.remove('flagged');});}
 function setTrust(){const rel=R.reliability||{},diss=(R.hero_conflict||{}).dissenter;
@@ -283,7 +322,7 @@ function setTrust(){const rel=R.reliability||{},diss=(R.hero_conflict||{}).disse
     const c=document.getElementById('cell-'+a.id);if(c)c.classList.toggle('flagged',a.id===diss);});}
 function stopGrid(){grid.querySelectorAll('video').forEach(v=>v.pause());}
 
-// Act 1 — metrics SYNCED to the video timeline
+// Act 1 - metrics SYNCED to the video timeline
 const a1ev=R.events.filter(e=>e.agent==='a1');
 function climbCold(){const vid=document.getElementById('coldvid');vid.currentTime=0;vid.loop=true;vid.play().catch(()=>{});
   vid.ontimeupdate=()=>{const ct=vid.currentTime;let step=0,tok=0;for(let i=0;i<a1ev.length;i++){if(a1ev[i].t<=ct){step=i+1;tok=a1ev[i].tokens;}}
@@ -291,9 +330,32 @@ function climbCold(){const vid=document.getElementById('coldvid');vid.currentTim
     document.getElementById('coldUsd').textContent='$'+((tok*1.25/1e6)).toFixed(3);
     document.getElementById('coldSteps').textContent=step;document.getElementById('coldTime').textContent=Math.round(ct)+'s';};}
 
-const cap=document.getElementById('caption'),actlabel=document.getElementById('actlabel'),herobadge=document.getElementById('herobadge'),coverage=document.getElementById('coverage');
+const cap=document.getElementById('caption'),actlabel=document.getElementById('actlabel'),herobadge=document.getElementById('herobadge'),coverage=document.getElementById('coverage'),twintest=document.getElementById('twintest'),healbadge=document.getElementById('healbadge');
 function showAct(id){document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id));document.getElementById('sponsors').classList.toggle('hide',id==='act3');}
 function stopBuild(){if(buildTimer){clearInterval(buildTimer);buildTimer=null;}}
+// Twin Test - render the REAL node-identity cosines from the captured frames
+function fillTwin(){const t=R.twin_test;if(!t)return;
+  const card=(d,anchor)=>`<div class="tt-card${anchor?' anchor':''}">${anchor?'<span class="tt-ref">reference screen</span>':''}<div class="shot"><img src="recording_deep/frames/${d.frame}"></div><div class="tt-cap"><div class="l">${d.label}</div><div class="s">${d.sub} · agent ${d.agent}</div></div></div>`;
+  const gap=(c,merge,verdict)=>`<div class="tt-gap ${merge?'tt-merge':'tt-split'}"><div class="tt-cos">${c.toFixed(2)}</div><div class="tt-rel">${merge?'≥':'<'} ${t.tau} threshold</div><div class="tt-verdict">${verdict}</div></div>`;
+  document.getElementById('ttrow').innerHTML =
+    card(t.same)+gap(t.same.cosine,true,'SAME node<br>merged')+card(t.anchor,true)+gap(t.diff.cosine,false,'DIFFERENT<br>kept apart')+card(t.diff);
+  document.getElementById('ttfoot').innerHTML =
+    `No DOM, and the pixels don't match (two different patients). Identity is one <b>Voyage</b> embedding: same screen <b>${t.same.cosine.toFixed(2)}</b> vs a different screen <i>${t.diff.cosine.toFixed(2)}</i>. That clean gap is how the swarm agrees on what it saw.`;}
+function showTwin(){fillTwin();twintest.classList.add('show');}
+function hideTwin(){twintest.classList.remove('show');}
+// Self-healing loop - a REAL provisional node (K=1) promoted to confirmed (K=2)
+function showHeal(){const h=R.heal;if(!h)return;const id=h.node,p=pos[id];
+  const rc=mapg.querySelector(`rect[data-rect="${id}"]`);
+  if(p){view={k:1.8,tx:500-1.8*p.x,ty:380-1.8*p.y};applyView();}
+  if(rc){rc.dataset.green='';rc.classList.remove('promote');rc.setAttribute('stroke','#b9b9b0');rc.setAttribute('stroke-width','3');rc.setAttribute('stroke-dasharray','7 5');}
+  healbadge.innerHTML=`<div class="h">↻ the operator hit a screen it only half-knew</div><div class="s"><b>${h.label}</b> was in the map from a single agent (${h.provisional_agent}): provisional, K=1, not trusted. The operator does not guess. It re-explores just this one path.</div><div class="r"><b>K=1 · provisional</b></div>`;
+  healbadge.classList.add('show');
+  healTimer=setTimeout(()=>{
+    [h.provisional_agent,h.confirm_agent].forEach(a=>{const c=document.getElementById('cell-'+a);if(c)c.classList.add('confirming');});
+    if(rc){rc.removeAttribute('stroke-dasharray');rc.dataset.green='1';rc.setAttribute('stroke','#0f7a3a');rc.setAttribute('stroke-width','4');rc.getBoundingClientRect();rc.classList.add('promote');}
+    healbadge.innerHTML=`<div class="h">✓ a second independent agent confirmed it</div><div class="s">agent ${h.confirm_agent} re-explored and landed on <b>${h.label}</b> too. Consensus promotes it: <b>K=1 → K=2</b>, now trusted and in the map for everyone.</div><div class="r"><b>re-explore once</b>, then free &nbsp;·&nbsp; <i>it pays for itself by the third use</i></div>`;
+  },1700);}
+function hideHeal(){healbadge.classList.remove('show');clearTimeout(healTimer);R.agents.forEach(a=>{const c=document.getElementById('cell-'+a.id);if(c)c.classList.remove('confirming');});}
 const BEATS=[
   {label:"The problem",cap:`Half the world's critical work runs on screens with <span class="em">no API, no page to read</span>. Today you do it by hand, or you let one AI agent try.`,
    run(){showAct('act1');spLive([]);herobadge.classList.remove('show');document.getElementById('coldTok').textContent='0';document.getElementById('coldSteps').textContent='0';}},
@@ -301,22 +363,25 @@ const BEATS=[
    run(){showAct('act1');spLive(['gemini']);climbCold();}},
   {label:"<b>Act 2</b> · the map builds",cap:`So we put a <span class="ok">swarm</span> on it. Watch ${R.agents.length} agents map the app, screen by screen, into one shared memory.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();resetTrust();spLive(['gemini','voyage','atlas']);playBuild();}},
-  {label:"<b>Act 2</b> · consensus",cap:`When a screen is seen by a <span class="ok">different agent</span>, Voyage recognizes it and merges it. The map converges by consensus.`,
-   run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);spPulse('voyage');}},
-  {label:"<b>Act 2</b> · the overrule",cap:`Agents don't always agree. Here, <span class="em">one agent diverged</span> on a real transition. <span class="ok">K-agreement keeps the majority</span> and drops the dissenter's trust. This is from the captured data.`,
+  {label:"<b>Act 2</b> · node identity",cap:`How does the swarm know two agents saw the <span class="ok">same screen</span>? Not the pixels (different patients), and there is <span class="em">no DOM</span> to read. One Voyage embedding decides, and <span class="ok">that</span> is what lets observations merge.`,
+   run(){showAct('act2');stopBuild();showFinal();herobadge.classList.remove('show');spLive(['voyage','atlas']);spPulse('voyage');showTwin();}},
+  {label:"<b>Act 2</b> · the overrule",cap:`Agents don't always agree. Here <span class="em">one agent diverged</span> on a real transition. Votes are <span class="ok">weighted by each agent's earned trust</span>, so K-agreement keeps the majority and quarantines the lone claim. Straight from the captured data.`,
    run(){showAct('act2');stopBuild();showFinal();const hc=R.hero_conflict||{};const from=hc.from||heroNode;const p=pos[from];
      const rc=mapg.querySelector(`rect[data-rect="${from}"]`);if(rc)rc.classList.add('hero');
      const dt=hc.dissenter_to&&pos[hc.dissenter_to],wn=hc.winner&&pos[hc.winner];
      if(dt){mapg.appendChild(el('line',{x1:p.x,y1:p.y,x2:dt.x,y2:dt.y,stroke:'#d11424','stroke-width':'4','stroke-dasharray':'9 6'}));
        const mx=(p.x+dt.x)/2,my=(p.y+dt.y)/2-4;const t=el('text',{x:mx,y:my,'text-anchor':'middle','font-size':'15','font-weight':'800',fill:'#d11424','paint-order':'stroke',stroke:'#fff','stroke-width':'5'});t.textContent=(hc.dissenter||'agent')+' diverged';mapg.appendChild(t);}
-     const rd=hc.rel_dissenter!=null?hc.rel_dissenter:0.33;
-     herobadge.innerHTML=`<div class="h">⚠ agent ${hc.dissenter||'?'} diverged on this transition</div><div class="s">${hc.winner_count||2} agents agree <b>${from}</b> → <b>${hc.winner}</b> via ${actLabel(hc.action)}. ${hc.dissenter} reported → ${hc.dissenter_to}. K-agreement keeps the majority and quarantines the lone claim.</div><div class="r">${hc.dissenter} trust&nbsp; <b>0.50</b> → <i>${rd}</i></div>`;
+     const rd=(hc.rel_dissenter!=null?hc.rel_dissenter:0.5).toFixed(2);
+     const winnerStr=(hc.winner_agents||[]).map(a=>a+' '+((R.reliability||{})[a]!=null?R.reliability[a].toFixed(2):'?')).join(', ')||(hc.rel_majority||0.8)+'+';
+     herobadge.innerHTML=`<div class="h">⚠ agent ${hc.dissenter||'?'} diverged on this transition</div><div class="s">${hc.winner_count||2} trusted agents agree <b>${nodeLabel[from]}</b> → <b>${nodeLabel[hc.winner]}</b> via ${actLabel(hc.action)}. ${hc.dissenter} alone reported → ${nodeLabel[hc.dissenter_to]}. Reliability-weighted K-agreement keeps the majority and quarantines the lone claim.</div><div class="r"><b>${hc.dissenter} trust ${rd}</b> &nbsp;overruled by&nbsp; <i>${winnerStr}</i></div>`;
      const xs=[p.x],ys=[p.y];if(dt){xs.push(dt.x);ys.push(dt.y);}if(wn){xs.push(wn.x);ys.push(wn.y);}
      const cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;
      view={k:1.6,tx:500-1.6*cx,ty:380-1.6*cy};applyView();
-     playGrid();spLive(['voyage','atlas']);setTrust();log('over',hc.dissenter||'agent',`diverged: ${from} → ${hc.dissenter_to}; consensus kept → ${hc.winner} (${hc.winner_count} agents), trust 0.50→${rd}`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
-  {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once.`,
+     playGrid();spLive(['voyage','atlas']);setTrust();log('over',hc.dissenter||'agent',`diverged: ${nodeLabel[from]} → ${nodeLabel[hc.dissenter_to]}; reliability-weighted consensus kept → ${nodeLabel[hc.winner]} (${hc.winner_count} agents, trust ${hc.rel_majority}+) over ${hc.dissenter} (${rd})`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
+  {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once. <span class="ok">The MCP you never wrote.</span>`,
    run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');setTrust();}},
+  {label:"<b>Act 2</b> · it keeps learning",cap:`The map is never finished, and it <span class="ok">knows what it is unsure of</span>: ${R.heal?R.heal.confirmed_total:''} screens confirmed, ${R.heal?R.heal.provisional_total:''} seen only once. Hit a half-known screen and it does not guess, it re-explores just that path and <span class="ok">consensus promotes it</span>. The same loop heals the map when the software changes.`,
+   run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);setTrust();showHeal();}},
   {label:"<b>Act 3</b> · cold vs map-guided",cap:`Both sides receive <span class="em">only the screenshot</span>. The <span class="em">frontier model</span> re-thinks every screen; the <span class="ok">tiny model just reads the map</span>. Same task, zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
@@ -324,8 +389,8 @@ const BEATS=[
      if(mv){mv.loop=false;mv.currentTime=0;mv.play().catch(()=>{});mv.ontimeupdate=()=>{const p=mv.duration?mv.currentTime/mv.duration:0;document.getElementById('a3mapt').textContent=mv.currentTime.toFixed(1)+'s';document.getElementById('a3maps').textContent=Math.min(ST,Math.ceil(p*ST));};mv.onended=()=>{document.getElementById('a3mapt').textContent=mv.duration.toFixed(1)+'s';};}}},
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
-let bi=-1,heroTimer;
-function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');coverage.classList.remove('show');bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
+let bi=-1,heroTimer,healTimer;
+function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');coverage.classList.remove('show');hideTwin();hideHeal();bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
   document.querySelectorAll('.bd').forEach((d,k)=>{d.classList.toggle('on',k===bi);d.classList.toggle('done',k<bi);});}
 function advance(){if(bi<BEATS.length-1)goto(bi+1);}
 function retreat(){if(bi>0)goto(bi-1);}
