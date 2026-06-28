@@ -7,7 +7,7 @@ later in build_map.py.
 
 Output: viz/recording/raw.json + frames/*.png + videos/*.webm
 """
-import sys, pathlib, json, time, shutil
+import os, sys, pathlib, json, time, shutil
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
@@ -16,22 +16,25 @@ from google.genai import types
 from veche.browser import Browser, OPENEMR
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-REC = ROOT / "viz" / "recording"
+REC = ROOT / os.environ.get("VECHE_REC_DIR", "viz/recording")   # set VECHE_REC_DIR to capture elsewhere
 FRAMES, VIDEOS = REC / "frames", REC / "videos"
 MODEL = "gemini-2.5-computer-use-preview-10-2025"
 PRICE_IN, PRICE_OUT = 1.25 / 1e6, 10.0 / 1e6
-MAX_STEPS = 12
+MAX_STEPS = int(os.environ.get("VECHE_MAX_STEPS", "12"))
 NO_HARM = " Visit as many DISTINCT screens as you can. Do NOT submit forms, save, or delete anything — only navigate."
 
+# deeper + OVERLAPPING goals: same chart screens seen by several agents (different
+# patients -> node-identity merges them -> committed edges), and menu<->patient
+# bridges so the graph stays connected.
 AGENTS = [
-    ("a1", "patient:1", "Explore this patient's chart in depth: open the History, Issues, Ledger, Documents, Transactions and Report tabs."),
-    ("a2", "main", "From the top menu, open the Calendar, then the Messages center, then the Flow board."),
-    ("a3", "main", "From the top menu, open Fees, then Reports — visit a few different report screens."),
-    ("a4", "main", "From the top menu, open the Patient/Client finder, then open two different patients' charts."),
-    ("a5", "main", "From the top menu, open Procedures, then Administration, then Miscellaneous."),
-    ("a6", "patient:2", "Explore this patient's Documents, Transactions, Ledger and Report tabs."),
-    ("a7", "main", "Open the Calendar, then the add-appointment screen (do not save), then the patient finder."),
-    ("a8", "patient:3", "Open this patient's History and Issues tabs and the Demographics edit screen (do not save)."),
+    ("a1", "patient:1", "Open this patient's chart and visit, in order, the History, Issues, Ledger, Documents, Transactions and Report tabs, then return to the patient summary."),
+    ("a2", "patient:1", "Open this patient's History tab, then Issues, then Ledger, then the Demographics screen, then Documents."),
+    ("a3", "patient:2", "Open this patient's History, Issues, Ledger and Documents tabs, then the Report tab."),
+    ("a4", "main", "From the top menu open the Calendar, then the add-appointment screen, then Messages, then the patient finder, then open a patient chart and its History tab."),
+    ("a5", "main", "Open the patient finder, open a patient, then visit that patient's History, Issues and Ledger tabs."),
+    ("a6", "main", "From the top menu open Fees, then several different Reports screens, then Procedures, then Administration."),
+    ("a7", "main", "From the top menu open the Calendar, then Messages, then Fees, then one Reports screen."),
+    ("a8", "patient:3", "Open this patient's History, Issues, Ledger, Documents and Transactions tabs."),
 ]
 
 

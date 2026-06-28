@@ -5,7 +5,7 @@ screen seen by different agents MERGES into one node), builds observed transitio
 and snapshots the map building agent-by-agent. Reads viz/recording/raw.json,
 writes viz/recording/recording.json (+ keeps frames as node thumbnails).
 """
-import sys, pathlib, json, time, collections
+import os, sys, pathlib, json, time, collections
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
@@ -15,7 +15,7 @@ from veche.consolidator import consolidate
 from veche.portable_map import Map, MapNode, MapEdge
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-REC = ROOT / "viz" / "recording"
+REC = ROOT / os.environ.get("VECHE_REC_DIR", "viz/recording")   # match record_swarm.py
 FRAMES = REC / "frames"
 
 
