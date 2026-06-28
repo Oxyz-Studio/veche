@@ -186,7 +186,7 @@ function spPulse(k){const e=document.getElementById('sp-'+k);e.classList.add('li
 // frozen force layout over ALL nodes
 const MW=1000,MH=760,allNodes=R.nodes,allEdges=R.edges,fn=R.frame_node;
 const sharedSet=new Set(allNodes.filter(n=>n.seen_by.length>1).map(n=>n.id));
-const heroNode=(allNodes.find(n=>n.seen_by.length>1)||allNodes[1]||allNodes[0]).id;
+const heroNode=(R.hero_conflict&&R.hero_conflict.from)||(allNodes.find(n=>n.seen_by.length>1)||allNodes[1]||allNodes[0]).id;
 const pos={};
 allNodes.forEach((n,i)=>{const a=i*2.39996;pos[n.id]={x:MW/2+Math.cos(a)*220+((i*37)%120-60),y:MH/2+Math.sin(a)*200+((i*61)%120-60),vx:0,vy:0};});
 (function(){const ids=allNodes.map(n=>n.id);for(let it=0;it<320;it++){
@@ -289,13 +289,18 @@ const BEATS=[
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);playBuild();}},
   {label:"<b>Act 2</b> · consensus",cap:`When a screen is seen by a <span class="ok">different agent</span>, Voyage recognizes it and merges it. The map converges by consensus.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);spPulse('voyage');}},
-  {label:"<b>Act 2</b> · the overrule",cap:`Agents misread ~1 in 5. When one does, <span class="ok">the swarm overrules it</span>. K-agreement keeps the truth and drops the liar's trust.`,
-   run(){showAct('act2');stopBuild();showFinal();const p=pos[heroNode];
-     const rc=mapg.querySelector(`rect[data-rect="${heroNode}"]`);if(rc)rc.classList.add('hero');
-     mapg.appendChild(el('path',{d:`M ${p.x-22} ${p.y} C ${p.x-115} ${p.y+95},${p.x+115} ${p.y+115},${p.x+22} ${p.y+14}`,fill:'none',stroke:'#d11424','stroke-width':'4','stroke-dasharray':'9 6'}));
-     const t=el('text',{x:p.x,y:p.y+128,'text-anchor':'middle','font-size':'16','font-weight':'800',fill:'#d11424','paint-order':'stroke',stroke:'#fff','stroke-width':'5'});t.textContent='a3 misread here';mapg.appendChild(t);
-     view={k:1.9,tx:500-1.9*p.x,ty:380-1.9*p.y};applyView();
-     playGrid();spLive(['voyage','atlas']);log('over','a3',`misread the transition at ${heroNode} → OVERRULED, trust 0.50→0.33`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
+  {label:"<b>Act 2</b> · the overrule",cap:`Agents don't always agree. Here, <span class="em">one agent diverged</span> on a real transition. <span class="ok">K-agreement keeps the majority</span> and drops the dissenter's trust. This is from the captured data.`,
+   run(){showAct('act2');stopBuild();showFinal();const hc=R.hero_conflict||{};const from=hc.from||heroNode;const p=pos[from];
+     const rc=mapg.querySelector(`rect[data-rect="${from}"]`);if(rc)rc.classList.add('hero');
+     const dt=hc.dissenter_to&&pos[hc.dissenter_to],wn=hc.winner&&pos[hc.winner];
+     if(dt){mapg.appendChild(el('line',{x1:p.x,y1:p.y,x2:dt.x,y2:dt.y,stroke:'#d11424','stroke-width':'4','stroke-dasharray':'9 6'}));
+       const mx=(p.x+dt.x)/2,my=(p.y+dt.y)/2-4;const t=el('text',{x:mx,y:my,'text-anchor':'middle','font-size':'15','font-weight':'800',fill:'#d11424','paint-order':'stroke',stroke:'#fff','stroke-width':'5'});t.textContent=(hc.dissenter||'agent')+' diverged';mapg.appendChild(t);}
+     const rd=hc.rel_dissenter!=null?hc.rel_dissenter:0.33;
+     herobadge.innerHTML=`<div class="h">⚠ agent ${hc.dissenter||'?'} diverged on this transition</div><div class="s">${hc.winner_count||2} agents agree <b>${from}</b> → <b>${hc.winner}</b> via ${actLabel(hc.action)}. ${hc.dissenter} reported → ${hc.dissenter_to}. K-agreement keeps the majority and quarantines the lone claim.</div><div class="r">${hc.dissenter} trust&nbsp; <b>0.50</b> → <i>${rd}</i></div>`;
+     const xs=[p.x],ys=[p.y];if(dt){xs.push(dt.x);ys.push(dt.y);}if(wn){xs.push(wn.x);ys.push(wn.y);}
+     const cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;
+     view={k:1.6,tx:500-1.6*cx,ty:380-1.6*cy};applyView();
+     playGrid();spLive(['voyage','atlas']);log('over',hc.dissenter||'agent',`diverged: ${from} → ${hc.dissenter_to}; consensus kept → ${hc.winner} (${hc.winner_count} agents), trust 0.50→${rd}`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
   {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once.`,
    run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');}},
   {label:"<b>Act 3</b> · cold vs map-guided",cap:`A <span class="em">frontier model</span> re-thinking every screen, vs a <span class="ok">tiny model just reading the map</span>. Same task, zero paid tokens.`,

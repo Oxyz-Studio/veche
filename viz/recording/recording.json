@@ -2358,5 +2358,24 @@
       "metric": "swarm hosting",
       "count": null
     }
+  },
+  "hero_conflict": {
+    "from": "n0001",
+    "action": "click_at",
+    "winner": "n0002",
+    "winner_count": 2,
+    "dissenter": "a6",
+    "dissenter_to": "n0003",
+    "rel_dissenter": 0.333,
+    "rel_majority": 0.75
+  },
+  "reliability": {
+    "a6": 0.333,
+    "a2": 0.5,
+    "a4": 0.75,
+    "a7": 0.889,
+    "a5": 0.8,
+    "a1": 0.75,
+    "a8": 0.833
   }
 }

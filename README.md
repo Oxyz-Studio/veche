@@ -57,12 +57,13 @@ measured compounding cost curve.
 - **Voyage AI** `voyage-multimodal-3` — pixel node-identity
 - **MongoDB Atlas** — the shared append-only log + consolidated graph + vector search
 
-## Watch the demo (no API keys needed)
+## Watch the demo
 
-Open **`viz/index.html` in Chrome** — a real recorded swarm run (agent screen
-recordings + the consensus map) ships with the repo. Use **Space** or **← →** to
-move through the three acts; on the map you can zoom (wheel), pan (drag), and hover
-a node for its details.
+`viz/index.html` replays a **real recorded swarm run** (agent screen recordings +
+the consensus map, all bound to the captured data). Generate the recording with the
+two scripts below, then open the file in **Chrome**. Use **Space** / **← →** to move
+through the three acts; on the map you can zoom (wheel), pan (drag), and hover a node
+for its details.
 
 ## Reproduce it from scratch
 

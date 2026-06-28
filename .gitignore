@@ -24,6 +24,7 @@ recordings/
 veche.md
 veche-spec.md
 
-# demo assets (frames + videos) ARE committed so the demo runs straight from a clone
+# Heavy demo assets (regenerable via the scripts) — kept OUT of this repo
+viz/recording/frames/
+viz/recording/videos/
 viz/recording/recording_salvage.json
-viz/recording/videos/*.webm

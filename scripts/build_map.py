@@ -10,6 +10,8 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
 from veche.node_identity import NodeRegistry, VoyageEmbedder
+from veche.types import Observation
+from veche.consolidator import consolidate
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 REC = ROOT / "viz" / "recording"
@@ -104,6 +106,33 @@ def main():
              for nid in sorted(reg.nodes.keys())]
     edges = edges_from(observations)
 
+    # ---- REAL consensus: run the consolidator on the real observations ----
+    cobs = [Observation(o["agent"], o["from"], o["label"], o["to"]) for o in observations]
+    cres = consolidate(cobs, k=2)
+    hero = None  # a genuine conflict in the data (one agent diverged, majority agreed)
+    for e in cres.edges:
+        if not (e.is_conflict and e.committed and e.confirmations >= 2):
+            continue
+        for tn in e.quarantined:
+            ags = sorted({o["agent"] for o in observations
+                          if o["from"] == e.from_node and o["label"] == e.action and o["to"] == tn})
+            if len(ags) == 1:                       # a clean lone dissenter vs a majority
+                hero = {"from": e.from_node, "action": e.action, "winner": e.to_node,
+                        "winner_count": e.confirmations, "dissenter": ags[0], "dissenter_to": tn}
+                break
+        if hero:
+            break
+    if hero:                                        # real, isolated reliability impact of THIS conflict
+        grp = [Observation(o["agent"], o["from"], o["label"], o["to"]) for o in observations
+               if o["from"] == hero["from"] and o["label"] == hero["action"]]
+        g = consolidate(grp, k=2)
+        hero["rel_dissenter"] = round(g.reliability.get(hero["dissenter"], 0.5), 3)
+        maj = [a for a in g.reliability if a != hero["dissenter"]]
+        hero["rel_majority"] = round(g.reliability.get(maj[0], 0.5), 3) if maj else 0.667
+        print(f"  real hero conflict: {hero['from']} --{hero['action']}--> winner {hero['winner']} "
+              f"({hero['winner_count']} agents) vs {hero['dissenter']}->{hero['dissenter_to']} "
+              f"(trust {hero['rel_dissenter']})")
+
     swarm_tokens = sum(e.get("tokens", 0) for e in raw["events"])
     swarm_cost = round(sum(e.get("cost", 0) for e in raw["events"]), 2)
     gemini_calls = len(raw["events"]) or max(0, len(all_frames) - len(raw["agents"]))
@@ -120,6 +149,8 @@ def main():
             "gemma": {"label": "Gemma 4 (operator)", "metric": "map-guided steps", "count": 4},
             "digitalocean": {"label": "DigitalOcean", "metric": "swarm hosting", "count": None},
         },
+        "hero_conflict": hero,
+        "reliability": {a: round(r, 3) for a, r in cres.reliability.items()},
     }
     (REC / "recording.json").write_text(json.dumps(recording, indent=2))
     print(f"\nMAP BUILT: {len(nodes)} nodes, {len(edges)} edges, {len(snapshots)} snapshots "
