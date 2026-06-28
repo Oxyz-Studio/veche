@@ -72,7 +72,8 @@
   .loopwrap svg{width:auto;height:100%;max-height:64vh;max-width:100%}
 
   #act1{display:grid;grid-template-columns:1.5fr 1fr;gap:2.4vw;align-items:center;height:100%}
-  .bigvideo{border:1.5px solid var(--ink);background:#000;height:100%;overflow:hidden;display:flex;align-items:center}
+  .bigvideo{border:1.5px solid var(--ink);background:#000;height:100%;overflow:hidden;display:flex;align-items:center;position:relative}
+  .vtag{position:absolute;top:0;left:0;background:var(--ink);color:var(--paper);font-size:.66rem;font-weight:700;padding:.18rem .55rem;letter-spacing:.02em;z-index:3;font-variant-numeric:tabular-nums}
   .bigvideo video{width:100%;height:100%;object-fit:contain}
   .coldm .big{font-weight:900;font-size:clamp(2.8rem,7vw,6rem);line-height:.9;color:var(--wrong);letter-spacing:-.02em}
   .coldm .lab{font-size:.8rem;font-weight:600;color:var(--muted);margin-top:.3rem}
@@ -163,7 +164,7 @@
 
   <div class="acts">
     <section class="act" id="act1">
-      <div class="bigvideo"><video id="coldvid" src="recording_deep/videos/a1.webm" muted playsinline></video></div>
+      <div class="bigvideo"><video id="coldvid" src="recording_deep/videos/a1.webm" muted playsinline></video><span class="vtag">computer-use · gemini-2.5-computer-use-preview-10-2025</span></div>
       <div class="coldm">
         <div class="big" id="coldTok">0</div><div class="lab">tokens · re-perceiving every screen</div>
         <div class="grid2">
@@ -196,7 +197,7 @@
       <div class="a3head">SAME REQUEST · <b style="color:var(--ink)">open the patient's History, then Issues, then Ledger tabs</b></div>
       <div class="a3grid">
         <div class="a3panel">
-          <div class="a3lbl"><span class="mname em">Gemini 2.5 Computer Use</span><span class="mtag">frontier model · re-perceives every screen</span></div>
+          <div class="a3lbl"><span class="mname em">Gemini 2.5 Computer Use</span><span class="mtag">gemini-2.5-computer-use-preview-10-2025 · re-perceives every screen</span></div>
           <div class="a3vid"><video id="coldop" src="recording_deep/videos/cold_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
             <div><span class="num cold" id="a3cold">0</span><span class="su">tokens</span></div>
@@ -205,7 +206,7 @@
           </div>
         </div>
         <div class="a3panel">
-          <div class="a3lbl"><span class="mname ok">Gemma 4</span><span class="mtag">lightweight model · just reads the shared map</span></div>
+          <div class="a3lbl"><span class="mname ok">Gemma 4</span><span class="mtag">reads the shared map · no vision model</span></div>
           <div class="a3vid"><video id="mapop" src="recording_deep/videos/mapped_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
             <div><span class="num mapped" id="a3map">0</span><span class="su">tokens</span></div>
@@ -422,7 +423,7 @@ function dimExcept(ids){const keep=new Set(ids);
 function undim(){mapg.querySelectorAll('line,text,image,rect[data-rect]').forEach(el=>el.style.removeProperty('opacity'));}
 
 const grid=document.getElementById('grid');
-R.agents.forEach(a=>{if(!a.video)return;const c=document.createElement('div');c.className='cell';c.id='cell-'+a.id;c.innerHTML=`<video src="${mp4(a.video)}" muted loop playsinline></video><span class="tag">${a.id} · Gemini</span><span class="trust" id="trust-${a.id}">trust 0.50</span>`;grid.appendChild(c);});
+R.agents.forEach(a=>{if(!a.video)return;const c=document.createElement('div');c.className='cell';c.id='cell-'+a.id;c.innerHTML=`<video src="${mp4(a.video)}" muted loop playsinline></video><span class="tag">${a.id} · gemini-2.5-computer-use</span><span class="trust" id="trust-${a.id}">trust 0.50</span>`;grid.appendChild(c);});
 // odd agent count: let the last tile fill the empty cell so the 2-col grid has no gap
 (function(){const cells=grid.querySelectorAll('.cell');if(cells.length%2===1)cells[cells.length-1].style.gridColumn='1 / -1';})();
 function playGrid(){grid.querySelectorAll('video').forEach(v=>{v.play().catch(()=>{});});}
