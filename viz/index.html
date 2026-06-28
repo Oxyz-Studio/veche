@@ -140,6 +140,9 @@
   .a3stats .num.cold{color:var(--wrong)} .a3stats .num.mapped{color:var(--truth)}
   .a3stats .n2{font-weight:800;font-size:clamp(1.3rem,2.4vw,2.2rem);line-height:1} .a3stats .n2.ok{color:var(--truth)}
   .a3stats .su{font-size:.68rem;font-weight:600;color:var(--muted);display:block;margin-top:.15rem}
+  .a3delta{flex:none;display:flex;align-items:center;justify-content:center;gap:clamp(1.4rem,3vw,3rem);border-top:1.5px solid var(--ink);padding-top:1.4vh;flex-wrap:wrap}
+  .a3delta .dlt{font-size:clamp(.92rem,1.5vw,1.18rem);font-weight:700;color:var(--muted)}
+  .a3delta .dlt b{color:var(--truth);font-weight:900;font-variant-numeric:tabular-nums}
 
   .sponsors{display:flex;gap:.7vw} .sponsors.hide{display:none}
   .sp{flex:1;border:1.5px solid var(--hair);padding:.55rem .8rem;display:flex;justify-content:space-between;align-items:center;opacity:.5;transition:.3s;background:var(--paper)}
@@ -200,20 +203,25 @@
           <div class="a3lbl"><span class="mname em">Gemini 2.5 Computer Use</span><span class="mtag">gemini-2.5-computer-use-preview-10-2025 · re-perceives every screen</span></div>
           <div class="a3vid"><video id="coldop" src="recording_deep/videos/cold_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
-            <div><span class="num cold" id="a3cold">0</span><span class="su">tokens</span></div>
+            <div><span class="num cold" id="a3cold">0</span><span class="su">paid vision tokens</span></div>
             <div><span class="n2" id="a3coldt">0.0s</span><span class="su">time</span></div>
             <div><span class="n2" id="a3colds">0</span><span class="su">steps</span></div>
           </div>
         </div>
         <div class="a3panel">
-          <div class="a3lbl"><span class="mname ok">Gemma 4</span><span class="mtag">reads the shared map · no vision model</span></div>
+          <div class="a3lbl"><span class="mname ok">Gemma 4</span><span class="mtag">reads the map · still fingerprints each screen (phash / Voyage), but no frontier vision</span></div>
           <div class="a3vid"><video id="mapop" src="recording_deep/videos/mapped_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
-            <div><span class="num mapped" id="a3map">0</span><span class="su">tokens</span></div>
+            <div><span class="num mapped" id="a3map">0</span><span class="su">paid vision tokens</span></div>
             <div><span class="n2 ok" id="a3mapt">0.0s</span><span class="su">time</span></div>
             <div><span class="n2" id="a3maps">0</span><span class="su">steps</span></div>
           </div>
         </div>
+      </div>
+      <div class="a3delta">
+        <span class="dlt"><b>28,794 → 0</b> paid vision tokens</span>
+        <span class="dlt"><b>~$0.04 → $0</b> per task</span>
+        <span class="dlt">and it compounds: <b>every reuse stays free</b></span>
       </div>
     </section>
 
