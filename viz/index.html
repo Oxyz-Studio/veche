@@ -43,6 +43,10 @@
   .cell{position:relative;border:1.5px solid var(--ink);background:#000;overflow:hidden;min-height:0}
   .cell video{width:100%;height:100%;object-fit:contain}
   .cell .tag{position:absolute;top:0;left:0;background:var(--ink);color:var(--paper);font-size:.62rem;font-weight:700;padding:.14rem .45rem;letter-spacing:.04em}
+  .cell .trust{position:absolute;top:0;right:0;background:var(--paper);color:var(--ink);font-size:.6rem;font-weight:800;padding:.14rem .4rem;border-left:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);font-variant-numeric:tabular-nums;transition:background .5s,color .5s}
+  .cell .trust.up{background:var(--truth);color:#fff}
+  .cell .trust.down{background:var(--wrong);color:#fff}
+  .cell.flagged{outline:3px solid var(--wrong);outline-offset:-3px}
   .mapwrap{border:1.5px solid var(--ink);position:relative;overflow:hidden;background:var(--paper);display:grid;grid-template-rows:1fr 23%}
   #map{width:100%;height:100%;display:block;min-height:0;cursor:grab}
   .nodeinfo{position:absolute;pointer-events:none;background:var(--ink);color:#fff;padding:.5rem .65rem;font-size:.72rem;font-weight:600;opacity:0;transition:opacity .1s;z-index:5;max-width:230px}
@@ -268,8 +272,15 @@ function showFinal(){ if(buildTimer){clearInterval(buildTimer);buildTimer=null;}
   log('merge','✓',`whole app mapped. ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by 2+ agents`); }
 
 const grid=document.getElementById('grid');
-R.agents.forEach(a=>{if(!a.video)return;const c=document.createElement('div');c.className='cell';c.innerHTML=`<video src="${mp4(a.video)}" muted loop playsinline></video><span class="tag">${a.id} · Gemini</span>`;grid.appendChild(c);});
+R.agents.forEach(a=>{if(!a.video)return;const c=document.createElement('div');c.className='cell';c.id='cell-'+a.id;c.innerHTML=`<video src="${mp4(a.video)}" muted loop playsinline></video><span class="tag">${a.id} · Gemini</span><span class="trust" id="trust-${a.id}">trust 0.50</span>`;grid.appendChild(c);});
 function playGrid(){grid.querySelectorAll('video').forEach(v=>{v.play().catch(()=>{});});}
+function resetTrust(){R.agents.forEach(a=>{const t=document.getElementById('trust-'+a.id);if(t){t.textContent='trust 0.50';t.className='trust';}const c=document.getElementById('cell-'+a.id);if(c)c.classList.remove('flagged');});}
+function setTrust(){const rel=R.reliability||{},diss=(R.hero_conflict||{}).dissenter;
+  R.agents.forEach(a=>{const t=document.getElementById('trust-'+a.id);if(!t)return;const v=rel[a.id];
+    if(v==null){t.textContent='trust 0.50';t.className='trust';return;}
+    t.textContent='trust '+v.toFixed(2);
+    t.className='trust '+(a.id===diss||v<0.45?'down':(v>0.6?'up':''));
+    const c=document.getElementById('cell-'+a.id);if(c)c.classList.toggle('flagged',a.id===diss);});}
 function stopGrid(){grid.querySelectorAll('video').forEach(v=>v.pause());}
 
 // Act 1 — metrics SYNCED to the video timeline
@@ -289,7 +300,7 @@ const BEATS=[
   {label:"<b>Act 1</b> · cold",cap:`<span class="em">One agent, cold.</span> Its only input is a <span class="em">screenshot</span>: it looks, picks where to click, a separate hand clicks. Slow, expensive, wrong about 1 in 5.`,
    run(){showAct('act1');spLive(['gemini']);climbCold();}},
   {label:"<b>Act 2</b> · the map builds",cap:`So we put a <span class="ok">swarm</span> on it. Watch ${R.agents.length} agents map the app, screen by screen, into one shared memory.`,
-   run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);playBuild();}},
+   run(){showAct('act2');herobadge.classList.remove('show');playGrid();resetTrust();spLive(['gemini','voyage','atlas']);playBuild();}},
   {label:"<b>Act 2</b> · consensus",cap:`When a screen is seen by a <span class="ok">different agent</span>, Voyage recognizes it and merges it. The map converges by consensus.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);spPulse('voyage');}},
   {label:"<b>Act 2</b> · the overrule",cap:`Agents don't always agree. Here, <span class="em">one agent diverged</span> on a real transition. <span class="ok">K-agreement keeps the majority</span> and drops the dissenter's trust. This is from the captured data.`,
@@ -303,9 +314,9 @@ const BEATS=[
      const xs=[p.x],ys=[p.y];if(dt){xs.push(dt.x);ys.push(dt.y);}if(wn){xs.push(wn.x);ys.push(wn.y);}
      const cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;
      view={k:1.6,tx:500-1.6*cx,ty:380-1.6*cy};applyView();
-     playGrid();spLive(['voyage','atlas']);log('over',hc.dissenter||'agent',`diverged: ${from} → ${hc.dissenter_to}; consensus kept → ${hc.winner} (${hc.winner_count} agents), trust 0.50→${rd}`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
+     playGrid();spLive(['voyage','atlas']);setTrust();log('over',hc.dissenter||'agent',`diverged: ${from} → ${hc.dissenter_to}; consensus kept → ${hc.winner} (${hc.winner_count} agents), trust 0.50→${rd}`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
   {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once.`,
-   run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');}},
+   run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');setTrust();}},
   {label:"<b>Act 3</b> · cold vs map-guided",cap:`Both sides receive <span class="em">only the screenshot</span>. The <span class="em">frontier model</span> re-thinks every screen; the <span class="ok">tiny model just reads the map</span>. Same task, zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
