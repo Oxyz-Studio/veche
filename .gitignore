@@ -30,3 +30,9 @@ viz/recording/videos/
 viz/recording/recording_salvage.json
 viz/recording_deep/frames/
 viz/recording_deep/videos/
+
+# Local demo backups (not published)
+backup/
+
+# Internal presentation runbook (not published)
+PITCH-RUNBOOK.md
