@@ -436,7 +436,11 @@ function climbCold(){const vid=document.getElementById('coldvid');vid.currentTim
     document.getElementById('coldSteps').textContent=step;document.getElementById('coldTime').textContent=Math.round(ct)+'s';};}
 
 const cap=document.getElementById('caption'),actlabel=document.getElementById('actlabel'),herobadge=document.getElementById('herobadge'),coverage=document.getElementById('coverage'),twintest=document.getElementById('twintest'),healbadge=document.getElementById('healbadge');
-function showAct(id){document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id));document.getElementById('sponsors').classList.toggle('hide',id==='act3');}
+function showAct(id){document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id));}
+// the sponsor bar only belongs where the swarm/map is actually on screen
+function syncSponsors(){const ov=twintest.classList.contains('show')||consolidatorEl.classList.contains('show')||loopEl.classList.contains('show');
+  const a1=document.getElementById('act1').classList.contains('show'),a3=document.getElementById('act3').classList.contains('show');
+  document.getElementById('sponsors').classList.toggle('hide',ov||a1||a3);}
 function stopBuild(){if(buildTimer){clearInterval(buildTimer);buildTimer=null;}}
 // Twin Test - render the REAL node-identity cosines from the captured frames
 function fillTwin(){const t=R.twin_test;if(!t)return;
@@ -506,7 +510,7 @@ const BEATS=[
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1,heroTimer,healTimer;
-function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');coverage.classList.remove('show');hideTwin();hideHeal();hideConsolidator();hideLoop();bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
+function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');coverage.classList.remove('show');hideTwin();hideHeal();hideConsolidator();hideLoop();bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();syncSponsors();
   document.querySelectorAll('.bd').forEach((d,k)=>{d.classList.toggle('on',k===bi);d.classList.toggle('done',k<bi);});}
 function advance(){if(bi<BEATS.length-1)goto(bi+1);}
 function retreat(){if(bi>0)goto(bi-1);}
