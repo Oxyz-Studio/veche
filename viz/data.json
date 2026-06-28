@@ -1,0 +1,38 @@
+{
+  "app": "OpenEMR (EHR) — operated by vision only, no DOM",
+  "nodes": [
+    { "id": "n0001", "label": "Patient Dashboard", "kind": "start" },
+    { "id": "n0002", "label": "History", "kind": "screen" },
+    { "id": "n0003", "label": "Ledger", "kind": "screen" },
+    { "id": "n0004", "label": "Documents", "kind": "screen" }
+  ],
+  "edges": [
+    { "from": "n0001", "action": "History",   "to": "n0002", "confirmations": 2, "committed": true },
+    { "from": "n0001", "action": "Ledger",    "to": "n0003", "confirmations": 2, "committed": true },
+    { "from": "n0001", "action": "Documents", "to": "n0004", "confirmations": 2, "committed": true }
+  ],
+  "hero": {
+    "from": "n0001",
+    "action": "History",
+    "claims": [
+      { "to": "n0002", "agents": ["a1", "a2"], "weight": 1.0, "correct": true },
+      { "to": "n0001", "agents": ["a3"], "weight": 0.5, "correct": false, "reason": "stale screenshot (misread)" }
+    ],
+    "winner": "n0002",
+    "quarantined": "n0001",
+    "reliability_after": { "a1": 0.667, "a2": 0.667, "a3": 0.333 }
+  },
+  "cost": {
+    "task": "open History → Issues → Ledger (4 steps)",
+    "cold_tokens": 28794,
+    "cold_usd": 0.04,
+    "mapped_tokens": 0,
+    "mapped_usd": 0.0,
+    "compounding_note": "cost-per-task = 28,794 / (N+1) → ~11x cheaper at 10 reuses, ~100x at 100"
+  },
+  "evidence": {
+    "node_identity": "Voyage cosine: same screen 0.67-0.85 vs different 0.30-0.33",
+    "concurrency": "5 agents x 100 concurrent appends to Atlas = 500, zero loss",
+    "single_agent_ceiling": "UI-CUBE: 9-19% on complex workflows -> consensus is load-bearing"
+  }
+}
