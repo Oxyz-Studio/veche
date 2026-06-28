@@ -429,7 +429,7 @@ function stopGrid(){grid.querySelectorAll('video').forEach(v=>v.pause());}
 
 // Act 1 - metrics SYNCED to the video timeline
 const a1ev=R.events.filter(e=>e.agent==='a1');
-function climbCold(){const vid=document.getElementById('coldvid');vid.currentTime=0;vid.loop=true;vid.play().catch(()=>{});
+function climbCold(){const vid=document.getElementById('coldvid');vid.currentTime=0;vid.loop=true;vid.playbackRate=3;vid.play().catch(()=>{});  // Act 1 replays 3x; metrics are synced to currentTime so they speed up with it
   vid.ontimeupdate=()=>{const ct=vid.currentTime;let step=0,tok=0;for(let i=0;i<a1ev.length;i++){if(a1ev[i].t<=ct){step=i+1;tok=a1ev[i].tokens;}}
     document.getElementById('coldTok').textContent=tok.toLocaleString();
     document.getElementById('coldUsd').textContent='$'+((tok*1.25/1e6)).toFixed(3);
