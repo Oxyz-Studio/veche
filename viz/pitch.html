@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VECHE — the MCP you never write</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070a08; --bg2:#0c110d; --ink:#eef2ec; --muted:#8b948b;
+    --green:#34e07c; --green-deep:#0f7a3a; --wrong:#ff5247; --hair:rgba(255,255,255,.12);
+    --mono:"IBM Plex Mono",ui-monospace,monospace; --disp:"Archivo",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--disp);font-weight:600;-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.15}
+  /* atmosphere: scanlines + grain + vignette */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px);mix-blend-mode:multiply;opacity:.5}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:59;
+    background:radial-gradient(120% 80% at 50% 0%,transparent 40%,rgba(0,0,0,.55) 100%)}
+  #swarm{position:fixed;inset:0;z-index:0;opacity:.55}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:80;display:flex;align-items:center;justify-content:space-between;
+    padding:1rem clamp(1.1rem,3.5vw,3rem);backdrop-filter:blur(9px);background:linear-gradient(180deg,rgba(7,10,8,.82),rgba(7,10,8,0))}
+  .brand{font-family:var(--disp);font-weight:900;letter-spacing:-.02em;font-size:1.35rem}
+  .brand i{color:var(--green);font-style:normal}
+  .navlinks{display:flex;gap:.5rem;font-family:var(--mono);font-size:.72rem}
+  .navlinks a{color:var(--muted);text-decoration:none;padding:.5rem .85rem;border:1px solid var(--hair);border-radius:2px;letter-spacing:.04em;text-transform:uppercase;transition:.2s}
+  .navlinks a:hover{color:var(--ink);border-color:var(--green)}
+  .navlinks a.on{color:var(--bg);background:var(--green);border-color:var(--green)}
+
+  main{position:relative;z-index:2}
+  section{padding:clamp(5rem,13vh,11rem) clamp(1.3rem,7vw,9rem);max-width:1500px;margin:0 auto}
+  .kick{font-family:var(--mono);font-size:.74rem;letter-spacing:.34em;text-transform:uppercase;color:var(--green);margin-bottom:1.6rem;display:flex;align-items:center;gap:.7rem}
+  .kick::before{content:"";width:34px;height:1px;background:var(--green)}
+
+  /* hero */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1500px;margin:0 auto;padding:7rem clamp(1.3rem,7vw,9rem) 4rem}
+  .hero h1{font-size:clamp(5rem,21vw,20rem);font-weight:900;letter-spacing:-.05em;line-height:.82;margin:.2rem 0}
+  .hero h1 .dot{color:var(--green)}
+  .tag{font-size:clamp(1.5rem,3.6vw,3rem);font-weight:800;letter-spacing:-.02em;max-width:18ch;margin-top:.4rem}
+  .tag .g{color:var(--green)}
+  .sub{font-family:var(--mono);font-weight:400;color:var(--muted);font-size:clamp(.9rem,1.3vw,1.05rem);max-width:54ch;margin-top:1.6rem;line-height:1.6}
+  .scrollhint{font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:var(--muted);margin-top:3.2rem;text-transform:uppercase;display:flex;align-items:center;gap:.6rem}
+  .scrollhint .a{animation:bob 1.6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+  h2{font-size:clamp(2.3rem,6.2vw,5.2rem);font-weight:900;letter-spacing:-.03em;line-height:.98;max-width:20ch}
+  h2 .g{color:var(--green)} h2 .r{color:var(--wrong)}
+  .lede{font-size:clamp(1.05rem,1.7vw,1.4rem);font-weight:600;color:var(--muted);max-width:60ch;margin-top:1.6rem;line-height:1.5}
+  .lede b{color:var(--ink);font-weight:800}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:3.4rem;background:var(--hair);border:1px solid var(--hair)}
+  .stat{background:var(--bg);padding:2.2rem 1.8rem}
+  .stat .n{font-size:clamp(2.6rem,5.2vw,4.6rem);font-weight:900;letter-spacing:-.03em;color:var(--green);line-height:.9;font-variant-numeric:tabular-nums}
+  .stat .l{margin-top:1rem;font-size:.96rem;font-weight:600;color:var(--ink);line-height:1.35}
+  .stat .s{margin-top:.7rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+
+  /* consensus number block */
+  .consensus{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(1rem,4vw,4rem);margin-top:3.4rem;border:1px solid var(--hair);padding:clamp(1.8rem,4vw,3.4rem)}
+  .cside .cn{font-size:clamp(3.4rem,8vw,7rem);font-weight:900;letter-spacing:-.03em;line-height:.85;font-variant-numeric:tabular-nums}
+  .cside.one .cn{color:var(--muted)} .cside.two .cn{color:var(--green)}
+  .cside .cl{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--muted);margin-top:.8rem;text-transform:uppercase;line-height:1.5}
+  .carrow{font-size:2.2rem;color:var(--green);font-family:var(--mono)}
+
+  .pipeline{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3.2rem}
+  .step{border:1px solid var(--hair);padding:1.7rem 1.5rem;position:relative}
+  .step .si{font-family:var(--mono);color:var(--green);font-size:.74rem;letter-spacing:.1em}
+  .step h3{font-size:1.45rem;font-weight:900;margin:.8rem 0 .5rem;letter-spacing:-.01em}
+  .step p{color:var(--muted);font-size:.96rem;line-height:1.5;font-weight:600}
+
+  /* close */
+  .close{min-height:88vh;display:flex;flex-direction:column;justify-content:center}
+  .close h2{font-size:clamp(2.8rem,9vw,8rem);letter-spacing:-.04em;line-height:.9}
+  .ctas{display:flex;flex-wrap:wrap;gap:1rem;margin-top:3rem}
+  .cta{font-family:var(--mono);font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:1.05rem 1.7rem;border:1px solid var(--green);color:var(--green);transition:.2s}
+  .cta:hover{background:var(--green);color:var(--bg)}
+  .cta.ghost{border-color:var(--hair);color:var(--muted)} .cta.ghost:hover{color:var(--ink);border-color:var(--ink);background:transparent}
+  footer{font-family:var(--mono);font-size:.68rem;color:var(--muted);padding:2.5rem clamp(1.3rem,7vw,9rem);border-top:1px solid var(--hair);max-width:1500px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+
+  /* reveal */
+  .rev{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .rev.in{opacity:1;transform:none}
+  .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+  /* hero load */
+  .hl{opacity:0;transform:translateY(30px);animation:rise .95s cubic-bezier(.2,.7,.2,1) forwards}
+  .hl1{animation-delay:.15s}.hl2{animation-delay:.32s}.hl3{animation-delay:.5s}.hl4{animation-delay:.68s}.hl5{animation-delay:.9s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(max-width:760px){.stats,.pipeline{grid-template-columns:1fr}.consensus{grid-template-columns:1fr;gap:1.2rem}.carrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+  <canvas id="swarm"></canvas>
+
+  <nav>
+    <div class="brand">VECHE<i>.</i></div>
+    <div class="navlinks">
+      <a href="pitch.html" class="on">Pitch</a>
+      <a href="how.html">How it works</a>
+      <a href="index.html">Live demo</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="kick hl hl1">Vision-only computer use // continual learning</div>
+      <h1 class="hl hl2">VECHE<span class="dot">.</span></h1>
+      <div class="tag hl hl3">An <span class="g">MCP</span> for software that never shipped one.</div>
+      <div class="sub hl hl4">A swarm of vision agents learns to operate any app from pixels alone, no API, no DOM, just the screen, and remembers it together as one shared, reusable map.</div>
+      <div class="scrollhint hl hl5"><span class="a">↓</span> scroll</div>
+    </header>
+
+    <section>
+      <div class="kick rev">The problem</div>
+      <h2 class="rev d1">Half the world runs on screens with <span class="g">no way in.</span></h2>
+      <p class="lede rev d2">No API. No DOM. Just pixels on a remote-streamed screen. Citrix-delivered health records, mainframe green-screens, twenty-year-old desktop apps. The software that runs hospitals, banks and governments was never built to be automated.</p>
+      <div class="stats">
+        <div class="stat rev d1"><div class="n" data-to="52" data-suf="%">0%</div><div class="l">of a doctor's day is spent operating the health record, a screen streamed over Citrix.</div><div class="s">peer-reviewed · 37–52%</div></div>
+        <div class="stat rev d2"><div class="n" data-to="20000" data-suf="+" data-k="1">0</div><div class="l">organizations still run their ERP on legacy SAP, through the old GUI.</div><div class="s">Gartner · end of 2024</div></div>
+        <div class="stat rev d3"><div class="n" data-to="92" data-suf="/100">0</div><div class="l">of the world's largest banks run their core on mainframe green-screens.</div><div class="s">according to IBM</div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kick rev">Why it's hard</div>
+      <h2 class="rev d1">One agent is a guess <span class="r">you can't check.</span></h2>
+      <p class="lede rev d2">Today you do it by hand, or you trust a single AI agent. The best vision agents get a step right maybe <b>eight times out of ten</b>, and those errors compound over a long task. With no API to verify against, a wrong reading looks exactly like a right one. Nowhere near safe enough for money, health, or compliance.</p>
+    </section>
+
+    <section>
+      <div class="kick rev">The idea</div>
+      <h2 class="rev d1">Don't make one agent smarter. <span class="g">Make many agree.</span></h2>
+      <p class="lede rev d2">A swarm of vision agents explores the app once and fuses what they see into <b>one shared map by consensus</b>. A path is trusted only when independent agents agree on it; when one diverges, it gets outvoted and its trust drops. The map ends up more reliable than any agent that built it. It is the same reason avionics runs three flight computers and votes.</p>
+      <div class="consensus rev d2">
+        <div class="cside one"><div class="cn" data-to="80" data-suf="%">0%</div><div class="cl">one agent,<br>on its own</div></div>
+        <div class="carrow">→</div>
+        <div class="cside two"><div class="cn" data-to="99.7" data-suf="%" data-dec="1">0%</div><div class="cl">two that<br>independently agree</div></div>
+      </div>
+      <div class="pipeline">
+        <div class="step rev d1"><div class="si">01 · SEE</div><h3>Pixels only</h3><p>Each agent's only input is a screenshot. It recognizes a screen by its visual fingerprint, the same screen with different data is still the same screen.</p></div>
+        <div class="step rev d2"><div class="si">02 · AGREE</div><h3>Consensus map</h3><p>Every observation is a vote, weighted by how reliable that agent has proven. Agreement filters out mistakes you could never otherwise catch.</p></div>
+        <div class="step rev d3"><div class="si">03 · REUSE</div><h3>Near-free at scale</h3><p>Once the map exists, a tiny cheap model just follows it, no re-reasoning per screen. The first pass pays for it; every pass after is essentially free.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kick rev">It compounds</div>
+      <h2 class="rev d1">The knowledge <span class="g">accumulates,</span> instead of resetting every session.</h2>
+      <p class="lede rev d2">Most computer-use agents are stateless within a session, and the few that keep memory build it per agent. VECHE's map persists, is shared, and grows the more it's used. Hit an unmapped screen and it learns it on the spot. Continual learning, applied to operating software, getting more reliable and cheaper with every run.</p>
+    </section>
+
+    <section class="close">
+      <div class="kick rev">VECHE</div>
+      <h2 class="rev d1">The integration<br>you <span class="g">never write.</span></h2>
+      <p class="lede rev d2">Reliable computer-use on the software nobody else can touch, that gets cheaper every time it's used.</p>
+      <div class="ctas rev d3">
+        <a class="cta" href="how.html">See how it works →</a>
+        <a class="cta ghost" href="index.html">Watch the live demo →</a>
+      </div>
+    </section>
+
+    <footer>
+      <span>VECHE · vision-only computer use · consensus · continual learning</span>
+      <span>AI Engineer World's Fair 2026</span>
+    </footer>
+  </main>
+
+<script>
+// ---- swarm canvas: agents drift, agree (green links), confirm nodes ----
+(function(){
+  const c=document.getElementById('swarm'),x=c.getContext('2d');let w,h,P=[];
+  function rs(){w=c.width=innerWidth;h=c.height=innerHeight;}
+  rs();addEventListener('resize',rs);
+  const N=Math.min(64,Math.floor(innerWidth/26));
+  for(let i=0;i<N;i++)P.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.32,vy:(Math.random()-.5)*.32,p:Math.random()*6.28});
+  function tick(t){
+    x.clearRect(0,0,w,h);
+    for(const a of P){a.x+=a.vx;a.y+=a.vy;a.p+=.02;
+      if(a.x<0||a.x>w)a.vx*=-1; if(a.y<0||a.y>h)a.vy*=-1;}
+    // links = "agreement"
+    for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){
+      const dx=P[i].x-P[j].x,dy=P[i].y-P[j].y,d=Math.hypot(dx,dy);
+      if(d<130){const o=(1-d/130)*.5;x.strokeStyle='rgba(52,224,124,'+o+')';x.lineWidth=1;x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.stroke();}
+    }
+    for(const a of P){const r=1.6+Math.sin(a.p)*.7;x.fillStyle='rgba(238,242,236,.85)';x.beginPath();x.arc(a.x,a.y,r,0,6.28);x.fill();}
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+// ---- reveal on scroll + count-up ----
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');
+  e.target.querySelectorAll&&e.target.querySelectorAll('[data-to]').forEach(countUp);
+  if(e.target.matches&&e.target.matches('[data-to]'))countUp(e.target);
+  io.unobserve(e.target);}});},{threshold:.25});
+document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+document.querySelectorAll('[data-to]').forEach(el=>io.observe(el));
+
+function countUp(el){
+  if(el._done)return;el._done=1;
+  const to=parseFloat(el.dataset.to),dec=parseInt(el.dataset.dec||'0'),suf=el.dataset.suf||'',k=el.dataset.k;
+  const fmt=v=>{if(k)return Math.round(v/1000)+'k';return dec?v.toFixed(dec):Math.round(v).toLocaleString();};
+  let s=null;const dur=1100;
+  function step(ts){if(s===null)s=ts;const p=Math.min(1,(ts-s)/dur),e=1-Math.pow(1-p,3);
+    el.textContent=fmt(to*e)+suf; if(p<1)requestAnimationFrame(step); else el.textContent=fmt(to)+suf;}
+  requestAnimationFrame(step);
+}
+</script>
+</body>
+</html>

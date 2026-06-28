@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VECHE — how it works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --paper:#fbfbf9; --ink:#0d0d0d; --muted:#6f746c; --hair:#e3e3db; --green:#0f7a3a; --wrong:#d11424;
+    --mono:"IBM Plex Mono",ui-monospace,monospace; --disp:"Archivo",system-ui,sans-serif; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--disp);font-weight:500;-webkit-font-smoothing:antialiased;line-height:1.45}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:80;display:flex;align-items:center;justify-content:space-between;
+    padding:1rem clamp(1.1rem,3.5vw,3rem);background:rgba(251,251,249,.86);backdrop-filter:blur(9px);border-bottom:1px solid var(--hair)}
+  .brand{font-weight:900;letter-spacing:-.02em;font-size:1.35rem}
+  .brand i{color:var(--green);font-style:normal}
+  .navlinks{display:flex;gap:.5rem;font-family:var(--mono);font-size:.72rem}
+  .navlinks a{color:var(--muted);text-decoration:none;padding:.5rem .85rem;border:1px solid var(--hair);letter-spacing:.04em;text-transform:uppercase;transition:.2s}
+  .navlinks a:hover{color:var(--ink);border-color:var(--green)}
+  .navlinks a.on{color:#fff;background:var(--green);border-color:var(--green)}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(1.3rem,5vw,3rem)}
+  header.top{padding:9rem 0 3rem}
+  .kick{font-family:var(--mono);font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;color:var(--green);margin-bottom:1.2rem}
+  header.top h1{font-size:clamp(2.6rem,7vw,5.4rem);font-weight:900;letter-spacing:-.03em;line-height:.98;max-width:18ch}
+  header.top .lede{font-size:clamp(1.05rem,1.6vw,1.35rem);color:var(--muted);max-width:62ch;margin-top:1.5rem;font-weight:600}
+
+  .block{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(1.5rem,5vw,4.5rem);align-items:start;
+    padding:clamp(2.6rem,6vh,5rem) 0;border-top:1px solid var(--hair)}
+  .block .num{font-family:var(--mono);font-size:.78rem;color:var(--green);letter-spacing:.12em;margin-bottom:1rem}
+  .block h2{font-size:clamp(1.7rem,3.4vw,2.7rem);font-weight:900;letter-spacing:-.02em;line-height:1.04;margin-bottom:1.1rem}
+  .block p{color:#2c2f2b;font-size:1.06rem;line-height:1.6;font-weight:500;margin-bottom:1rem;max-width:60ch}
+  .block p b{font-weight:800;color:var(--ink)}
+  .block .fig{position:sticky;top:6rem}
+  .note{font-family:var(--mono);font-size:.82rem;color:var(--muted);line-height:1.6;border-left:2px solid var(--green);padding:.3rem 0 .3rem 1rem;margin-top:1.2rem;font-weight:400}
+  .pill{display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--green);border:1px solid var(--green);padding:.25rem .6rem;border-radius:2px;margin-top:.4rem}
+
+  figure{border:1px solid var(--hair);background:#fff;padding:1.4rem}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:.9rem;letter-spacing:.02em;text-align:center}
+
+  .bignum{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin:.4rem 0 .2rem}
+  .bignum .a{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--muted);font-variant-numeric:tabular-nums}
+  .bignum .arr{font-family:var(--mono);color:var(--green)}
+  .bignum .b{font-size:clamp(2.6rem,6vw,4.4rem);font-weight:900;color:var(--green);letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:.9}
+
+  .svglab{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+  .nstroke{fill:#fff;stroke:var(--ink);stroke-width:2}
+  .nstroke.g{stroke:var(--green)} .nstroke.r{stroke:var(--wrong)}
+  .ntext{font-family:var(--disp);font-weight:800;font-size:13px;fill:var(--ink)}
+
+  footer{border-top:1px solid var(--hair);padding:2.4rem 0;font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .rev{opacity:0;transform:translateY(18px);transition:.7s cubic-bezier(.2,.7,.2,1)} .rev.in{opacity:1;transform:none}
+  @media(max-width:820px){.block{grid-template-columns:1fr}.block .fig{position:static}}
+</style>
+</head>
+<body>
+  <nav>
+    <div class="brand">VECHE<i>.</i></div>
+    <div class="navlinks">
+      <a href="pitch.html">Pitch</a>
+      <a href="how.html" class="on">How it works</a>
+      <a href="index.html">Live demo</a>
+    </div>
+  </nav>
+
+  <header class="top wrap">
+    <div class="kick">How it works · no bullshit</div>
+    <h1>A swarm learns to drive software it can only <span style="color:var(--green)">see.</span></h1>
+    <p class="lede">No magic, four mechanisms. It works from pixels, it trusts agreement over any single agent, it stores the result as a reusable map, and it gets cheaper the more it's used. Here is each part, plainly.</p>
+  </header>
+
+  <main class="wrap">
+
+    <section class="block">
+      <div>
+        <div class="num rev">01 · The input</div>
+        <h2 class="rev">It only ever sees a picture.</h2>
+        <p class="rev">Every agent's single input is a <b>screenshot</b>. No DOM, no HTML, no accessibility tree, no API. To decide whether two screenshots are the same screen, it does not read any text on them: it turns each image into a numeric <b>fingerprint</b> (a multimodal embedding) and compares the fingerprints.</p>
+        <p class="rev">The same screen showing different data still matches; a genuinely different screen does not. That is why it works on a Citrix stream or a mainframe green-screen, where pixels are the only thing on the wire.</p>
+      </div>
+      <div class="fig rev">
+        <figure>
+          <svg viewBox="0 0 360 220">
+            <rect class="nstroke" x="14" y="40" width="92" height="66" rx="3"/>
+            <rect class="nstroke" x="14" y="120" width="92" height="66" rx="3"/>
+            <text class="svglab" x="60" y="34" text-anchor="middle">patient A</text>
+            <text class="svglab" x="60" y="206" text-anchor="middle">patient B</text>
+            <path d="M106 73 L180 105" stroke="#0f7a3a" stroke-width="2" fill="none"/>
+            <path d="M106 153 L180 115" stroke="#0f7a3a" stroke-width="2" fill="none"/>
+            <rect x="180" y="92" width="92" height="36" rx="3" fill="#0f7a3a"/>
+            <text x="226" y="114" text-anchor="middle" fill="#fff" font-family="IBM Plex Mono" font-size="11">fingerprint</text>
+            <path d="M272 110 L312 110" stroke="#0f7a3a" stroke-width="2" fill="none" marker-end="url(#a)"/>
+            <circle class="nstroke g" cx="330" cy="110" r="16"/>
+            <text class="ntext" x="330" y="115" text-anchor="middle" fill="#0f7a3a">1</text>
+            <defs><marker id="a" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0f7a3a"/></marker></defs>
+          </svg>
+          <figcaption>two views, different data, one screen → one node</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <div>
+        <div class="num rev">02 · Why a swarm, not one agent</div>
+        <h2 class="rev">One reading you can't verify is just a guess.</h2>
+        <p class="rev">A single agent on a pixels-only app has nothing to check itself against, no API, no ground truth. So a wrong reading looks exactly like a right one. The only way out is <b>redundancy</b>: several independent agents look, and you trust what they agree on. Agreement is the only signal of correctness you can get without an oracle. Same principle as triple-redundant flight computers and error-correcting codes.</p>
+        <p class="rev">Each observation is a <b>vote, weighted by how reliable that agent has proven</b>. When one agent diverges, the majority overrules it and its trust drops, so it counts for less next time.</p>
+        <div class="bignum rev"><span class="a">80%</span><span class="arr">→</span><span class="b">99.7%</span></div>
+        <p class="rev" style="margin-top:.2rem;color:var(--muted)">One agent on its own is right ~80% per step. Two that independently agree are right ~99.7%.</p>
+        <div class="note rev">We measured this on the actual consensus code (Monte-Carlo). More agents mainly buy coverage, not accuracy. It assumes mistakes are independent; if a screen is confusing enough that everyone trips the same way, you raise the bar to three or more.</div>
+      </div>
+      <div class="fig rev">
+        <figure>
+          <svg viewBox="0 0 360 230">
+            <rect class="nstroke" x="18" y="96" width="86" height="44" rx="3"/>
+            <text class="ntext" x="61" y="123" text-anchor="middle">Screen A</text>
+            <rect class="nstroke g" x="250" y="30" width="92" height="44" rx="3"/>
+            <text class="ntext" x="296" y="50" text-anchor="middle" fill="#0f7a3a">Screen B</text>
+            <text class="svglab" x="296" y="66" text-anchor="middle" fill="#0f7a3a">kept ✓</text>
+            <rect class="nstroke r" x="250" y="158" width="92" height="44" rx="3" opacity=".55"/>
+            <text class="ntext" x="296" y="178" text-anchor="middle" fill="#d11424" opacity=".7">Screen C</text>
+            <text class="svglab" x="296" y="194" text-anchor="middle" fill="#d11424">overruled</text>
+            <path d="M104 110 L246 56" stroke="#0f7a3a" stroke-width="3" fill="none"/>
+            <path d="M104 122 L246 60" stroke="#0f7a3a" stroke-width="3" fill="none"/>
+            <text class="svglab" x="172" y="78" text-anchor="middle" fill="#0f7a3a">2 agents agree</text>
+            <path d="M104 130 L246 178" stroke="#d11424" stroke-width="2.5" stroke-dasharray="7 6" fill="none" opacity=".7"/>
+            <text class="svglab" x="170" y="168" text-anchor="middle" fill="#d11424">1 diverged</text>
+          </svg>
+          <figcaption>K-agreement keeps the majority, quarantines the outlier</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <div>
+        <div class="num rev">03 · The result</div>
+        <h2 class="rev">A reusable map, not a one-off run.</h2>
+        <p class="rev">Every confirmed transition becomes an edge: <i>from this screen, this action takes you to that screen</i>. Put them together and you have a <b>graph of the app</b>, its screens and the actions between them.</p>
+        <p class="rev">That map is a portable artifact. Any computer-use tool can read it, whatever model it runs. It is, in effect, <b>an MCP learned from pixels</b> instead of authored by hand.</p>
+        <span class="pill rev">a Visual Context Protocol</span>
+      </div>
+      <div class="fig rev">
+        <figure>
+          <svg viewBox="0 0 360 220">
+            <line x1="70" y1="60" x2="170" y2="40" stroke="#0f7a3a" stroke-width="2.5"/>
+            <line x1="170" y1="40" x2="280" y2="70" stroke="#0f7a3a" stroke-width="2.5"/>
+            <line x1="70" y1="60" x2="120" y2="150" stroke="#0f7a3a" stroke-width="2.5"/>
+            <line x1="120" y1="150" x2="230" y2="165" stroke="#0f7a3a" stroke-width="2.5"/>
+            <line x1="170" y1="40" x2="120" y2="150" stroke="#c9c9c1" stroke-width="1.6"/>
+            <line x1="280" y1="70" x2="230" y2="165" stroke="#c9c9c1" stroke-width="1.6"/>
+            <text class="svglab" x="120" y="44" text-anchor="middle" fill="#0f7a3a">click</text>
+            <text class="svglab" x="225" y="50" text-anchor="middle" fill="#0f7a3a">open</text>
+            <g>
+              <circle class="nstroke g" cx="70" cy="60" r="15"/><circle class="nstroke g" cx="170" cy="40" r="15"/>
+              <circle class="nstroke g" cx="280" cy="70" r="15"/><circle class="nstroke g" cx="120" cy="150" r="15"/>
+              <circle class="nstroke g" cx="230" cy="165" r="15"/>
+            </g>
+          </svg>
+          <figcaption>screens = nodes · actions = edges</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <div>
+        <div class="num rev">04 · Reuse and continual learning</div>
+        <h2 class="rev">It gets cheaper the more it's used.</h2>
+        <p class="rev">Once the map exists, you drop the expensive frontier model. A small cheap model just locates which screen it is on and follows the route, with <b>no per-screen reasoning</b>. The first traversal pays for the route; every reuse after is essentially free.</p>
+        <p class="rev">And the map keeps learning. It persists, it is shared, and it grows: hit a screen nobody mapped and that seeds new exploration. The knowledge <b>accumulates instead of resetting</b> each session. That is the continual-learning part.</p>
+        <div class="note rev">Cost per task falls roughly as the cold cost divided by the number of reuses, so a route that is expensive once becomes near-free at scale.</div>
+      </div>
+      <div class="fig rev">
+        <figure>
+          <svg viewBox="0 0 360 200">
+            <line x1="40" y1="20" x2="40" y2="168" stroke="#c9c9c1" stroke-width="1.5"/>
+            <line x1="40" y1="168" x2="340" y2="168" stroke="#c9c9c1" stroke-width="1.5"/>
+            <path d="M52 40 C 110 150, 200 162, 330 165" stroke="#0f7a3a" stroke-width="3" fill="none"/>
+            <circle cx="52" cy="40" r="4" fill="#d11424"/>
+            <text class="svglab" x="70" y="36" fill="#d11424">first run pays</text>
+            <circle cx="330" cy="165" r="4" fill="#0f7a3a"/>
+            <text class="svglab" x="300" y="158" text-anchor="end" fill="#0f7a3a">reuse ≈ free</text>
+            <text class="svglab" x="190" y="190" text-anchor="middle">number of times the route is used →</text>
+            <text class="svglab" x="20" y="95" text-anchor="middle" transform="rotate(-90 20 95)">cost / task</text>
+          </svg>
+          <figcaption>the compounding cost curve</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <div>
+        <div class="num rev">05 · What's ours, what's borrowed</div>
+        <h2 class="rev">Honest about the novelty.</h2>
+        <p class="rev">Fusing noisy votes into truth is <b>well-established</b>: Dawid-Skene truth inference, self-consistency, redundancy for reliability. We did not invent consensus, and we say so.</p>
+        <p class="rev">What is new is running it <b>live on a noisy, pixels-only GUI</b>: a swarm building one shared, model-agnostic map, with a measured compounding cost curve. Most computer-use agents today are stateless within a session; the ones that keep memory build it per-agent and lean on the DOM. A shared, consensus-built, pixels-only map any model can reuse is the gap VECHE fills.</p>
+      </div>
+      <div class="fig rev">
+        <figure>
+          <svg viewBox="0 0 360 180">
+            <text class="svglab" x="20" y="30" fill="#6f746c">BORROWED (cited)</text>
+            <text x="20" y="58" font-family="IBM Plex Mono" font-size="13" fill="#6f746c">· consensus / truth inference</text>
+            <text x="20" y="80" font-family="IBM Plex Mono" font-size="13" fill="#6f746c">· redundancy for reliability</text>
+            <line x1="20" y1="100" x2="340" y2="100" stroke="#e3e3db"/>
+            <text class="svglab" x="20" y="126" fill="#0f7a3a">OURS</text>
+            <text x="20" y="150" font-family="IBM Plex Mono" font-size="13" fill="#0f7a3a">· live, pixels-only, on real GUIs</text>
+            <text x="20" y="170" font-family="IBM Plex Mono" font-size="13" fill="#0f7a3a">· one shared, reusable, model-agnostic map</text>
+          </svg>
+          <figcaption>commodity plumbing vs the actual contribution</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <footer>
+      <span><a href="pitch.html" style="color:var(--green);text-decoration:none">← back to the pitch</a> &nbsp;·&nbsp; <a href="index.html" style="color:var(--green);text-decoration:none">watch the live demo →</a></span>
+      <span>VECHE · AI Engineer World's Fair 2026</span>
+    </footer>
+  </main>
+
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.2});
+  document.querySelectorAll('.rev').forEach((el,i)=>{el.style.transitionDelay=(i%4*0.06)+'s';io.observe(el);});
+</script>
+</body>
+</html>
