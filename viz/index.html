@@ -366,7 +366,7 @@ function addEdge(from,to,conf,label){if(!drawn.has(from)||!drawn.has(to))return;
 function greenNode(id){const rc=mapg.querySelector(`rect[data-rect="${id}"]`);if(rc&&!rc.dataset.green){rc.dataset.green='1';rc.setAttribute('stroke','#0f7a3a');rc.setAttribute('stroke-width','4');greenCount++;setShared();}}
 function addNode(id){if(drawn.has(id))return;drawn.add(id);const p=pos[id],n=allNodes.find(x=>x.id===id);if(!n)return;
   mapg.appendChild(el('rect',{x:p.x-TH/2,y:p.y-TH/2,width:TH,height:TH,fill:'#fff',stroke:'#0d0d0d','stroke-width':'2','data-rect':id,class:'noderect'}));
-  const img=el('image',{x:p.x-TH/2,y:p.y-TH/2,width:TH,height:TH,preserveAspectRatio:'xMidYMid slice'});
+  const img=el('image',{x:p.x-TH/2,y:p.y-TH/2,width:TH,height:TH,preserveAspectRatio:'xMidYMid slice','data-img':id});
   img.setAttribute('href','recording_deep/frames/'+n.frame);img.setAttributeNS('http://www.w3.org/1999/xlink','href','recording_deep/frames/'+n.frame);
   img.style.cursor='pointer';
   img.addEventListener('mousemove',ev=>{if(drag)return;ev.stopPropagation();const r=svg.getBoundingClientRect();showInfo(id,ev.clientX-r.left,ev.clientY-r.top);});
@@ -412,6 +412,14 @@ function showFinal(){ if(buildTimer){clearInterval(buildTimer);buildTimer=null;}
   resetMap(); view={k:1,tx:0,ty:0};applyView(); allNodes.forEach(n=>addNode(n.id)); sharedSet.forEach(greenNode); allEdges.forEach(e=>addEdge(e.from,e.to,e.confirmations,e.label));
   spSet('gemini',SP.gemini.count);spSet('voyage',SP.voyage.count);spSet('atlas',SP.atlas.count);
   log('merge','✓',`whole app mapped. ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by 2+ agents`); }
+// spotlight: fade the whole map except a few subject nodes (+ their labels), so one thing reads clearly.
+// !important beats the .noderect `pop` keyframe, which otherwise holds opacity at 1 and ignores inline styles.
+function dimExcept(ids){const keep=new Set(ids);
+  mapg.querySelectorAll('line,text,image,rect[data-rect]').forEach(el=>{
+    const id=el.getAttribute('data-rect')||el.getAttribute('data-img')||el.getAttribute('data-flabel');
+    el.style.transition='opacity .4s';
+    el.style.setProperty('opacity',(id&&keep.has(id))?'1':'.12','important');});}
+function undim(){mapg.querySelectorAll('line,text,image,rect[data-rect]').forEach(el=>el.style.removeProperty('opacity'));}
 
 const grid=document.getElementById('grid');
 R.agents.forEach(a=>{if(!a.video)return;const c=document.createElement('div');c.className='cell';c.id='cell-'+a.id;c.innerHTML=`<video src="${mp4(a.video)}" muted loop playsinline></video><span class="tag">${a.id} · Gemini</span><span class="trust" id="trust-${a.id}">trust 0.50</span>`;grid.appendChild(c);});
@@ -455,7 +463,8 @@ function hideTwin(){twintest.classList.remove('show');}
 // Self-healing loop - a REAL provisional node (K=1) promoted to confirmed (K=2)
 function showHeal(){const h=R.heal;if(!h)return;const id=h.node,p=pos[id];
   const rc=mapg.querySelector(`rect[data-rect="${id}"]`);
-  if(p){view={k:1.8,tx:500-1.8*p.x,ty:380-1.8*p.y};applyView();}
+  if(p){view={k:2.1,tx:500-2.1*p.x,ty:380-2.1*p.y};applyView();}
+  dimExcept([id]);  // spotlight: fade the rest of the map so this one screen is the subject
   if(rc){rc.dataset.green='';rc.classList.remove('promote');rc.setAttribute('stroke','#b9b9b0');rc.setAttribute('stroke-width','3');rc.setAttribute('stroke-dasharray','7 5');}
   healbadge.innerHTML=`<div class="h">↻ the operator hit a screen it only half-knew</div><div class="s"><b>${h.label}</b> was in the map from a single agent (${h.provisional_agent}): provisional, K=1, not trusted. The operator does not guess. It re-explores just this one path.</div><div class="r"><b>K=1 · provisional</b></div>`;
   healbadge.classList.add('show');
@@ -472,20 +481,23 @@ function hideConsolidator(){consolidatorEl.classList.remove('show');}
 function showLoop(){loopEl.classList.add('show');}
 function hideLoop(){loopEl.classList.remove('show');}
 const BEATS=[
-  {label:"The problem",cap:`Half the world's critical work runs on screens with <span class="em">no API, no page to read</span>. Today you do it by hand, or you let one AI agent try.`,
+  {label:"The problem",cap:`Half the world's critical work runs on a screen with <span class="em">no API and no page to read</span>. You get in only by looking and clicking, like a person.`,
    run(){showAct('act1');spLive([]);herobadge.classList.remove('show');document.getElementById('coldTok').textContent='0';document.getElementById('coldSteps').textContent='0';}},
-  {label:"<b>Act 1</b> · cold",cap:`<span class="em">One agent, cold.</span> Its only input is a <span class="em">screenshot</span>: it looks, picks where to click, a separate hand clicks. Slow, expensive, wrong about 1 in 5.`,
+  {label:"<b>Act 1</b> · cold",cap:`<span class="em">One agent, cold.</span> Its only input is the <span class="em">screenshot</span> you see, and it re-thinks every screen from scratch. Slow, costly, wrong about <span class="em">1 in 5</span>.`,
    run(){showAct('act1');spLive(['gemini']);climbCold();}},
-  {label:"<b>Act 2</b> · the map builds",cap:`So we put a <span class="ok">swarm</span> on it. Watch ${R.agents.length} agents map the app, screen by screen, into one shared memory.`,
+  {label:"<b>Act 2</b> · the map builds",cap:`A <span class="ok">swarm</span> of ${R.agents.length} vision agents explores the app and writes what each one sees into <span class="ok">one shared map</span>, live.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();resetTrust();spLive(['gemini','voyage','atlas']);playBuild();}},
-  {label:"<b>Act 2</b> · the consolidator",cap:`How do noisy observations become one reliable map? <span class="ok">Three steps</span>, run as one function: identify the same screen, keep only what agents agree on, and decay what goes stale. This is the consensus mechanism.`,
+  {label:"<b>Act 2</b> · the consolidator",cap:`These noisy views become one reliable map in <span class="ok">three steps</span>: identify the same screen, keep only what agents agree on, decay what goes stale.`,
    run(){showAct('act2');stopBuild();showFinal();spLive(['voyage','atlas']);showConsolidator();}},
-  {label:"<b>Act 2</b> · node identity",cap:`How does the swarm know two agents saw the <span class="ok">same screen</span>? Not the pixels (different patients), and there is <span class="em">no DOM</span> to read. One Voyage embedding decides, and <span class="ok">that</span> is what lets observations merge.`,
+  {label:"<b>Act 2</b> · node identity",cap:`Two <span class="em">different patients</span>, the same screen: cosine <span class="ok">${R.twin_test?R.twin_test.same.cosine.toFixed(2):'0.85'}, one node</span>. A different screen, ${R.twin_test?R.twin_test.diff.cosine.toFixed(2):'0.35'}. Decided from pixels, <span class="em">no DOM</span>.`,
    run(){showAct('act2');stopBuild();showFinal();herobadge.classList.remove('show');spLive(['voyage','atlas']);spPulse('voyage');showTwin();}},
-  {label:"<b>Act 2</b> · the overrule",cap:`Agents don't always agree. Here <span class="em">one agent diverged</span> on a real transition. Votes are <span class="ok">weighted by each agent's earned trust</span>, so K-agreement keeps the majority and quarantines the lone claim. Straight from the captured data.`,
+  {label:"<b>Act 2</b> · the overrule",cap:`The <span class="ok">green</span> path is where the trusted agents agree; the <span class="em">red</span> is ${(R.hero_conflict||{}).dissenter||'one agent'}'s lone divergence. <span class="ok">K-agreement keeps the green</span> and drops its trust. A real captured conflict.`,
    run(){showAct('act2');stopBuild();showFinal();const hc=R.hero_conflict||{};const from=hc.from||heroNode;const p=pos[from];
+     dimExcept([from,hc.winner,hc.dissenter_to]);  // spotlight the conflict: the screen and its two claimed destinations
      const rc=mapg.querySelector(`rect[data-rect="${from}"]`);if(rc)rc.classList.add('hero');
      const dt=hc.dissenter_to&&pos[hc.dissenter_to],wn=hc.winner&&pos[hc.winner];
+     if(wn){mapg.appendChild(el('line',{x1:p.x,y1:p.y,x2:wn.x,y2:wn.y,stroke:'#0f7a3a','stroke-width':'5'}));
+       const gx=(p.x+wn.x)/2,gy=(p.y+wn.y)/2-4;const gt=el('text',{x:gx,y:gy,'text-anchor':'middle','font-size':'15','font-weight':'800',fill:'#0f7a3a','paint-order':'stroke',stroke:'#fff','stroke-width':'5'});gt.textContent=(hc.winner_count||2)+' agents agree';mapg.appendChild(gt);}
      if(dt){mapg.appendChild(el('line',{x1:p.x,y1:p.y,x2:dt.x,y2:dt.y,stroke:'#d11424','stroke-width':'4','stroke-dasharray':'9 6'}));
        const mx=(p.x+dt.x)/2,my=(p.y+dt.y)/2-4;const t=el('text',{x:mx,y:my,'text-anchor':'middle','font-size':'15','font-weight':'800',fill:'#d11424','paint-order':'stroke',stroke:'#fff','stroke-width':'5'});t.textContent=(hc.dissenter||'agent')+' diverged';mapg.appendChild(t);}
      const rd=(hc.rel_dissenter!=null?hc.rel_dissenter:0.5).toFixed(2);
@@ -495,13 +507,13 @@ const BEATS=[
      const cx=(Math.min(...xs)+Math.max(...xs))/2,cy=(Math.min(...ys)+Math.max(...ys))/2;
      view={k:1.6,tx:500-1.6*cx,ty:380-1.6*cy};applyView();
      playGrid();spLive(['voyage','atlas']);setTrust();log('over',hc.dissenter||'agent',`diverged: ${nodeLabel[from]} → ${nodeLabel[hc.dissenter_to]}; reliability-weighted consensus kept → ${nodeLabel[hc.winner]} (${hc.winner_count} agents, trust ${hc.rel_majority}+) over ${hc.dissenter} (${rd})`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
-  {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once. <span class="ok">The MCP you never wrote.</span>`,
+  {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped</span> once: ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by 2+ agents, for about $${TOT.swarm_cost}. <span class="ok">The MCP you never wrote.</span>`,
    run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');setTrust();}},
-  {label:"<b>Act 2</b> · it keeps learning",cap:`The map is never finished, and it <span class="ok">knows what it is unsure of</span>: ${R.heal?R.heal.confirmed_total:''} screens confirmed, ${R.heal?R.heal.provisional_total:''} seen only once. Hit a half-known screen and it does not guess, it re-explores just that path and <span class="ok">consensus promotes it</span>. The same loop heals the map when the software changes.`,
+  {label:"<b>Act 2</b> · it keeps learning",cap:`The one bright screen, <b>${R.heal?R.heal.label:'this screen'}</b>, was seen once: <span class="em">provisional</span>, untrusted. A second independent agent confirms it, <span class="ok">K=1 → K=2</span>. The map <span class="ok">heals itself</span>.`,
    run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);setTrust();showHeal();}},
-  {label:"<b>Act 2</b> · the loop",cap:`Put it together. An agent operates from the map; when it hits a screen the map does not know, a <span class="ok">swarm is launched</span> on just that path, consensus updates the map, and operation resumes. <span class="ok">The loop closes</span>, and the map heals while it is used.`,
+  {label:"<b>Act 2</b> · the loop",cap:`The full <span class="ok">loop</span>: an agent reads the map, hits a screen it does not know, a <span class="ok">swarm re-explores</span> just that path, consensus updates the map, operation resumes.`,
    run(){showAct('act2');stopBuild();showFinal();spLive(['gemini','voyage','atlas']);showLoop();}},
-  {label:"<b>Act 3</b> · cold vs map-guided",cap:`Both sides receive <span class="em">only the screenshot</span>. The <span class="em">frontier model</span> re-thinks every screen; the <span class="ok">tiny model just reads the map</span>. Same task, zero paid tokens.`,
+  {label:"<b>Act 3</b> · cold vs map-guided",cap:`Same request, same screenshots. The <span class="em">frontier</span> re-thinks every screen; the <span class="ok">tiny model just reads the map</span>. <span class="ok">Zero paid tokens</span>, and it finishes first.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
      // 3x replay; cold tokens SNAP per step (real total over real steps), not a smooth ramp
