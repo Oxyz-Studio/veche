@@ -17,6 +17,9 @@
   .wordmark .dot{color:var(--truth)}
   .brand{display:flex;align-items:baseline;gap:1rem}
   .vo{font-size:.66rem;font-weight:700;letter-spacing:.04em;color:var(--muted);border:1.5px solid var(--hair);padding:.2rem .5rem}
+  .pagereads{display:flex;align-items:center;gap:.55rem;border:2px solid var(--ink);padding:.18rem .7rem}
+  .pagereads .pl{font-size:.64rem;font-weight:800;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;line-height:1.05;max-width:6.5rem}
+  .pagereads .pn{font-size:1.7rem;font-weight:900;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
   .actlabel{font-size:.82rem;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
   .actlabel b{color:var(--ink)}
   .beats{display:flex;gap:.5rem}
@@ -103,7 +106,7 @@
 <body>
 <div class="stage">
   <header>
-    <div class="brand"><div class="wordmark">VECHE<span class="dot">.</span></div><div class="vo">VISION ONLY · NO DOM READ</div></div>
+    <div class="brand"><div class="wordmark">VECHE<span class="dot">.</span></div><div class="pagereads" title="The agents never read the page. Their only input is the screenshot."><span class="pl">page reads</span><span class="pn">0</span></div></div>
     <div class="actlabel" id="actlabel"></div>
     <div class="beats" id="beats"></div>
   </header>
@@ -281,9 +284,9 @@ const cap=document.getElementById('caption'),actlabel=document.getElementById('a
 function showAct(id){document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id));document.getElementById('sponsors').classList.toggle('hide',id==='act3');}
 function stopBuild(){if(buildTimer){clearInterval(buildTimer);buildTimer=null;}}
 const BEATS=[
-  {label:"The problem",cap:`Half the world's critical work runs on screens with <span class="em">no API, no DOM</span>. Today you do it by hand, or you let one AI agent try.`,
+  {label:"The problem",cap:`Half the world's critical work runs on screens with <span class="em">no API, no page to read</span>. Today you do it by hand, or you let one AI agent try.`,
    run(){showAct('act1');spLive([]);herobadge.classList.remove('show');document.getElementById('coldTok').textContent='0';document.getElementById('coldSteps').textContent='0';}},
-  {label:"<b>Act 1</b> · cold",cap:`<span class="em">One agent, cold.</span> It re-perceives every screen: slow, expensive, and wrong about 1 in 5 times.`,
+  {label:"<b>Act 1</b> · cold",cap:`<span class="em">One agent, cold.</span> Its only input is a <span class="em">screenshot</span>: it looks, picks where to click, a separate hand clicks. Slow, expensive, wrong about 1 in 5.`,
    run(){showAct('act1');spLive(['gemini']);climbCold();}},
   {label:"<b>Act 2</b> · the map builds",cap:`So we put a <span class="ok">swarm</span> on it. Watch ${R.agents.length} agents map the app, screen by screen, into one shared memory.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);playBuild();}},
@@ -303,7 +306,7 @@ const BEATS=[
      playGrid();spLive(['voyage','atlas']);log('over',hc.dissenter||'agent',`diverged: ${from} → ${hc.dissenter_to}; consensus kept → ${hc.winner} (${hc.winner_count} agents), trust 0.50→${rd}`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
   {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once.`,
    run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');}},
-  {label:"<b>Act 3</b> · cold vs map-guided",cap:`A <span class="em">frontier model</span> re-thinking every screen, vs a <span class="ok">tiny model just reading the map</span>. Same task, zero paid tokens.`,
+  {label:"<b>Act 3</b> · cold vs map-guided",cap:`Both sides receive <span class="em">only the screenshot</span>. The <span class="em">frontier model</span> re-thinks every screen; the <span class="ok">tiny model just reads the map</span>. Same task, zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
      if(cv){cv.loop=false;cv.currentTime=0;cv.play().catch(()=>{});cv.ontimeupdate=()=>{const p=cv.duration?cv.currentTime/cv.duration:0;document.getElementById('a3cold').textContent=Math.round(COLD*p).toLocaleString();document.getElementById('a3coldt').textContent=cv.currentTime.toFixed(1)+'s';document.getElementById('a3colds').textContent=Math.min(ST,Math.ceil(p*ST));};}
