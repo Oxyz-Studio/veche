@@ -1,0 +1,4141 @@
+{
+  "agents": [
+    {
+      "id": "a1",
+      "start": "patient:1",
+      "goal": "Open this patient's chart and visit, in order, the History, Issues, Ledger, Documents, Transactions and Report tabs, then return to the patient summary.",
+      "frames": [
+        "a1_00.png",
+        "a1_01.png",
+        "a1_02.png",
+        "a1_03.png",
+        "a1_04.png",
+        "a1_05.png",
+        "a1_06.png",
+        "a1_07.png",
+        "a1_08.png",
+        "a1_09.png",
+        "a1_10.png",
+        "a1_11.png",
+        "a1_12.png",
+        "a1_13.png"
+      ],
+      "video": "a1.webm"
+    },
+    {
+      "id": "a2",
+      "start": "patient:1",
+      "goal": "Open this patient's History tab, then Issues, then Ledger, then the Demographics screen, then Documents.",
+      "frames": [
+        "a2_00.png",
+        "a2_01.png",
+        "a2_02.png",
+        "a2_03.png",
+        "a2_04.png",
+        "a2_05.png",
+        "a2_06.png",
+        "a2_07.png",
+        "a2_08.png",
+        "a2_09.png",
+        "a2_10.png",
+        "a2_11.png",
+        "a2_12.png",
+        "a2_13.png",
+        "a2_14.png",
+        "a2_15.png",
+        "a2_16.png",
+        "a2_17.png",
+        "a2_18.png",
+        "a2_19.png"
+      ],
+      "video": "a2.webm"
+    },
+    {
+      "id": "a3",
+      "start": "patient:2",
+      "goal": "Open this patient's History, Issues, Ledger and Documents tabs, then the Report tab.",
+      "frames": [
+        "a3_00.png",
+        "a3_01.png",
+        "a3_02.png",
+        "a3_03.png",
+        "a3_04.png",
+        "a3_05.png",
+        "a3_06.png",
+        "a3_07.png",
+        "a3_08.png",
+        "a3_09.png",
+        "a3_10.png",
+        "a3_11.png",
+        "a3_12.png",
+        "a3_13.png",
+        "a3_14.png",
+        "a3_15.png"
+      ],
+      "video": "a3.webm"
+    },
+    {
+      "id": "a4",
+      "start": "main",
+      "goal": "From the top menu open the Calendar, then the add-appointment screen, then Messages, then the patient finder, then open a patient chart and its History tab.",
+      "frames": [
+        "a4_00.png",
+        "a4_01.png",
+        "a4_02.png",
+        "a4_03.png",
+        "a4_04.png",
+        "a4_05.png",
+        "a4_06.png",
+        "a4_07.png",
+        "a4_08.png",
+        "a4_09.png",
+        "a4_10.png",
+        "a4_11.png",
+        "a4_12.png",
+        "a4_13.png",
+        "a4_14.png",
+        "a4_15.png",
+        "a4_16.png",
+        "a4_17.png",
+        "a4_18.png",
+        "a4_19.png",
+        "a4_20.png"
+      ],
+      "video": "a4.webm"
+    },
+    {
+      "id": "a5",
+      "start": "main",
+      "goal": "Open the patient finder, open a patient, then visit that patient's History, Issues and Ledger tabs.",
+      "frames": [
+        "a5_00.png",
+        "a5_01.png",
+        "a5_02.png",
+        "a5_03.png",
+        "a5_04.png",
+        "a5_05.png",
+        "a5_06.png",
+        "a5_07.png",
+        "a5_08.png",
+        "a5_09.png",
+        "a5_10.png",
+        "a5_11.png",
+        "a5_12.png",
+        "a5_13.png",
+        "a5_14.png",
+        "a5_15.png",
+        "a5_16.png",
+        "a5_17.png",
+        "a5_18.png",
+        "a5_19.png",
+        "a5_20.png"
+      ],
+      "video": "a5.webm"
+    },
+    {
+      "id": "a6",
+      "start": "main",
+      "goal": "From the top menu open Fees, then several different Reports screens, then Procedures, then Administration.",
+      "frames": [
+        "a6_00.png",
+        "a6_01.png",
+        "a6_02.png",
+        "a6_03.png",
+        "a6_04.png",
+        "a6_05.png",
+        "a6_06.png",
+        "a6_07.png",
+        "a6_08.png",
+        "a6_09.png",
+        "a6_10.png",
+        "a6_11.png",
+        "a6_12.png",
+        "a6_13.png",
+        "a6_14.png",
+        "a6_15.png",
+        "a6_16.png",
+        "a6_17.png",
+        "a6_18.png",
+        "a6_19.png",
+        "a6_20.png"
+      ],
+      "video": "a6.webm"
+    },
+    {
+      "id": "a7",
+      "start": "main",
+      "goal": "From the top menu open the Calendar, then Messages, then Fees, then one Reports screen.",
+      "frames": [
+        "a7_00.png",
+        "a7_01.png",
+        "a7_02.png",
+        "a7_03.png",
+        "a7_04.png",
+        "a7_05.png",
+        "a7_06.png",
+        "a7_07.png",
+        "a7_08.png",
+        "a7_09.png",
+        "a7_10.png",
+        "a7_11.png",
+        "a7_12.png",
+        "a7_13.png",
+        "a7_14.png",
+        "a7_15.png",
+        "a7_16.png",
+        "a7_17.png",
+        "a7_18.png",
+        "a7_19.png",
+        "a7_20.png"
+      ],
+      "video": "a7.webm"
+    }
+  ],
+  "events": [
+    {
+      "agent": "a1",
+      "step": 0,
+      "t": 18.98,
+      "frame": "a1_00.png",
+      "action": "open_web_browser",
+      "args": {},
+      "intent": "",
+      "tokens": 1875,
+      "latency": 3.9,
+      "cost": 0.0024
+    },
+    {
+      "agent": "a1",
+      "step": 1,
+      "t": 23.85,
+      "frame": "a1_01.png",
+      "action": "click_at",
+      "args": {
+        "y": 96,
+        "x": 221
+      },
+      "intent": "",
+      "tokens": 3856,
+      "latency": 4.4,
+      "cost": 0.0059
+    },
+    {
+      "agent": "a1",
+      "step": 2,
+      "t": 28.64,
+      "frame": "a1_02.png",
+      "action": "click_at",
+      "args": {
+        "x": 539,
+        "y": 109
+      },
+      "intent": "",
+      "tokens": 5763,
+      "latency": 4.4,
+      "cost": 0.0077
+    },
+    {
+      "agent": "a1",
+      "step": 3,
+      "t": 33.5,
+      "frame": "a1_03.png",
+      "action": "click_at",
+      "args": {
+        "y": 92,
+        "x": 478
+      },
+      "intent": "",
+      "tokens": 7684,
+      "latency": 4.4,
+      "cost": 0.0102
+    },
+    {
+      "agent": "a1",
+      "step": 4,
+      "t": 38.54,
+      "frame": "a1_04.png",
+      "action": "click_at",
+      "args": {
+        "x": 308,
+        "y": 109
+      },
+      "intent": "",
+      "tokens": 9619,
+      "latency": 4.6,
+      "cost": 0.0127
+    },
+    {
+      "agent": "a1",
+      "step": 5,
+      "t": 45.85,
+      "frame": "a1_05.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/interface/patient_file/summary/demographics.php?set_pid=1"
+      },
+      "intent": "",
+      "tokens": 11772,
+      "latency": 6.6,
+      "cost": 0.0174
+    },
+    {
+      "agent": "a1",
+      "step": 6,
+      "t": 53.5,
+      "frame": "a1_06.png",
+      "action": "click_at",
+      "args": {
+        "x": 413,
+        "y": 96
+      },
+      "intent": "",
+      "tokens": 13722,
+      "latency": 5.7,
+      "cost": 0.018
+    },
+    {
+      "agent": "a1",
+      "step": 7,
+      "t": 60.23,
+      "frame": "a1_07.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/interface/patient_file/summary/demographics.php?set_pid=1"
+      },
+      "intent": "",
+      "tokens": 15704,
+      "latency": 6.3,
+      "cost": 0.0208
+    },
+    {
+      "agent": "a1",
+      "step": 8,
+      "t": 69.06,
+      "frame": "a1_08.png",
+      "action": "click_at",
+      "args": {
+        "y": 96,
+        "x": 413
+      },
+      "intent": "",
+      "tokens": 17800,
+      "latency": 6.9,
+      "cost": 0.0244
+    },
+    {
+      "agent": "a1",
+      "step": 9,
+      "t": 78.09,
+      "frame": "a1_09.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/interface/patient_file/summary/demographics.php?set_pid=1"
+      },
+      "intent": "",
+      "tokens": 19835,
+      "latency": 8.6,
+      "cost": 0.0264
+    },
+    {
+      "agent": "a1",
+      "step": 10,
+      "t": 85.73,
+      "frame": "a1_10.png",
+      "action": "click_at",
+      "args": {
+        "x": 486,
+        "y": 96
+      },
+      "intent": "",
+      "tokens": 21745,
+      "latency": 5.6,
+      "cost": 0.0277
+    },
+    {
+      "agent": "a1",
+      "step": 11,
+      "t": 92.12,
+      "frame": "a1_11.png",
+      "action": "click_at",
+      "args": {
+        "x": 356,
+        "y": 109
+      },
+      "intent": "",
+      "tokens": 23659,
+      "latency": 6.0,
+      "cost": 0.0302
+    },
+    {
+      "agent": "a1",
+      "step": 12,
+      "t": 99.01,
+      "frame": "a1_12.png",
+      "action": "click_at",
+      "args": {
+        "y": 109,
+        "x": 162
+      },
+      "intent": "",
+      "tokens": 25611,
+      "latency": 6.4,
+      "cost": 0.0329
+    },
+    {
+      "agent": "a1",
+      "step": 13,
+      "t": 108.62,
+      "frame": "a1_13.png",
+      "action": "done",
+      "intent": "I have successfully returned to the \"Dashboard\" (Patient Summary).\nI visited, in order:\n1.",
+      "tokens": 27587,
+      "latency": 9.2,
+      "cost": 0.0356
+    },
+    {
+      "agent": "a2",
+      "step": 0,
+      "t": 18.99,
+      "frame": "a2_00.png",
+      "action": "open_web_browser",
+      "args": {},
+      "intent": "",
+      "tokens": 1865,
+      "latency": 3.4,
+      "cost": 0.0024
+    },
+    {
+      "agent": "a2",
+      "step": 1,
+      "t": 23.16,
+      "frame": "a2_01.png",
+      "action": "click_at",
+      "args": {
+        "y": 97,
+        "x": 221
+      },
+      "intent": "",
+      "tokens": 3816,
+      "latency": 3.7,
+      "cost": 0.0056
+    },
+    {
+      "agent": "a2",
+      "step": 2,
+      "t": 27.61,
+      "frame": "a2_02.png",
+      "action": "click_at",
+      "args": {
+        "x": 540,
+        "y": 109
+      },
+      "intent": "",
+      "tokens": 5733,
+      "latency": 4.0,
+      "cost": 0.0078
+    },
+    {
+      "agent": "a2",
+      "step": 3,
+      "t": 32.25,
+      "frame": "a2_03.png",
+      "action": "click_at",
+      "args": {
+        "x": 477,
+        "y": 92
+      },
+      "intent": "",
+      "tokens": 7655,
+      "latency": 4.2,
+      "cost": 0.0102
+    },
+    {
+      "agent": "a2",
+      "step": 4,
+      "t": 38.1,
+      "frame": "a2_04.png",
+      "action": "click_at",
+      "args": {
+        "y": 110,
+        "x": 64
+      },
+      "intent": "",
+      "tokens": 9661,
+      "latency": 5.4,
+      "cost": 0.0134
+    },
+    {
+      "agent": "a2",
+      "step": 5,
+      "t": 44.37,
+      "frame": "a2_05.png",
+      "action": "scroll_document",
+      "args": {
+        "direction": "down",
+        "magnitude": 800
+      },
+      "intent": "",
+      "tokens": 11580,
+      "latency": 5.8,
+      "cost": 0.0151
+    },
+    {
+      "agent": "a2",
+      "step": 6,
+      "t": 52.67,
+      "frame": "a2_06.png",
+      "action": "click_at",
+      "args": {
+        "y": 313,
+        "x": 195
+      },
+      "intent": "",
+      "tokens": 13669,
+      "latency": 7.8,
+      "cost": 0.0192
+    },
+    {
+      "agent": "a2",
+      "step": 7,
+      "t": 59.04,
+      "frame": "a2_07.png",
+      "action": "click_at",
+      "args": {
+        "x": 267,
+        "y": 313
+      },
+      "intent": "",
+      "tokens": 15638,
+      "latency": 5.9,
+      "cost": 0.0206
+    },
+    {
+      "agent": "a2",
+      "step": 8,
+      "t": 65.52,
+      "frame": "a2_08.png",
+      "action": "click_at",
+      "args": {
+        "x": 312,
+        "y": 313
+      },
+      "intent": "",
+      "tokens": 17547,
+      "latency": 6.0,
+      "cost": 0.0225
+    },
+    {
+      "agent": "a2",
+      "step": 9,
+      "t": 73.27,
+      "frame": "a2_09.png",
+      "action": "click_at",
+      "args": {
+        "x": 351,
+        "y": 313
+      },
+      "intent": "",
+      "tokens": 19456,
+      "latency": 7.3,
+      "cost": 0.0249
+    },
+    {
+      "agent": "a2",
+      "step": 10,
+      "t": 82.28,
+      "frame": "a2_10.png",
+      "action": "click_at",
+      "args": {
+        "x": 398,
+        "y": 313
+      },
+      "intent": "",
+      "tokens": 21365,
+      "latency": 8.6,
+      "cost": 0.0273
+    },
+    {
+      "agent": "a2",
+      "step": 11,
+      "t": 89.83,
+      "frame": "a2_11.png",
+      "action": "scroll_document",
+      "args": {
+        "direction": "up",
+        "magnitude": 900
+      },
+      "intent": "",
+      "tokens": 23371,
+      "latency": 7.1,
+      "cost": 0.0306
+    },
+    {
+      "agent": "a2",
+      "step": 12,
+      "t": 98.8,
+      "frame": "a2_12.png",
+      "action": "click_at",
+      "args": {
+        "x": 411,
+        "y": 97
+      },
+      "intent": "",
+      "tokens": 25325,
+      "latency": 8.5,
+      "cost": 0.0326
+    },
+    {
+      "agent": "a2",
+      "step": 13,
+      "t": 107.22,
+      "frame": "a2_13.png",
+      "action": "go_back",
+      "args": {},
+      "intent": "",
+      "tokens": 27357,
+      "latency": 7.7,
+      "cost": 0.0358
+    },
+    {
+      "agent": "a2",
+      "step": 14,
+      "t": 118.69,
+      "frame": "a2_14.png",
+      "action": "click_at",
+      "args": {
+        "x": 284,
+        "y": 97
+      },
+      "intent": "",
+      "tokens": 29297,
+      "latency": 9.6,
+      "cost": 0.0374
+    },
+    {
+      "agent": "a2",
+      "step": 15,
+      "t": 127.28,
+      "frame": "a2_15.png",
+      "action": "click_at",
+      "args": {
+        "x": 297,
+        "y": 152
+      },
+      "intent": "",
+      "tokens": 31234,
+      "latency": 8.1,
+      "cost": 0.0398
+    },
+    {
+      "agent": "a2",
+      "step": 16,
+      "t": 135.95,
+      "frame": "a2_16.png",
+      "action": "click_at",
+      "args": {
+        "x": 355,
+        "y": 89
+      },
+      "intent": "",
+      "tokens": 33172,
+      "latency": 8.2,
+      "cost": 0.0422
+    },
+    {
+      "agent": "a2",
+      "step": 17,
+      "t": 143.8,
+      "frame": "a2_17.png",
+      "action": "click_at",
+      "args": {
+        "x": 480,
+        "y": 100
+      },
+      "intent": "",
+      "tokens": 35064,
+      "latency": 7.4,
+      "cost": 0.0442
+    },
+    {
+      "agent": "a2",
+      "step": 18,
+      "t": 153.79,
+      "frame": "a2_18.png",
+      "action": "click_at",
+      "args": {
+        "x": 647,
+        "y": 108
+      },
+      "intent": "",
+      "tokens": 36955,
+      "latency": 9.6,
+      "cost": 0.0466
+    },
+    {
+      "agent": "a2",
+      "step": 19,
+      "t": 163.77,
+      "frame": "a2_19.png",
+      "action": "done",
+      "intent": "Visited \"External Data\" (Encounters and Procedures tabs within it).\n\nI have visited: Dashb",
+      "tokens": 38992,
+      "latency": 9.5,
+      "cost": 0.0504
+    },
+    {
+      "agent": "a3",
+      "step": 0,
+      "t": 17.43,
+      "frame": "a3_00.png",
+      "action": "open_web_browser",
+      "args": {},
+      "intent": "",
+      "tokens": 1861,
+      "latency": 3.4,
+      "cost": 0.0024
+    },
+    {
+      "agent": "a3",
+      "step": 1,
+      "t": 21.89,
+      "frame": "a3_01.png",
+      "action": "click_at",
+      "args": {
+        "x": 221,
+        "y": 96
+      },
+      "intent": "",
+      "tokens": 3822,
+      "latency": 4.0,
+      "cost": 0.0057
+    },
+    {
+      "agent": "a3",
+      "step": 2,
+      "t": 26.76,
+      "frame": "a3_02.png",
+      "action": "click_at",
+      "args": {
+        "y": 231,
+        "x": 221
+      },
+      "intent": "",
+      "tokens": 5787,
+      "latency": 4.4,
+      "cost": 0.0083
+    },
+    {
+      "agent": "a3",
+      "step": 3,
+      "t": 32.0,
+      "frame": "a3_03.png",
+      "action": "click_at",
+      "args": {
+        "y": 231,
+        "x": 293
+      },
+      "intent": "",
+      "tokens": 7698,
+      "latency": 4.8,
+      "cost": 0.0102
+    },
+    {
+      "agent": "a3",
+      "step": 4,
+      "t": 37.35,
+      "frame": "a3_04.png",
+      "action": "click_at",
+      "args": {
+        "x": 357,
+        "y": 231
+      },
+      "intent": "",
+      "tokens": 9608,
+      "latency": 4.9,
+      "cost": 0.0126
+    },
+    {
+      "agent": "a3",
+      "step": 5,
+      "t": 43.16,
+      "frame": "a3_05.png",
+      "action": "click_at",
+      "args": {
+        "x": 408,
+        "y": 231
+      },
+      "intent": "",
+      "tokens": 11518,
+      "latency": 5.4,
+      "cost": 0.015
+    },
+    {
+      "agent": "a3",
+      "step": 6,
+      "t": 50.76,
+      "frame": "a3_06.png",
+      "action": "click_at",
+      "args": {
+        "x": 540,
+        "y": 109
+      },
+      "intent": "",
+      "tokens": 13488,
+      "latency": 7.2,
+      "cost": 0.018
+    },
+    {
+      "agent": "a3",
+      "step": 7,
+      "t": 58.43,
+      "frame": "a3_07.png",
+      "action": "click_at",
+      "args": {
+        "x": 478,
+        "y": 92
+      },
+      "intent": "",
+      "tokens": 15515,
+      "latency": 7.2,
+      "cost": 0.0209
+    },
+    {
+      "agent": "a3",
+      "step": 8,
+      "t": 64.8,
+      "frame": "a3_08.png",
+      "action": "click_at",
+      "args": {
+        "y": 109,
+        "x": 306
+      },
+      "intent": "",
+      "tokens": 17449,
+      "latency": 5.8,
+      "cost": 0.0225
+    },
+    {
+      "agent": "a3",
+      "step": 9,
+      "t": 72.01,
+      "frame": "a3_09.png",
+      "action": "click_at",
+      "args": {
+        "x": 82,
+        "y": 150
+      },
+      "intent": "",
+      "tokens": 19412,
+      "latency": 6.5,
+      "cost": 0.0253
+    },
+    {
+      "agent": "a3",
+      "step": 10,
+      "t": 79.51,
+      "frame": "a3_10.png",
+      "action": "click_at",
+      "args": {
+        "x": 69,
+        "y": 308
+      },
+      "intent": "",
+      "tokens": 21350,
+      "latency": 7.1,
+      "cost": 0.0274
+    },
+    {
+      "agent": "a3",
+      "step": 11,
+      "t": 88.71,
+      "frame": "a3_11.png",
+      "action": "go_back",
+      "args": {},
+      "intent": "",
+      "tokens": 23426,
+      "latency": 8.8,
+      "cost": 0.0312
+    },
+    {
+      "agent": "a3",
+      "step": 12,
+      "t": 97.09,
+      "frame": "a3_12.png",
+      "action": "go_back",
+      "args": {},
+      "intent": "",
+      "tokens": 25332,
+      "latency": 7.2,
+      "cost": 0.0321
+    },
+    {
+      "agent": "a3",
+      "step": 13,
+      "t": 107.7,
+      "frame": "a3_13.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/interface/patient_file/summary/demographics.php?set_pid=2"
+      },
+      "intent": "",
+      "tokens": 27380,
+      "latency": 9.4,
+      "cost": 0.036
+    },
+    {
+      "agent": "a3",
+      "step": 14,
+      "t": 119.69,
+      "frame": "a3_14.png",
+      "action": "click_at",
+      "args": {
+        "x": 355,
+        "y": 96
+      },
+      "intent": "",
+      "tokens": 29313,
+      "latency": 10.1,
+      "cost": 0.0374
+    },
+    {
+      "agent": "a3",
+      "step": 15,
+      "t": 134.04,
+      "frame": "a3_15.png",
+      "action": "done",
+      "intent": "I have evaluated step 15. I successfully navigated to the \"Report\" tab. The task says \"Do ",
+      "tokens": 31427,
+      "latency": 13.9,
+      "cost": 0.0416
+    },
+    {
+      "agent": "a4",
+      "step": 0,
+      "t": 17.3,
+      "frame": "a4_00.png",
+      "action": "open_web_browser",
+      "args": {},
+      "intent": "",
+      "tokens": 1875,
+      "latency": 4.3,
+      "cost": 0.0024
+    },
+    {
+      "agent": "a4",
+      "step": 1,
+      "t": 23.14,
+      "frame": "a4_01.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/"
+      },
+      "intent": "",
+      "tokens": 3819,
+      "latency": 5.4,
+      "cost": 0.0056
+    },
+    {
+      "agent": "a4",
+      "step": 2,
+      "t": 29.26,
+      "frame": "a4_02.png",
+      "action": "type_text_at",
+      "args": {
+        "text": "admin",
+        "y": 509,
+        "x": 552
+      },
+      "intent": "",
+      "tokens": 5747,
+      "latency": 4.9,
+      "cost": 0.0079
+    },
+    {
+      "agent": "a4",
+      "step": 3,
+      "t": 34.2,
+      "frame": "a4_03.png",
+      "action": "type_text_at",
+      "args": {
+        "text": "pass",
+        "y": 569,
+        "x": 541
+      },
+      "intent": "",
+      "tokens": 7656,
+      "latency": 4.5,
+      "cost": 0.0101
+    },
+    {
+      "agent": "a4",
+      "step": 4,
+      "t": 39.47,
+      "frame": "a4_04.png",
+      "action": "click_at",
+      "args": {
+        "x": 499,
+        "y": 690
+      },
+      "intent": "",
+      "tokens": 9569,
+      "latency": 4.8,
+      "cost": 0.0125
+    },
+    {
+      "agent": "a4",
+      "step": 5,
+      "t": 47.88,
+      "frame": "a4_05.png",
+      "action": "wait_5_seconds",
+      "args": {},
+      "intent": "",
+      "tokens": 11576,
+      "latency": 5.9,
+      "cost": 0.0156
+    },
+    {
+      "agent": "a4",
+      "step": 6,
+      "t": 56.96,
+      "frame": "a4_06.png",
+      "action": "click_at",
+      "args": {
+        "x": 70,
+        "y": 140
+      },
+      "intent": "",
+      "tokens": 13570,
+      "latency": 7.1,
+      "cost": 0.018
+    },
+    {
+      "agent": "a4",
+      "step": 7,
+      "t": 65.06,
+      "frame": "a4_07.png",
+      "action": "click_at",
+      "args": {
+        "x": 591,
+        "y": 498
+      },
+      "intent": "",
+      "tokens": 15691,
+      "latency": 7.6,
+      "cost": 0.0218
+    },
+    {
+      "agent": "a4",
+      "step": 8,
+      "t": 73.06,
+      "frame": "a4_08.png",
+      "action": "click_at",
+      "args": {
+        "x": 179,
+        "y": 94
+      },
+      "intent": "",
+      "tokens": 17796,
+      "latency": 7.5,
+      "cost": 0.0243
+    },
+    {
+      "agent": "a4",
+      "step": 9,
+      "t": 90.15,
+      "frame": "a4_09.png",
+      "action": "click_at",
+      "args": {
+        "x": 768,
+        "y": 16
+      },
+      "intent": "",
+      "tokens": 19782,
+      "latency": 8.6,
+      "cost": 0.0257
+    },
+    {
+      "agent": "a4",
+      "step": 10,
+      "t": 106.81,
+      "frame": "a4_10.png",
+      "action": "click_at",
+      "args": {
+        "x": 179,
+        "y": 94
+      },
+      "intent": "",
+      "tokens": 21785,
+      "latency": 8.2,
+      "cost": 0.0284
+    },
+    {
+      "agent": "a4",
+      "step": 11,
+      "t": 133.09,
+      "frame": "a4_11.png",
+      "action": "click_at",
+      "args": {
+        "x": 231,
+        "y": 19
+      },
+      "intent": "",
+      "tokens": 23881,
+      "latency": 25.8,
+      "cost": 0.0318
+    },
+    {
+      "agent": "a4",
+      "step": 12,
+      "t": 141.41,
+      "frame": "a4_12.png",
+      "action": "click_at",
+      "args": {
+        "x": 252,
+        "y": 43
+      },
+      "intent": "",
+      "tokens": 25891,
+      "latency": 7.9,
+      "cost": 0.0335
+    },
+    {
+      "agent": "a4",
+      "step": 13,
+      "t": 160.07,
+      "frame": "a4_13.png",
+      "action": "scroll_document",
+      "args": {
+        "direction": "down",
+        "magnitude": 500
+      },
+      "intent": "",
+      "tokens": 28074,
+      "latency": 10.2,
+      "cost": 0.0378
+    },
+    {
+      "agent": "a4",
+      "step": 14,
+      "t": 176.56,
+      "frame": "a4_14.png",
+      "action": "type_text_at",
+      "args": {
+        "x": 854,
+        "text": "Billy Smith",
+        "press_enter": true,
+        "y": 19
+      },
+      "intent": "",
+      "tokens": 30097,
+      "latency": 8.9,
+      "cost": 0.0389
+    },
+    {
+      "agent": "a4",
+      "step": 15,
+      "t": 183.84,
+      "frame": "a4_15.png",
+      "action": "click_at",
+      "args": {
+        "x": 918,
+        "y": 19
+      },
+      "intent": "",
+      "tokens": 32058,
+      "latency": 6.8,
+      "cost": 0.0408
+    },
+    {
+      "agent": "a4",
+      "step": 16,
+      "t": 203.54,
+      "frame": "a4_16.png",
+      "action": "type_text_at",
+      "args": {
+        "press_enter": true,
+        "text": "",
+        "y": 19,
+        "x": 854
+      },
+      "intent": "",
+      "tokens": 34364,
+      "latency": 11.2,
+      "cost": 0.0467
+    },
+    {
+      "agent": "a4",
+      "step": 17,
+      "t": 220.63,
+      "frame": "a4_17.png",
+      "action": "type_text_at",
+      "args": {
+        "x": 109,
+        "text": "a",
+        "y": 334
+      },
+      "intent": "",
+      "tokens": 36401,
+      "latency": 8.6,
+      "cost": 0.0469
+    },
+    {
+      "agent": "a4",
+      "step": 18,
+      "t": 238.84,
+      "frame": "a4_18.png",
+      "action": "type_text_at",
+      "args": {
+        "text": "",
+        "clear_before_typing": true,
+        "y": 19,
+        "press_enter": false,
+        "x": 854
+      },
+      "intent": "",
+      "tokens": 38540,
+      "latency": 9.8,
+      "cost": 0.0505
+    },
+    {
+      "agent": "a4",
+      "step": 19,
+      "t": 256.38,
+      "frame": "a4_19.png",
+      "action": "click_at",
+      "args": {
+        "y": 92,
+        "x": 555
+      },
+      "intent": "",
+      "tokens": 40599,
+      "latency": 9.1,
+      "cost": 0.0523
+    },
+    {
+      "agent": "a5",
+      "step": 0,
+      "t": 16.17,
+      "frame": "a5_00.png",
+      "action": "open_web_browser",
+      "args": {},
+      "intent": "",
+      "tokens": 1864,
+      "latency": 3.1,
+      "cost": 0.0024
+    },
+    {
+      "agent": "a5",
+      "step": 1,
+      "t": 21.88,
+      "frame": "a5_01.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/"
+      },
+      "intent": "",
+      "tokens": 3836,
+      "latency": 5.3,
+      "cost": 0.0058
+    },
+    {
+      "agent": "a5",
+      "step": 2,
+      "t": 28.54,
+      "frame": "a5_02.png",
+      "action": "type_text_at",
+      "args": {
+        "x": 552,
+        "text": "admin",
+        "y": 509
+      },
+      "intent": "",
+      "tokens": 5783,
+      "latency": 5.5,
+      "cost": 0.0081
+    },
+    {
+      "agent": "a5",
+      "step": 3,
+      "t": 34.15,
+      "frame": "a5_03.png",
+      "action": "type_text_at",
+      "args": {
+        "x": 540,
+        "y": 569,
+        "text": "pass"
+      },
+      "intent": "",
+      "tokens": 7692,
+      "latency": 5.2,
+      "cost": 0.0102
+    },
+    {
+      "agent": "a5",
+      "step": 4,
+      "t": 40.13,
+      "frame": "a5_04.png",
+      "action": "click_at",
+      "args": {
+        "y": 690,
+        "x": 499
+      },
+      "intent": "",
+      "tokens": 9592,
+      "latency": 5.5,
+      "cost": 0.0125
+    },
+    {
+      "agent": "a5",
+      "step": 5,
+      "t": 47.53,
+      "frame": "a5_05.png",
+      "action": "wait_5_seconds",
+      "args": {},
+      "intent": "",
+      "tokens": 11520,
+      "latency": 5.0,
+      "cost": 0.0149
+    },
+    {
+      "agent": "a5",
+      "step": 6,
+      "t": 55.29,
+      "frame": "a5_06.png",
+      "action": "click_at",
+      "args": {
+        "y": 19,
+        "x": 94
+      },
+      "intent": "",
+      "tokens": 13488,
+      "latency": 5.8,
+      "cost": 0.0177
+    },
+    {
+      "agent": "a5",
+      "step": 7,
+      "t": 61.97,
+      "frame": "a5_07.png",
+      "action": "click_at",
+      "args": {
+        "x": 77,
+        "y": 441
+      },
+      "intent": "",
+      "tokens": 15447,
+      "latency": 5.2,
+      "cost": 0.02
+    },
+    {
+      "agent": "a5",
+      "step": 8,
+      "t": 70.05,
+      "frame": "a5_08.png",
+      "action": "click_at",
+      "args": {
+        "x": 220,
+        "y": 274
+      },
+      "intent": "",
+      "tokens": 17438,
+      "latency": 5.5,
+      "cost": 0.0228
+    },
+    {
+      "agent": "a5",
+      "step": 9,
+      "t": 78.17,
+      "frame": "a5_09.png",
+      "action": "click_at",
+      "args": {
+        "x": 218,
+        "y": 410
+      },
+      "intent": "",
+      "tokens": 19440,
+      "latency": 7.7,
+      "cost": 0.0254
+    },
+    {
+      "agent": "a5",
+      "step": 10,
+      "t": 85.87,
+      "frame": "a5_10.png",
+      "action": "click_at",
+      "args": {
+        "x": 297,
+        "y": 410
+      },
+      "intent": "",
+      "tokens": 21389,
+      "latency": 7.3,
+      "cost": 0.0274
+    },
+    {
+      "agent": "a5",
+      "step": 11,
+      "t": 93.61,
+      "frame": "a5_11.png",
+      "action": "click_at",
+      "args": {
+        "x": 361,
+        "y": 410
+      },
+      "intent": "",
+      "tokens": 23337,
+      "latency": 7.3,
+      "cost": 0.0298
+    },
+    {
+      "agent": "a5",
+      "step": 12,
+      "t": 106.6,
+      "frame": "a5_12.png",
+      "action": "click_at",
+      "args": {
+        "y": 410,
+        "x": 411
+      },
+      "intent": "",
+      "tokens": 25285,
+      "latency": 12.6,
+      "cost": 0.0322
+    },
+    {
+      "agent": "a5",
+      "step": 13,
+      "t": 113.69,
+      "frame": "a5_13.png",
+      "action": "click_at",
+      "args": {
+        "x": 540,
+        "y": 287
+      },
+      "intent": "",
+      "tokens": 27307,
+      "latency": 6.6,
+      "cost": 0.0354
+    },
+    {
+      "agent": "a5",
+      "step": 14,
+      "t": 122.8,
+      "frame": "a5_14.png",
+      "action": "click_at",
+      "args": {
+        "x": 482,
+        "y": 270
+      },
+      "intent": "",
+      "tokens": 29254,
+      "latency": 8.7,
+      "cost": 0.0372
+    },
+    {
+      "agent": "a5",
+      "step": 15,
+      "t": 138.95,
+      "frame": "a5_15.png",
+      "action": "click_at",
+      "args": {
+        "x": 181,
+        "y": 287
+      },
+      "intent": "",
+      "tokens": 31296,
+      "latency": 7.7,
+      "cost": 0.0406
+    },
+    {
+      "agent": "a5",
+      "step": 16,
+      "t": 155.52,
+      "frame": "a5_16.png",
+      "action": "click_at",
+      "args": {
+        "x": 198,
+        "y": 350
+      },
+      "intent": "",
+      "tokens": 33241,
+      "latency": 8.1,
+      "cost": 0.0422
+    },
+    {
+      "agent": "a5",
+      "step": 17,
+      "t": 173.26,
+      "frame": "a5_17.png",
+      "action": "click_at",
+      "args": {
+        "x": 354,
+        "y": 267
+      },
+      "intent": "",
+      "tokens": 35238,
+      "latency": 9.3,
+      "cost": 0.0451
+    },
+    {
+      "agent": "a5",
+      "step": 18,
+      "t": 183.42,
+      "frame": "a5_18.png",
+      "action": "click_at",
+      "args": {
+        "y": 287,
+        "x": 415
+      },
+      "intent": "",
+      "tokens": 37180,
+      "latency": 9.7,
+      "cost": 0.0471
+    },
+    {
+      "agent": "a5",
+      "step": 19,
+      "t": 205.77,
+      "frame": "a5_19.png",
+      "action": "click_at",
+      "args": {
+        "x": 488,
+        "y": 158
+      },
+      "intent": "",
+      "tokens": 39348,
+      "latency": 13.9,
+      "cost": 0.0517
+    },
+    {
+      "agent": "a6",
+      "step": 0,
+      "t": 15.61,
+      "frame": "a6_00.png",
+      "action": "open_web_browser",
+      "args": {},
+      "intent": "",
+      "tokens": 1861,
+      "latency": 3.0,
+      "cost": 0.0024
+    },
+    {
+      "agent": "a6",
+      "step": 1,
+      "t": 21.61,
+      "frame": "a6_01.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/"
+      },
+      "intent": "",
+      "tokens": 3859,
+      "latency": 5.6,
+      "cost": 0.0061
+    },
+    {
+      "agent": "a6",
+      "step": 2,
+      "t": 27.98,
+      "frame": "a6_02.png",
+      "action": "type_text_at",
+      "args": {
+        "x": 552,
+        "text": "admin",
+        "y": 509
+      },
+      "intent": "",
+      "tokens": 5811,
+      "latency": 5.2,
+      "cost": 0.0082
+    },
+    {
+      "agent": "a6",
+      "step": 3,
+      "t": 32.42,
+      "frame": "a6_03.png",
+      "action": "type_text_at",
+      "args": {
+        "text": "pass",
+        "y": 569,
+        "x": 552
+      },
+      "intent": "",
+      "tokens": 7719,
+      "latency": 4.0,
+      "cost": 0.0102
+    },
+    {
+      "agent": "a6",
+      "step": 4,
+      "t": 38.51,
+      "frame": "a6_04.png",
+      "action": "click_at",
+      "args": {
+        "x": 499,
+        "y": 690
+      },
+      "intent": "",
+      "tokens": 9616,
+      "latency": 5.6,
+      "cost": 0.0125
+    },
+    {
+      "agent": "a6",
+      "step": 5,
+      "t": 46.08,
+      "frame": "a6_05.png",
+      "action": "wait_5_seconds",
+      "args": {},
+      "intent": "",
+      "tokens": 11582,
+      "latency": 5.2,
+      "cost": 0.0153
+    },
+    {
+      "agent": "a6",
+      "step": 6,
+      "t": 54.54,
+      "frame": "a6_06.png",
+      "action": "click_at",
+      "args": {
+        "x": 248,
+        "y": 20
+      },
+      "intent": "",
+      "tokens": 13610,
+      "latency": 6.5,
+      "cost": 0.0183
+    },
+    {
+      "agent": "a6",
+      "step": 7,
+      "t": 60.33,
+      "frame": "a6_07.png",
+      "action": "click_at",
+      "args": {
+        "y": 43,
+        "x": 286
+      },
+      "intent": "",
+      "tokens": 15570,
+      "latency": 5.3,
+      "cost": 0.0202
+    },
+    {
+      "agent": "a6",
+      "step": 8,
+      "t": 66.51,
+      "frame": "a6_08.png",
+      "action": "click_at",
+      "args": {
+        "x": 309,
+        "y": 69
+      },
+      "intent": "",
+      "tokens": 17627,
+      "latency": 5.7,
+      "cost": 0.0236
+    },
+    {
+      "agent": "a6",
+      "step": 9,
+      "t": 73.77,
+      "frame": "a6_09.png",
+      "action": "click_at",
+      "args": {
+        "x": 302,
+        "y": 124
+      },
+      "intent": "",
+      "tokens": 19625,
+      "latency": 6.8,
+      "cost": 0.0256
+    },
+    {
+      "agent": "a6",
+      "step": 10,
+      "t": 87.0,
+      "frame": "a6_10.png",
+      "action": "click_at",
+      "args": {
+        "y": 20,
+        "x": 248
+      },
+      "intent": "",
+      "tokens": 21605,
+      "latency": 10.8,
+      "cost": 0.0279
+    },
+    {
+      "agent": "a6",
+      "step": 11,
+      "t": 94.96,
+      "frame": "a6_11.png",
+      "action": "click_at",
+      "args": {
+        "x": 302,
+        "y": 150
+      },
+      "intent": "",
+      "tokens": 23537,
+      "latency": 7.5,
+      "cost": 0.0299
+    },
+    {
+      "agent": "a6",
+      "step": 12,
+      "t": 104.68,
+      "frame": "a6_12.png",
+      "action": "click_at",
+      "args": {
+        "x": 248,
+        "y": 20
+      },
+      "intent": "",
+      "tokens": 25489,
+      "latency": 8.3,
+      "cost": 0.0325
+    },
+    {
+      "agent": "a6",
+      "step": 13,
+      "t": 111.53,
+      "frame": "a6_13.png",
+      "action": "click_at",
+      "args": {
+        "y": 175,
+        "x": 302
+      },
+      "intent": "",
+      "tokens": 27410,
+      "latency": 6.4,
+      "cost": 0.0346
+    },
+    {
+      "agent": "a6",
+      "step": 14,
+      "t": 126.42,
+      "frame": "a6_14.png",
+      "action": "click_at",
+      "args": {
+        "x": 248,
+        "y": 20
+      },
+      "intent": "",
+      "tokens": 29357,
+      "latency": 6.4,
+      "cost": 0.0373
+    },
+    {
+      "agent": "a6",
+      "step": 15,
+      "t": 147.52,
+      "frame": "a6_15.png",
+      "action": "click_at",
+      "args": {
+        "x": 289,
+        "y": 201
+      },
+      "intent": "",
+      "tokens": 31279,
+      "latency": 12.6,
+      "cost": 0.0395
+    },
+    {
+      "agent": "a6",
+      "step": 16,
+      "t": 238.59,
+      "frame": "a6_16.png",
+      "action": "click_at",
+      "args": {
+        "x": 456,
+        "y": 20
+      },
+      "intent": "",
+      "tokens": 33239,
+      "latency": 82.6,
+      "cost": 0.0423
+    },
+    {
+      "agent": "a6",
+      "step": 17,
+      "t": 269.0,
+      "frame": "a6_17.png",
+      "action": "hover_at",
+      "args": {
+        "x": 498,
+        "y": 44
+      },
+      "intent": "",
+      "tokens": 35254,
+      "latency": 30.0,
+      "cost": 0.0453
+    },
+    {
+      "agent": "a6",
+      "step": 18,
+      "t": 291.65,
+      "frame": "a6_18.png",
+      "action": "click_at",
+      "args": {
+        "y": 44,
+        "x": 498
+      },
+      "intent": "",
+      "tokens": 37268,
+      "latency": 22.6,
+      "cost": 0.0478
+    },
+    {
+      "agent": "a6",
+      "step": 19,
+      "t": 312.83,
+      "frame": "a6_19.png",
+      "action": "click_at",
+      "args": {
+        "x": 621,
+        "y": 43
+      },
+      "intent": "",
+      "tokens": 39224,
+      "latency": 20.7,
+      "cost": 0.0497
+    },
+    {
+      "agent": "a7",
+      "step": 0,
+      "t": 17.77,
+      "frame": "a7_00.png",
+      "action": "open_web_browser",
+      "args": {},
+      "intent": "",
+      "tokens": 1861,
+      "latency": 3.2,
+      "cost": 0.0024
+    },
+    {
+      "agent": "a7",
+      "step": 1,
+      "t": 22.99,
+      "frame": "a7_01.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/"
+      },
+      "intent": "",
+      "tokens": 3900,
+      "latency": 4.8,
+      "cost": 0.0065
+    },
+    {
+      "agent": "a7",
+      "step": 2,
+      "t": 30.05,
+      "frame": "a7_02.png",
+      "action": "search",
+      "args": {},
+      "intent": "",
+      "tokens": 5844,
+      "latency": 5.8,
+      "cost": 0.0082
+    },
+    {
+      "agent": "a7",
+      "step": 3,
+      "t": 34.76,
+      "frame": "a7_03.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://www.google.com"
+      },
+      "intent": "",
+      "tokens": 7762,
+      "latency": 4.7,
+      "cost": 0.0104
+    },
+    {
+      "agent": "a7",
+      "step": 4,
+      "t": 43.33,
+      "frame": "a7_04.png",
+      "action": "type_text_at",
+      "args": {
+        "y": 445,
+        "text": "openemr demo login credentials",
+        "press_enter": true,
+        "x": 494
+      },
+      "intent": "",
+      "tokens": 9656,
+      "latency": 5.2,
+      "cost": 0.0127
+    },
+    {
+      "agent": "a7",
+      "step": 5,
+      "t": 51.25,
+      "frame": "a7_05.png",
+      "action": "key_combination",
+      "args": {
+        "keys": "enter"
+      },
+      "intent": "",
+      "tokens": 11582,
+      "latency": 7.3,
+      "cost": 0.0153
+    },
+    {
+      "agent": "a7",
+      "step": 6,
+      "t": 59.56,
+      "frame": "a7_06.png",
+      "action": "navigate",
+      "args": {
+        "url": "https://demo.openemr.io/openemr/interface/login/login.php?site=default"
+      },
+      "intent": "",
+      "tokens": 13984,
+      "latency": 7.5,
+      "cost": 0.0184
+    },
+    {
+      "agent": "a7",
+      "step": 7,
+      "t": 69.74,
+      "frame": "a7_07.png",
+      "action": "type_text_at",
+      "args": {
+        "text": "admin",
+        "y": 509,
+        "x": 552
+      },
+      "intent": "",
+      "tokens": 15917,
+      "latency": 9.0,
+      "cost": 0.0207
+    },
+    {
+      "agent": "a7",
+      "step": 8,
+      "t": 79.97,
+      "frame": "a7_08.png",
+      "action": "type_text_at",
+      "args": {
+        "x": 552,
+        "text": "pass",
+        "y": 569
+      },
+      "intent": "",
+      "tokens": 17825,
+      "latency": 9.7,
+      "cost": 0.0228
+    },
+    {
+      "agent": "a7",
+      "step": 9,
+      "t": 88.76,
+      "frame": "a7_09.png",
+      "action": "click_at",
+      "args": {
+        "y": 690,
+        "x": 499
+      },
+      "intent": "",
+      "tokens": 19720,
+      "latency": 8.3,
+      "cost": 0.0251
+    },
+    {
+      "agent": "a7",
+      "step": 10,
+      "t": 101.9,
+      "frame": "a7_10.png",
+      "action": "wait_5_seconds",
+      "args": {},
+      "intent": "",
+      "tokens": 21709,
+      "latency": 10.6,
+      "cost": 0.0281
+    },
+    {
+      "agent": "a7",
+      "step": 11,
+      "t": 116.29,
+      "frame": "a7_11.png",
+      "action": "click_at",
+      "args": {
+        "y": 19,
+        "x": 178
+      },
+      "intent": "",
+      "tokens": 23797,
+      "latency": 12.4,
+      "cost": 0.0316
+    },
+    {
+      "agent": "a7",
+      "step": 12,
+      "t": 132.68,
+      "frame": "a7_12.png",
+      "action": "click_at",
+      "args": {
+        "x": 258,
+        "y": 19
+      },
+      "intent": "",
+      "tokens": 25750,
+      "latency": 15.9,
+      "cost": 0.0329
+    },
+    {
+      "agent": "a7",
+      "step": 13,
+      "t": 144.76,
+      "frame": "a7_13.png",
+      "action": "click_at",
+      "args": {
+        "x": 309,
+        "y": 44
+      },
+      "intent": "",
+      "tokens": 27700,
+      "latency": 11.6,
+      "cost": 0.0353
+    },
+    {
+      "agent": "a7",
+      "step": 14,
+      "t": 158.16,
+      "frame": "a7_14.png",
+      "action": "click_at",
+      "args": {
+        "x": 299,
+        "y": 44
+      },
+      "intent": "",
+      "tokens": 29709,
+      "latency": 13.0,
+      "cost": 0.0383
+    },
+    {
+      "agent": "a7",
+      "step": 15,
+      "t": 183.67,
+      "frame": "a7_15.png",
+      "action": "click_at",
+      "args": {
+        "x": 299,
+        "y": 40
+      },
+      "intent": "",
+      "tokens": 31705,
+      "latency": 25.1,
+      "cost": 0.0407
+    },
+    {
+      "agent": "a7",
+      "step": 16,
+      "t": 199.03,
+      "frame": "a7_16.png",
+      "action": "click_at",
+      "args": {
+        "x": 230,
+        "y": 94
+      },
+      "intent": "",
+      "tokens": 33725,
+      "latency": 14.9,
+      "cost": 0.0434
+    },
+    {
+      "agent": "a7",
+      "step": 17,
+      "t": 216.46,
+      "frame": "a7_17.png",
+      "action": "click_at",
+      "args": {
+        "x": 258,
+        "y": 94
+      },
+      "intent": "",
+      "tokens": 35716,
+      "latency": 17.0,
+      "cost": 0.0457
+    },
+    {
+      "agent": "a7",
+      "step": 18,
+      "t": 231.45,
+      "frame": "a7_18.png",
+      "action": "click_at",
+      "args": {
+        "y": 19,
+        "x": 258
+      },
+      "intent": "",
+      "tokens": 37673,
+      "latency": 14.5,
+      "cost": 0.0478
+    },
+    {
+      "agent": "a7",
+      "step": 19,
+      "t": 249.84,
+      "frame": "a7_19.png",
+      "action": "click_at",
+      "args": {
+        "x": 290,
+        "y": 44
+      },
+      "intent": "",
+      "tokens": 39619,
+      "latency": 18.0,
+      "cost": 0.0501
+    }
+  ],
+  "frame_node": {
+    "a1_00.png": "n0001",
+    "a1_01.png": "n0001",
+    "a1_02.png": "n0002",
+    "a1_03.png": "n0001",
+    "a1_04.png": "n0002",
+    "a1_05.png": "n0003",
+    "a1_06.png": "n0001",
+    "a1_07.png": "n0003",
+    "a1_08.png": "n0001",
+    "a1_09.png": "n0003",
+    "a1_10.png": "n0001",
+    "a1_11.png": "n0004",
+    "a1_12.png": "n0005",
+    "a1_13.png": "n0001",
+    "a2_00.png": "n0001",
+    "a2_01.png": "n0001",
+    "a2_02.png": "n0002",
+    "a2_03.png": "n0001",
+    "a2_04.png": "n0004",
+    "a2_05.png": "n0001",
+    "a2_06.png": "n0006",
+    "a2_07.png": "n0006",
+    "a2_08.png": "n0006",
+    "a2_09.png": "n0006",
+    "a2_10.png": "n0006",
+    "a2_11.png": "n0006",
+    "a2_12.png": "n0001",
+    "a2_13.png": "n0003",
+    "a2_14.png": "n0001",
+    "a2_15.png": "n0001",
+    "a2_16.png": "n0007",
+    "a2_17.png": "n0005",
+    "a2_18.png": "n0004",
+    "a2_19.png": "n0002",
+    "a3_00.png": "n0001",
+    "a3_01.png": "n0001",
+    "a3_02.png": "n0002",
+    "a3_03.png": "n0002",
+    "a3_04.png": "n0002",
+    "a3_05.png": "n0002",
+    "a3_06.png": "n0002",
+    "a3_07.png": "n0002",
+    "a3_08.png": "n0008",
+    "a3_09.png": "n0003",
+    "a3_10.png": "n0003",
+    "a3_11.png": "n0003",
+    "a3_12.png": "n0003",
+    "a3_13.png": "n0003",
+    "a3_14.png": "n0001",
+    "a3_15.png": "n0005",
+    "a4_00.png": "n0009",
+    "a4_01.png": "n0009",
+    "a4_02.png": "n0010",
+    "a4_03.png": "n0010",
+    "a4_04.png": "n0010",
+    "a4_05.png": "n0011",
+    "a4_06.png": "n0012",
+    "a4_07.png": "n0012",
+    "a4_08.png": "n0012",
+    "a4_09.png": "n0012",
+    "a4_10.png": "n0012",
+    "a4_11.png": "n0011",
+    "a4_12.png": "n0011",
+    "a4_13.png": "n0006",
+    "a4_14.png": "n0006",
+    "a4_15.png": "n0006",
+    "a4_16.png": "n0013",
+    "a4_17.png": "n0013",
+    "a4_18.png": "n0013",
+    "a4_19.png": "n0013",
+    "a4_20.png": "n0006",
+    "a5_00.png": "n0009",
+    "a5_01.png": "n0009",
+    "a5_02.png": "n0010",
+    "a5_03.png": "n0010",
+    "a5_04.png": "n0010",
+    "a5_05.png": "n0011",
+    "a5_06.png": "n0012",
+    "a5_07.png": "n0013",
+    "a5_08.png": "n0001",
+    "a5_09.png": "n0002",
+    "a5_10.png": "n0002",
+    "a5_11.png": "n0002",
+    "a5_12.png": "n0002",
+    "a5_13.png": "n0002",
+    "a5_14.png": "n0014",
+    "a5_15.png": "n0008",
+    "a5_16.png": "n0014",
+    "a5_17.png": "n0007",
+    "a5_18.png": "n0005",
+    "a5_19.png": "n0014",
+    "a5_20.png": "n0014",
+    "a6_00.png": "n0009",
+    "a6_01.png": "n0009",
+    "a6_02.png": "n0010",
+    "a6_03.png": "n0010",
+    "a6_04.png": "n0010",
+    "a6_05.png": "n0011",
+    "a6_06.png": "n0012",
+    "a6_07.png": "n0012",
+    "a6_08.png": "n0012",
+    "a6_09.png": "n0012",
+    "a6_10.png": "n0015",
+    "a6_11.png": "n0015",
+    "a6_12.png": "n0016",
+    "a6_13.png": "n0016",
+    "a6_14.png": "n0016",
+    "a6_15.png": "n0016",
+    "a6_16.png": "n0017",
+    "a6_17.png": "n0017",
+    "a6_18.png": "n0017",
+    "a6_19.png": "n0017",
+    "a6_20.png": "n0013",
+    "a7_00.png": "n0009",
+    "a7_01.png": "n0009",
+    "a7_02.png": "n0010",
+    "a7_03.png": "n0010",
+    "a7_04.png": "n0018",
+    "a7_05.png": "n0018",
+    "a7_06.png": "n0019",
+    "a7_07.png": "n0010",
+    "a7_08.png": "n0010",
+    "a7_09.png": "n0010",
+    "a7_10.png": "n0011",
+    "a7_11.png": "n0012",
+    "a7_12.png": "n0011",
+    "a7_13.png": "n0011",
+    "a7_14.png": "n0011",
+    "a7_15.png": "n0011",
+    "a7_16.png": "n0011",
+    "a7_17.png": "n0011",
+    "a7_18.png": "n0012",
+    "a7_19.png": "n0012",
+    "a7_20.png": "n0012"
+  },
+  "nodes": [
+    {
+      "id": "n0001",
+      "frame": "a1_00.png",
+      "seen_by": [
+        "a1",
+        "a2",
+        "a3",
+        "a5"
+      ],
+      "label": "Medical Record Dashboard"
+    },
+    {
+      "id": "n0002",
+      "frame": "a1_02.png",
+      "seen_by": [
+        "a1",
+        "a2",
+        "a3",
+        "a5"
+      ],
+      "label": "History And Lifestyle"
+    },
+    {
+      "id": "n0003",
+      "frame": "a1_05.png",
+      "seen_by": [
+        "a1",
+        "a2",
+        "a3"
+      ],
+      "label": "Patient Documents"
+    },
+    {
+      "id": "n0004",
+      "frame": "a1_11.png",
+      "seen_by": [
+        "a1",
+        "a2"
+      ],
+      "label": "Patient Transactions"
+    },
+    {
+      "id": "n0005",
+      "frame": "a1_12.png",
+      "seen_by": [
+        "a1",
+        "a2",
+        "a3",
+        "a5"
+      ],
+      "label": "Patient Reports"
+    },
+    {
+      "id": "n0006",
+      "frame": "a2_06.png",
+      "seen_by": [
+        "a2",
+        "a4"
+      ],
+      "label": "Patient Details"
+    },
+    {
+      "id": "n0007",
+      "frame": "a2_16.png",
+      "seen_by": [
+        "a2",
+        "a5"
+      ],
+      "label": "SDOH Assessments"
+    },
+    {
+      "id": "n0008",
+      "frame": "a3_08.png",
+      "seen_by": [
+        "a3",
+        "a5"
+      ],
+      "label": "Patient Ledger"
+    },
+    {
+      "id": "n0009",
+      "frame": "a4_00.png",
+      "seen_by": [
+        "a4",
+        "a5",
+        "a6",
+        "a7"
+      ],
+      "label": "Authentication Error"
+    },
+    {
+      "id": "n0010",
+      "frame": "a4_02.png",
+      "seen_by": [
+        "a4",
+        "a5",
+        "a6",
+        "a7"
+      ],
+      "label": "Login Screen"
+    },
+    {
+      "id": "n0011",
+      "frame": "a4_05.png",
+      "seen_by": [
+        "a4",
+        "a5",
+        "a6",
+        "a7"
+      ],
+      "label": "Calendar Message Inbox"
+    },
+    {
+      "id": "n0012",
+      "frame": "a4_06.png",
+      "seen_by": [
+        "a4",
+        "a5",
+        "a6",
+        "a7"
+      ],
+      "label": "Appointment Calendar"
+    },
+    {
+      "id": "n0013",
+      "frame": "a4_16.png",
+      "seen_by": [
+        "a4",
+        "a5",
+        "a6"
+      ],
+      "label": "Patient Finder"
+    },
+    {
+      "id": "n0014",
+      "frame": "a5_14.png",
+      "seen_by": [
+        "a5"
+      ],
+      "label": "Patient Issues"
+    },
+    {
+      "id": "n0015",
+      "frame": "a6_10.png",
+      "seen_by": [
+        "a6"
+      ],
+      "label": "Billing Manager"
+    },
+    {
+      "id": "n0016",
+      "frame": "a6_12.png",
+      "seen_by": [
+        "a6"
+      ],
+      "label": "Batch Payment Entry"
+    },
+    {
+      "id": "n0017",
+      "frame": "a6_16.png",
+      "seen_by": [
+        "a6"
+      ],
+      "label": "EDI History"
+    },
+    {
+      "id": "n0018",
+      "frame": "a7_04.png",
+      "seen_by": [
+        "a7"
+      ],
+      "label": "Google Search"
+    },
+    {
+      "id": "n0019",
+      "frame": "a7_06.png",
+      "seen_by": [
+        "a7"
+      ],
+      "label": "Security Check"
+    }
+  ],
+  "edges": [
+    {
+      "from": "n0001",
+      "to": "n0002",
+      "label": "click_at",
+      "confirmations": 4,
+      "committed": true
+    },
+    {
+      "from": "n0002",
+      "to": "n0001",
+      "label": "click_at",
+      "confirmations": 2,
+      "committed": true
+    },
+    {
+      "from": "n0002",
+      "to": "n0003",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0003",
+      "to": "n0001",
+      "label": "navigate",
+      "confirmations": 3,
+      "committed": true
+    },
+    {
+      "from": "n0001",
+      "to": "n0003",
+      "label": "click_at",
+      "confirmations": 2,
+      "committed": true
+    },
+    {
+      "from": "n0001",
+      "to": "n0004",
+      "label": "click_at",
+      "confirmations": 2,
+      "committed": true
+    },
+    {
+      "from": "n0004",
+      "to": "n0005",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0005",
+      "to": "n0001",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0004",
+      "to": "n0001",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0001",
+      "to": "n0006",
+      "label": "scroll_document",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0006",
+      "to": "n0001",
+      "label": "scroll_document",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0001",
+      "to": "n0007",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0007",
+      "to": "n0005",
+      "label": "click_at",
+      "confirmations": 2,
+      "committed": true
+    },
+    {
+      "from": "n0005",
+      "to": "n0004",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0004",
+      "to": "n0002",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0002",
+      "to": "n0008",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0008",
+      "to": "n0003",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0001",
+      "to": "n0005",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0009",
+      "to": "n0010",
+      "label": "navigate",
+      "confirmations": 4,
+      "committed": true
+    },
+    {
+      "from": "n0010",
+      "to": "n0011",
+      "label": "click_at",
+      "confirmations": 4,
+      "committed": true
+    },
+    {
+      "from": "n0011",
+      "to": "n0012",
+      "label": "wait_5_seconds",
+      "confirmations": 4,
+      "committed": true
+    },
+    {
+      "from": "n0012",
+      "to": "n0011",
+      "label": "click_at",
+      "confirmations": 2,
+      "committed": true
+    },
+    {
+      "from": "n0011",
+      "to": "n0006",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0006",
+      "to": "n0013",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0013",
+      "to": "n0006",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0012",
+      "to": "n0013",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0013",
+      "to": "n0001",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0002",
+      "to": "n0014",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0014",
+      "to": "n0008",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0008",
+      "to": "n0014",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0014",
+      "to": "n0007",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0005",
+      "to": "n0014",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0012",
+      "to": "n0015",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0015",
+      "to": "n0016",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0016",
+      "to": "n0017",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0017",
+      "to": "n0013",
+      "label": "click_at",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0010",
+      "to": "n0018",
+      "label": "navigate",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0018",
+      "to": "n0019",
+      "label": "key_combination",
+      "confirmations": 1,
+      "committed": false
+    },
+    {
+      "from": "n0019",
+      "to": "n0010",
+      "label": "navigate",
+      "confirmations": 1,
+      "committed": false
+    }
+  ],
+  "snapshots": [
+    {
+      "after": "a1",
+      "n_agents": 1,
+      "nodes": [
+        "n0001",
+        "n0002",
+        "n0003",
+        "n0004",
+        "n0005"
+      ],
+      "edges": [
+        {
+          "from": "n0001",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0003",
+          "to": "n0001",
+          "label": "navigate",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        }
+      ]
+    },
+    {
+      "after": "a2",
+      "n_agents": 2,
+      "nodes": [
+        "n0001",
+        "n0002",
+        "n0003",
+        "n0004",
+        "n0005",
+        "n0006",
+        "n0007"
+      ],
+      "edges": [
+        {
+          "from": "n0001",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0003",
+          "to": "n0001",
+          "label": "navigate",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0004",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0006",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0001",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0007",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        }
+      ]
+    },
+    {
+      "after": "a3",
+      "n_agents": 3,
+      "nodes": [
+        "n0001",
+        "n0002",
+        "n0003",
+        "n0004",
+        "n0005",
+        "n0006",
+        "n0007",
+        "n0008"
+      ],
+      "edges": [
+        {
+          "from": "n0001",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0003",
+          "to": "n0001",
+          "label": "navigate",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0004",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0006",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0001",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0007",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        }
+      ]
+    },
+    {
+      "after": "a4",
+      "n_agents": 4,
+      "nodes": [
+        "n0001",
+        "n0002",
+        "n0003",
+        "n0004",
+        "n0005",
+        "n0006",
+        "n0007",
+        "n0008",
+        "n0009",
+        "n0010",
+        "n0011",
+        "n0012",
+        "n0013"
+      ],
+      "edges": [
+        {
+          "from": "n0001",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0003",
+          "to": "n0001",
+          "label": "navigate",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0004",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0006",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0001",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0007",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0009",
+          "to": "n0010",
+          "label": "navigate",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0010",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0011",
+          "to": "n0012",
+          "label": "wait_5_seconds",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0012",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0011",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0013",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        }
+      ]
+    },
+    {
+      "after": "a5",
+      "n_agents": 5,
+      "nodes": [
+        "n0001",
+        "n0002",
+        "n0003",
+        "n0004",
+        "n0005",
+        "n0006",
+        "n0007",
+        "n0008",
+        "n0009",
+        "n0010",
+        "n0011",
+        "n0012",
+        "n0013",
+        "n0014"
+      ],
+      "edges": [
+        {
+          "from": "n0001",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 4,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0003",
+          "to": "n0001",
+          "label": "navigate",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0004",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0006",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0001",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0007",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0005",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0009",
+          "to": "n0010",
+          "label": "navigate",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0010",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0011",
+          "to": "n0012",
+          "label": "wait_5_seconds",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0012",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0011",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0013",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0012",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0013",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0014",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0014",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        }
+      ]
+    },
+    {
+      "after": "a6",
+      "n_agents": 6,
+      "nodes": [
+        "n0001",
+        "n0002",
+        "n0003",
+        "n0004",
+        "n0005",
+        "n0006",
+        "n0007",
+        "n0008",
+        "n0009",
+        "n0010",
+        "n0011",
+        "n0012",
+        "n0013",
+        "n0014",
+        "n0015",
+        "n0016",
+        "n0017"
+      ],
+      "edges": [
+        {
+          "from": "n0001",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 4,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0003",
+          "to": "n0001",
+          "label": "navigate",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0004",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0006",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0001",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0007",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0005",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0009",
+          "to": "n0010",
+          "label": "navigate",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0010",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0011",
+          "to": "n0012",
+          "label": "wait_5_seconds",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0012",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0011",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0013",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0012",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0013",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0014",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0014",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0012",
+          "to": "n0015",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0015",
+          "to": "n0016",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0016",
+          "to": "n0017",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0017",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        }
+      ]
+    },
+    {
+      "after": "a7",
+      "n_agents": 7,
+      "nodes": [
+        "n0001",
+        "n0002",
+        "n0003",
+        "n0004",
+        "n0005",
+        "n0006",
+        "n0007",
+        "n0008",
+        "n0009",
+        "n0010",
+        "n0011",
+        "n0012",
+        "n0013",
+        "n0014",
+        "n0015",
+        "n0016",
+        "n0017",
+        "n0018",
+        "n0019"
+      ],
+      "edges": [
+        {
+          "from": "n0001",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 4,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0002",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0003",
+          "to": "n0001",
+          "label": "navigate",
+          "confirmations": 3,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0001",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0004",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0006",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0001",
+          "label": "scroll_document",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0007",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0005",
+          "to": "n0004",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0004",
+          "to": "n0002",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0003",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0001",
+          "to": "n0005",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0009",
+          "to": "n0010",
+          "label": "navigate",
+          "confirmations": 4,
+          "committed": true
+        },
+        {
+          "from": "n0010",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 4,
+          "committed": true
+        },
+        {
+          "from": "n0011",
+          "to": "n0012",
+          "label": "wait_5_seconds",
+          "confirmations": 4,
+          "committed": true
+        },
+        {
+          "from": "n0012",
+          "to": "n0011",
+          "label": "click_at",
+          "confirmations": 2,
+          "committed": true
+        },
+        {
+          "from": "n0011",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0006",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0013",
+          "to": "n0006",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0012",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0013",
+          "to": "n0001",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0002",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0014",
+          "to": "n0008",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0008",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0014",
+          "to": "n0007",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0005",
+          "to": "n0014",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0012",
+          "to": "n0015",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0015",
+          "to": "n0016",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0016",
+          "to": "n0017",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0017",
+          "to": "n0013",
+          "label": "click_at",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0010",
+          "to": "n0018",
+          "label": "navigate",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0018",
+          "to": "n0019",
+          "label": "key_combination",
+          "confirmations": 1,
+          "committed": false
+        },
+        {
+          "from": "n0019",
+          "to": "n0010",
+          "label": "navigate",
+          "confirmations": 1,
+          "committed": false
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "nodes": 19,
+    "edges": 39,
+    "frames": 134,
+    "swarm_tokens": 2532812,
+    "swarm_cost": 3.29,
+    "cold_tokens": 28794,
+    "cold_usd": 0.04,
+    "mapped_tokens": 0
+  },
+  "sponsors": {
+    "gemini": {
+      "label": "Gemini 2.5 Computer Use",
+      "metric": "agent calls",
+      "count": 130,
+      "tokens": 2532812
+    },
+    "voyage": {
+      "label": "Voyage multimodal-3",
+      "metric": "node-id embeddings",
+      "count": 87
+    },
+    "atlas": {
+      "label": "MongoDB Atlas",
+      "metric": "shared-log writes",
+      "count": 63
+    },
+    "gemma": {
+      "label": "Gemma 4 (operator)",
+      "metric": "map-guided steps",
+      "count": 4
+    },
+    "digitalocean": {
+      "label": "DigitalOcean",
+      "metric": "swarm hosting",
+      "count": null
+    }
+  },
+  "hero_conflict": {
+    "from": "n0012",
+    "action": "click_at",
+    "winner": "n0011",
+    "winner_count": 2,
+    "winner_agents": [
+      "a4",
+      "a7"
+    ],
+    "dissenter": "a5",
+    "dissenter_to": "n0013",
+    "rel_dissenter": 0.5,
+    "rel_majority": 0.8
+  },
+  "reliability": {
+    "a1": 0.643,
+    "a6": 0.778,
+    "a5": 0.5,
+    "a7": 0.8,
+    "a4": 0.889,
+    "a3": 0.571,
+    "a2": 0.5
+  },
+  "twin_test": {
+    "tau": 0.55,
+    "anchor": {
+      "frame": "a1_06.png",
+      "label": "Medical Record Dashboard",
+      "sub": "patient: Phil Belford",
+      "agent": "a1"
+    },
+    "same": {
+      "frame": "a3_01.png",
+      "label": "Medical Record Dashboard",
+      "sub": "patient: Susan Ardmore Underwood",
+      "agent": "a3",
+      "cosine": 0.85,
+      "verdict": "merge"
+    },
+    "diff": {
+      "frame": "a4_11.png",
+      "label": "Message Center",
+      "sub": "a different screen",
+      "agent": "a4",
+      "cosine": 0.353,
+      "verdict": "split"
+    }
+  },
+  "heal": {
+    "node": "n0004",
+    "label": "Patient Transactions",
+    "frame": "a1_11.png",
+    "provisional_agent": "a1",
+    "confirm_agent": "a2",
+    "provisional_frame": "a1_11.png",
+    "confirm_frame": "a2_04.png",
+    "k_before": 1,
+    "k_after": 2,
+    "provisional_total": 6,
+    "confirmed_total": 13
+  }
+}
