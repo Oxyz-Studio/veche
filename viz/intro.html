@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VECHE · intro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --paper:#ffffff; --ink:#0d0d0d; --muted:#7c7c74; --hair:#e4e4dd; --truth:#0f7a3a; --wrong:#d11424; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;height:100vh;overflow:hidden;font-weight:500;-webkit-font-smoothing:antialiased}
+
+  .deck{position:fixed;inset:0}
+  .slide{position:absolute;inset:0;padding:5vh 6vw;display:none;flex-direction:column}
+  .slide.show{display:flex}
+
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:2rem;flex:none}
+  .wordmark{font-weight:900;font-size:clamp(1.6rem,3vw,2.6rem);letter-spacing:-.03em;line-height:1}
+  .wordmark .dot{color:var(--truth)}
+  .meta{font-size:.74rem;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+
+  .body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.2vh;min-height:0}
+  .kick{font-size:.8rem;font-weight:800;letter-spacing:.16em;color:var(--truth);text-transform:uppercase;margin-bottom:.9vh;display:flex;align-items:center;gap:.7rem}
+  .kick::before{content:"";width:30px;height:2px;background:var(--truth)}
+  h1{font-size:clamp(2.4rem,5.6vw,4.6rem);font-weight:900;letter-spacing:-.03em;line-height:.98;max-width:20ch}
+  h1 .g{color:var(--truth)} h1 .r{color:var(--wrong)}
+  .lede{font-size:clamp(1.05rem,1.9vw,1.5rem);font-weight:600;color:#2c2f2b;max-width:60ch;line-height:1.45;margin-top:1.1vh}
+  .lede b{color:var(--ink);font-weight:800}
+
+  .who{display:flex;align-items:baseline;gap:1.1rem;flex-wrap:wrap}
+  .who .name{font-size:clamp(1.8rem,3.4vw,2.8rem);font-weight:900;letter-spacing:-.02em}
+  .who .studio{font-size:1.05rem;font-weight:700;color:var(--muted)}
+
+  .row{display:grid;grid-template-columns:auto 1fr;gap:1.4rem 1.8rem;align-items:start;border-top:1.5px solid var(--hair);padding-top:2.4vh}
+  .row .lab{font-size:.78rem;font-weight:800;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;padding-top:.4rem;white-space:nowrap}
+  .row p{font-size:clamp(1.05rem,1.8vw,1.45rem);font-weight:600;color:#2c2f2b;line-height:1.4;max-width:64ch}
+  .row p b{color:var(--ink);font-weight:800} .row p .r{color:var(--wrong);font-weight:800}
+
+  .chips{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1vh}
+  .chip{border:1.5px solid var(--ink);padding:1rem 1.3rem;flex:1;min-width:200px}
+  .chip .h{font-size:1.15rem;font-weight:900} .chip .h.g{color:var(--truth)}
+  .chip .s{font-size:.92rem;font-weight:600;color:var(--muted);margin-top:.3rem;line-height:1.35}
+
+  footer{flex:none;display:flex;align-items:center;justify-content:space-between;gap:2rem;border-top:1.5px solid var(--ink);padding-top:2vh}
+  .dots{display:flex;gap:.5rem;align-items:center}
+  .dot2{width:10px;height:10px;border:2px solid var(--ink);border-radius:50%} .dot2.on{background:var(--ink)}
+  .nav{display:flex;gap:.6rem;align-items:center}
+  .hint{font-size:.72rem;font-weight:600;color:var(--muted);margin-right:.6rem}
+  .btn{font-family:inherit;font-weight:800;font-size:.82rem;letter-spacing:.04em;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);padding:.7rem 1.2rem;cursor:pointer;text-decoration:none}
+  .btn.go{background:var(--truth);border-color:var(--truth);color:#fff}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- SLIDE 1 - who / problem / why me -->
+  <section class="slide s1 show">
+    <header>
+      <div class="wordmark">VECHE<span class="dot">.</span></div>
+      <div class="meta">AI Engineer World's Fair 2026 · Continual Learning</div>
+    </header>
+    <div class="body">
+      <div>
+        <div class="kick">Who is behind it</div>
+        <div class="who"><span class="name">Alexandre Geng</span><span class="studio">O'XYZ Studio · I build and ship AI agents into production</span></div>
+      </div>
+      <div class="row">
+        <div class="lab">The problem</div>
+        <p>The most valuable software has <b>no way in</b>: no API, no DOM, no MCP. Citrix health records, mainframe green-screens, twenty-year-old desktop apps. Computer-use is the only door, but one agent is <span class="r">wrong about 1 in 5</span>, and it forgets everything between runs.</p>
+      </div>
+      <div class="row">
+        <div class="lab">Why me</div>
+        <p>I ship agents for a living, and I keep hitting the same wall: they are <b>unreliable</b>, and they have <b>no shared memory</b>. VECHE is the layer I built to cross it.</p>
+      </div>
+    </div>
+    <footer>
+      <div class="dots"><span class="dot2 on"></span><span class="dot2"></span></div>
+      <div class="nav"><span class="hint">press →</span><button class="btn" id="next1">Next →</button></div>
+    </footer>
+  </section>
+
+  <!-- SLIDE 2 - how VECHE solves it -->
+  <section class="slide s2">
+    <header>
+      <div class="wordmark">VECHE<span class="dot">.</span></div>
+      <div class="meta">How it works · then the live demo</div>
+    </header>
+    <div class="body">
+      <div>
+        <div class="kick">How VECHE fixes it</div>
+        <h1><span class="g">Continual learning</span> for computer-use.</h1>
+        <p class="lede">A swarm of vision agents learns <b>one shared map</b> of the app by consensus, from pixels alone. A path is trusted only when independent agents agree, a small model then operates by reading the map, and the map heals itself when the software changes.</p>
+      </div>
+      <div class="chips">
+        <div class="chip"><div class="h g">Reliable</div><div class="s">consensus overrules a single agent's mistake, so the map beats any agent that built it.</div></div>
+        <div class="chip"><div class="h g">Cheap</div><div class="s">the small model just reads the map, no re-perceiving. Zero paid tokens on a known path.</div></div>
+        <div class="chip"><div class="h g">Continual</div><div class="s">it gets better the more it is used, and re-learns just the part that changes.</div></div>
+      </div>
+    </div>
+    <footer>
+      <div class="dots"><span class="dot2"></span><span class="dot2 on"></span></div>
+      <div class="nav"><button class="btn" id="prev2">← Back</button><a class="btn go" href="index.html">Let me show you · the demo →</a></div>
+    </footer>
+  </section>
+
+</div>
+<script>
+  const s1=document.querySelector('.s1'),s2=document.querySelector('.s2');
+  function show(n){s1.classList.toggle('show',n===1);s2.classList.toggle('show',n===2);}
+  document.getElementById('next1').addEventListener('click',()=>show(2));
+  document.getElementById('prev2').addEventListener('click',()=>show(1));
+  addEventListener('keydown',e=>{
+    if(e.code==='ArrowRight'||e.code==='Space'){e.preventDefault();show(2);}
+    else if(e.code==='ArrowLeft'||e.code==='Backspace'){e.preventDefault();show(1);}
+  });
+</script>
+</body>
+</html>
