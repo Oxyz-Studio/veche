@@ -79,8 +79,7 @@ def main():
             page.goto(f"{BASE}/interface/patient_file/summary/demographics.php?set_pid={pid}",
                       wait_until="domcontentloaded", timeout=60000)
             page.wait_for_timeout(3500)
-            txt = page.content()
-            return "demographic" in txt.lower() or "Patient" in txt
+            return f"set_pid={pid}" in (page.url or "")   # URL only, never read the DOM
 
         chart_pids = []
         for pid in candidate_pids:

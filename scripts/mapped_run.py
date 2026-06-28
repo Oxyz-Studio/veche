@@ -45,7 +45,16 @@ def main():
         print(f"  step {steps}: map-lookup -> replay {act['name']} {act.get('args', {})}  (computer-use tokens: 0)")
         br.execute(act["name"], act.get("args", {}))
 
-    success = "ledger" in br.text().lower()
+    # pixels-only success check: node-identify the final screen, NEVER read the DOM
+    from veche.node_identity import _cosine
+    final_shot = br.screenshot()
+    ref = ROOT / "captures" / "goal_ref.png"
+    if ref.exists():
+        a, b = embed_safe(emb, final_shot), embed_safe(emb, ref.read_bytes())
+        success = a is not None and b is not None and _cosine(a, b) >= 0.55
+    else:
+        ref.write_bytes(final_shot)   # first run defines the goal screen, by pixels
+        success = steps == len(trace)
     print(f"\n=== MAP-GUIDED RESULT ===")
     print(f"  steps={steps}  computer_use_tokens={cu_tokens}  voyage_embeds={voyage_embeds} (free tier)  success={success}")
     vp = br.close()

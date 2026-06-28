@@ -53,12 +53,6 @@ class Browser:
     def url(self) -> str:
         return self.page.url
 
-    def text(self) -> str:
-        try:
-            return self.page.inner_text("body")[:4000]
-        except Exception:
-            return ""
-
     # --- actuation ---
     def _px(self, x, y):
         return int(round((x or 0) / 1000 * self.w)), int(round((y or 0) / 1000 * self.h))
