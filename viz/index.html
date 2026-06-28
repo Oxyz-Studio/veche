@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VECHE — live demo</title>
+<title>VECHE · live demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -64,18 +64,20 @@
   .herobadge .s{font-size:.76rem;color:var(--ink);font-weight:500;margin-top:.25rem;line-height:1.35}
   .herobadge .r{font-weight:800;margin-top:.4rem;font-size:.86rem} .herobadge .r b{color:var(--wrong)} .herobadge .r i{color:var(--truth);font-style:normal}
 
-  #act3{display:flex;flex-direction:column;height:100%;gap:1.4vh;justify-content:center}
-  .a3grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8vw;flex:1;min-height:0}
+  #act3{display:flex;flex-direction:column;height:100%;gap:1vh}
+  .a3head{text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.12em;color:var(--muted)}
+  .a3grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6vw;flex:1;min-height:0}
   .a3panel{display:grid;grid-template-rows:auto 1fr auto;gap:.7vh;min-height:0}
   .a3lbl{font-size:.86rem;font-weight:600;color:var(--muted)} .a3lbl b{font-weight:900} .a3lbl .em{color:var(--wrong)} .a3lbl .ok{color:var(--truth)}
   .a3vid{border:1.5px solid var(--ink);background:#000;overflow:hidden;min-height:0}
-  .a3m{display:flex;align-items:baseline;gap:.8rem}
-  .a3m .num{font-weight:900;font-size:clamp(2.4rem,5vw,4rem);line-height:1}
-  .a3m .num.cold{color:var(--wrong)} .a3m .num.mapped{color:var(--truth)}
-  .a3m .u{font-size:.76rem;font-weight:600;color:var(--muted)}
-  .a3foot{text-align:center;font-size:1rem;font-weight:600;color:var(--muted)} .a3foot b{color:var(--ink)}
+  .a3vid video{width:100%;height:100%;object-fit:contain}
+  .a3stats{display:flex;gap:2.4rem;align-items:flex-end}
+  .a3stats .num{font-weight:900;font-size:clamp(2rem,4.4vw,3.6rem);line-height:.95}
+  .a3stats .num.cold{color:var(--wrong)} .a3stats .num.mapped{color:var(--truth)}
+  .a3stats .n2{font-weight:800;font-size:clamp(1.3rem,2.4vw,2.2rem);line-height:1} .a3stats .n2.ok{color:var(--truth)}
+  .a3stats .su{font-size:.68rem;font-weight:600;color:var(--muted);display:block;margin-top:.15rem}
 
-  .sponsors{display:flex;gap:.7vw}
+  .sponsors{display:flex;gap:.7vw} .sponsors.hide{display:none}
   .sp{flex:1;border:1.5px solid var(--hair);padding:.55rem .8rem;display:flex;justify-content:space-between;align-items:center;opacity:.5;transition:.3s;background:var(--paper)}
   .sp.live{opacity:1;border-color:var(--ink)} .sp.pulse{animation:pulse .8s ease}
   @keyframes pulse{0%,100%{background:var(--paper)}45%{background:#0f7a3a14;border-color:var(--truth)}}
@@ -117,7 +119,7 @@
         <div class="mapstat"><b id="mapNodes">0</b> screens mapped<br><span id="mapShared"></span></div>
         <div class="herobadge" id="herobadge">
           <div class="h">⚠ agent a3 misread this screen</div>
-          <div class="s">consensus overruled it — K-agreement keeps the screen two agents confirmed, and quarantines the false claim.</div>
+          <div class="s">consensus overruled it. K-agreement keeps the screen two agents confirmed, and quarantines the false claim.</div>
           <div class="r">a3 trust&nbsp; <b>0.50</b> → <i>0.33</i></div>
         </div>
         <div class="maplog" id="maplog"></div>
@@ -126,19 +128,27 @@
     </section>
 
     <section class="act" id="act3">
+      <div class="a3head">SAME TASK · SAME SUCCESS</div>
       <div class="a3grid">
         <div class="a3panel">
-          <div class="a3lbl"><b class="em">COLD</b> · Gemini Computer Use re-perceives every screen</div>
+          <div class="a3lbl"><b class="em">COLD</b> · Gemini re-perceives every screen</div>
           <div class="a3vid"><video id="coldop" src="recording/videos/cold_op.mp4" muted playsinline></video></div>
-          <div class="a3m"><span class="num cold" id="a3cold">0</span><span class="u">paid tokens · <span id="a3coldt">0s</span></span></div>
+          <div class="a3stats">
+            <div><span class="num cold" id="a3cold">0</span><span class="su">tokens</span></div>
+            <div><span class="n2" id="a3coldt">0.0s</span><span class="su">time</span></div>
+            <div><span class="n2" id="a3colds">0</span><span class="su">steps</span></div>
+          </div>
         </div>
         <div class="a3panel">
-          <div class="a3lbl"><b class="ok">MAP-GUIDED</b> · Gemma 4 reads the shared map</div>
+          <div class="a3lbl"><b class="ok">MAP-GUIDED</b> · Gemma reads the shared map</div>
           <div class="a3vid"><video id="mapop" src="recording/videos/mapped_op.mp4" muted playsinline></video></div>
-          <div class="a3m"><span class="num mapped">0</span><span class="u">paid tokens · <span id="a3mapt">running</span></span></div>
+          <div class="a3stats">
+            <div><span class="num mapped" id="a3map">0</span><span class="su">tokens</span></div>
+            <div><span class="n2 ok" id="a3mapt">0.0s</span><span class="su">time</span></div>
+            <div><span class="n2" id="a3maps">0</span><span class="su">steps</span></div>
+          </div>
         </div>
       </div>
-      <div class="a3foot">Same task, same success — <b>28,794 → 0 paid tokens.</b> <span id="a3note"></span></div>
     </section>
   </div>
 
@@ -222,9 +232,9 @@ function playBuild(done){
   resetMap(); let i=0; const cnt={};
   buildTimer=setInterval(()=>{
     if(i>=seq.length){clearInterval(buildTimer);buildTimer=null;if(done)done();return;}
-    const s=seq[i++]; cnt.g=(cnt.g||0)+1; spSet('gemini',cnt.g); if(i%2===0)spPulse('gemini');
+    const s=seq[i++]; cnt.g=(cnt.g||0)+1; spSet('gemini',Math.min(cnt.g,SP.gemini.count)); if(i%2===0)spPulse('gemini');
     if(s.type==='new'){ addNode(s.node); spSet('voyage',(cnt.v=(cnt.v||0)+1)); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('',s.ag,`mapped a new screen → ${s.node}`); }
-    else if(s.type==='merge'){ greenNode(s.node); spPulse('voyage'); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('merge',s.ag,`recognized ${s.node} — confirmed by 2 agents ✓`); }
+    else if(s.type==='merge'){ greenNode(s.node); spPulse('voyage'); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('merge',s.ag,`recognized ${s.node}, confirmed by 2 agents ✓`); }
     else { spSet('atlas',(cnt.a=(cnt.a||0)+1)); }
     if(s.from)addEdge(s.from,s.node,(allEdges.find(e=>e.from===s.from&&e.to===s.node)||{}).confirmations||1);
   },230);
@@ -232,7 +242,7 @@ function playBuild(done){
 function showFinal(){ if(buildTimer){clearInterval(buildTimer);buildTimer=null;}
   resetMap(); allNodes.forEach(n=>addNode(n.id)); sharedSet.forEach(greenNode); allEdges.forEach(e=>addEdge(e.from,e.to,e.confirmations));
   spSet('gemini',SP.gemini.count);spSet('voyage',SP.voyage.count);spSet('atlas',SP.atlas.count);
-  log('merge','✓',`whole app mapped — ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by ≥2 agents`); }
+  log('merge','✓',`whole app mapped. ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by 2+ agents`); }
 
 const grid=document.getElementById('grid');
 R.agents.forEach(a=>{if(!a.video)return;const c=document.createElement('div');c.className='cell';c.innerHTML=`<video src="${mp4(a.video)}" muted loop playsinline></video><span class="tag">${a.id} · Gemini</span>`;grid.appendChild(c);});
@@ -248,27 +258,26 @@ function climbCold(){const vid=document.getElementById('coldvid');vid.currentTim
     document.getElementById('coldSteps').textContent=step;document.getElementById('coldTime').textContent=Math.round(ct)+'s';};}
 
 const cap=document.getElementById('caption'),actlabel=document.getElementById('actlabel'),herobadge=document.getElementById('herobadge');
-function showAct(id){document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id));}
+function showAct(id){document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id));document.getElementById('sponsors').classList.toggle('hide',id==='act3');}
 function stopBuild(){if(buildTimer){clearInterval(buildTimer);buildTimer=null;}}
 const BEATS=[
-  {label:"The problem",cap:`Half the world's critical work runs on screens with <span class="em">no API, no DOM</span>. Today you do it by hand — or let one AI agent try.`,
+  {label:"The problem",cap:`Half the world's critical work runs on screens with <span class="em">no API, no DOM</span>. Today you do it by hand, or you let one AI agent try.`,
    run(){showAct('act1');spLive([]);herobadge.classList.remove('show');document.getElementById('coldTok').textContent='0';document.getElementById('coldSteps').textContent='0';}},
-  {label:"<b>Act 1</b> · cold",cap:`<span class="em">One agent, cold.</span> It re-perceives every screen — slow, expensive, and wrong ~1 in 5 times.`,
+  {label:"<b>Act 1</b> · cold",cap:`<span class="em">One agent, cold.</span> It re-perceives every screen: slow, expensive, and wrong about 1 in 5 times.`,
    run(){showAct('act1');spLive(['gemini']);climbCold();}},
-  {label:"<b>Act 2</b> · the map builds",cap:`So we put a <span class="ok">swarm</span> on it — watch ${R.agents.length} agents map the app, screen by screen, into one shared memory.`,
+  {label:"<b>Act 2</b> · the map builds",cap:`So we put a <span class="ok">swarm</span> on it. Watch ${R.agents.length} agents map the app, screen by screen, into one shared memory.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);playBuild();}},
-  {label:"<b>Act 2</b> · consensus",cap:`When a screen is seen by a <span class="ok">different agent</span>, Voyage recognizes it and merges it — the map converges by consensus.`,
+  {label:"<b>Act 2</b> · consensus",cap:`When a screen is seen by a <span class="ok">different agent</span>, Voyage recognizes it and merges it. The map converges by consensus.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);spPulse('voyage');}},
-  {label:"<b>Act 2</b> · the overrule",cap:`Agents misread ~1 in 5. When one does, <span class="ok">the swarm overrules it</span> — K-agreement keeps the truth and drops the liar's trust.`,
+  {label:"<b>Act 2</b> · the overrule",cap:`Agents misread ~1 in 5. When one does, <span class="ok">the swarm overrules it</span>. K-agreement keeps the truth and drops the liar's trust.`,
    run(){showAct('act2');stopBuild();showFinal();const rc=mapg.querySelector(`rect[data-rect="${heroNode}"]`);if(rc)rc.classList.add('hero');playGrid();spLive(['voyage','atlas']);log('over','a3',`misread a screen → OVERRULED, trust 0.50→0.33`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
-  {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents — for ~$${TOT.swarm_cost}, once.`,
+  {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once.`,
    run(){showAct('act2');herobadge.classList.remove('show');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);}},
-  {label:"<b>Act 3</b> · cold vs map-guided",cap:`Same task, side by side. <span class="em">Cold re-thinks every screen</span>; <span class="ok">map-guided just reads the map</span> — and finishes for zero paid tokens.`,
-   run(){showAct('act3');stopGrid();stopBuild();spLive(['gemma','atlas']);spPulse('gemma');spSet('gemma',SP.gemma.count);
-     const cv=document.getElementById('coldop'),mv=document.getElementById('mapop');
-     if(cv){cv.loop=false;cv.currentTime=0;cv.play().catch(()=>{});cv.ontimeupdate=()=>{const p=cv.duration?cv.currentTime/cv.duration:0;document.getElementById('a3cold').textContent=Math.round(TOT.cold_tokens*p).toLocaleString();document.getElementById('a3coldt').textContent=Math.round(cv.currentTime)+'s';};}
-     if(mv){mv.loop=false;mv.currentTime=0;mv.play().catch(()=>{});mv.onended=()=>{document.getElementById('a3mapt').textContent='done';};}
-     document.getElementById('a3note').textContent='cost-per-task → 0 as the map is reused — '+TOT.cold_tokens.toLocaleString()+' / (N+1). The map cost ~$'+TOT.swarm_cost+' once.';}},
+  {label:"<b>Act 3</b> · cold vs map-guided",cap:`Same task, side by side. <span class="em">Cold re-thinks every screen.</span> <span class="ok">Map-guided just reads the map</span>, and finishes for zero paid tokens.`,
+   run(){showAct('act3');stopGrid();stopBuild();
+     const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
+     if(cv){cv.loop=false;cv.currentTime=0;cv.play().catch(()=>{});cv.ontimeupdate=()=>{const p=cv.duration?cv.currentTime/cv.duration:0;document.getElementById('a3cold').textContent=Math.round(COLD*p).toLocaleString();document.getElementById('a3coldt').textContent=cv.currentTime.toFixed(1)+'s';document.getElementById('a3colds').textContent=Math.min(ST,Math.ceil(p*ST));};}
+     if(mv){mv.loop=false;mv.currentTime=0;mv.play().catch(()=>{});mv.ontimeupdate=()=>{const p=mv.duration?mv.currentTime/mv.duration:0;document.getElementById('a3mapt').textContent=mv.currentTime.toFixed(1)+'s';document.getElementById('a3maps').textContent=Math.min(ST,Math.ceil(p*ST));};mv.onended=()=>{document.getElementById('a3mapt').textContent=mv.duration.toFixed(1)+'s';};}}},
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1,heroTimer;
