@@ -63,6 +63,14 @@
   .herobadge .h{font-weight:800;color:var(--wrong);font-size:.92rem}
   .herobadge .s{font-size:.76rem;color:var(--ink);font-weight:500;margin-top:.25rem;line-height:1.35}
   .herobadge .r{font-weight:800;margin-top:.4rem;font-size:.86rem} .herobadge .r b{color:var(--wrong)} .herobadge .r i{color:var(--truth);font-style:normal}
+  .coverage{position:absolute;left:1rem;top:1rem;background:var(--paper);border:1.5px solid var(--ink);padding:.6rem .75rem;opacity:0;transition:opacity .4s;z-index:3}
+  .coverage.show{opacity:1}
+  .coverage .ct{font-size:.74rem;font-weight:800} .coverage .ct b{color:var(--truth)}
+  .coverage .bars{display:flex;align-items:flex-end;gap:5px;height:52px;margin-top:.4rem}
+  .coverage .bcol{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .coverage .bar{width:15px;background:var(--truth);min-height:2px}
+  .coverage .bl{font-size:.52rem;color:var(--muted)}
+  .coverage .cn{font-size:.62rem;color:var(--muted);margin-top:.35rem;max-width:230px}
 
   #act3{display:flex;flex-direction:column;height:100%;gap:1vh}
   .a3head{text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.12em;color:var(--muted)}
@@ -124,6 +132,7 @@
           <div class="s">consensus overruled it. K-agreement keeps the screen two agents confirmed, and quarantines the false claim.</div>
           <div class="r">a3 trust&nbsp; <b>0.50</b> → <i>0.33</i></div>
         </div>
+        <div class="coverage" id="coverage"></div>
         <div class="maplog" id="maplog"></div>
         <div class="nodeinfo" id="nodeinfo"></div>
       </div>
@@ -201,8 +210,11 @@ function showInfo(id,cx,cy){const m=nodeMeta[id];if(!m)return;
 allNodes.forEach(n=>{const im=new Image();im.src='recording/frames/'+n.frame;}); // preload thumbnails
 let greenCount=0;
 function setShared(){document.getElementById('mapShared').innerHTML=greenCount?`<span style="color:var(--truth)">${greenCount} confirmed by ≥2 agents</span>`:'';}
-function addEdge(from,to,conf){if(!drawn.has(from)||!drawn.has(to))return;const p=pos[from],q=pos[to];if(!p||!q)return;
-  mapg.insertBefore(el('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:conf>=2?'var(--truth)':'#0d0d0d2e','stroke-width':conf>=2?4:2}),mapg.firstChild);}
+const ACT={click_at:'click',click:'click',go_back:'back',go_forward:'forward',navigate:'open',open_web_browser:'open',type_text_at:'type',type:'type',key_combination:'key',scroll_document:'scroll',scroll_at:'scroll',wait_5_seconds:'wait'};
+const actLabel=l=>ACT[l]||l||'';
+function addEdge(from,to,conf,label){if(!drawn.has(from)||!drawn.has(to))return;const p=pos[from],q=pos[to];if(!p||!q)return;
+  mapg.insertBefore(el('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:conf>=2?'var(--truth)':'#0d0d0d2e','stroke-width':conf>=2?4:2}),mapg.firstChild);
+  if(conf>=2&&label){const mx=(p.x+q.x)/2,my=(p.y+q.y)/2-4;const t=el('text',{x:mx,y:my,'text-anchor':'middle','font-size':'15','font-weight':'700',fill:'#0f7a3a','paint-order':'stroke',stroke:'#fff','stroke-width':'4'});t.textContent=actLabel(label);mapg.appendChild(t);}}
 function greenNode(id){const rc=mapg.querySelector(`rect[data-rect="${id}"]`);if(rc&&!rc.dataset.green){rc.dataset.green='1';rc.setAttribute('stroke','#0f7a3a');rc.setAttribute('stroke-width','4');greenCount++;setShared();}}
 function addNode(id){if(drawn.has(id))return;drawn.add(id);const p=pos[id],n=allNodes.find(x=>x.id===id);if(!n)return;
   mapg.appendChild(el('rect',{x:p.x-TH/2,y:p.y-TH/2,width:TH,height:TH,fill:'#fff',stroke:'#0d0d0d','stroke-width':'2','data-rect':id,class:'noderect'}));
@@ -228,6 +240,12 @@ R.agents.forEach(ag=>{let prev=null;(ag.frames||[]).forEach(fr=>{const node=fn[f
   const had=seen[node]?seen[node].has(ag.id):false; if(!seen[node])seen[node]=new Set(); seen[node].add(ag.id);
   const type = !had && seen[node].size===1 ? 'new' : (!had && seen[node].size===2 ? 'merge' : 'confirm');
   seq.push({ag:ag.id,node,type,from:prev,size:seen[node].size}); prev=node;});});
+// coverage chart: new screens discovered per agent (answers "how many agents do you need?")
+(function(){const cov=document.getElementById('coverage'),snaps=R.snapshots;
+  const per=snaps.map((s,i)=>s.nodes.length-(i?snaps[i-1].nodes.length:0)),mx=Math.max(1,...per);
+  cov.innerHTML=`<div class="ct">new screens / agent <b>(saturates)</b></div><div class="bars">${
+    per.map((v,i)=>`<div class="bcol"><div class="bar" style="height:${Math.max(2,v/mx*52)}px"></div><div class="bl">a${i+1}</div></div>`).join('')}</div>`+
+    `<div class="cn">discovery dries up by the last agents. Rule: add agents until new screens hit zero (loop-until-dry).</div>`;})();
 
 let buildTimer=null;
 function playBuild(done){
@@ -238,11 +256,11 @@ function playBuild(done){
     if(s.type==='new'){ addNode(s.node); spSet('voyage',(cnt.v=(cnt.v||0)+1)); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('',s.ag,`mapped a new screen → ${s.node}`); }
     else if(s.type==='merge'){ greenNode(s.node); spPulse('voyage'); spSet('atlas',(cnt.a=(cnt.a||0)+1)); log('merge',s.ag,`recognized ${s.node}, confirmed by 2 agents ✓`); }
     else { spSet('atlas',(cnt.a=(cnt.a||0)+1)); }
-    if(s.from)addEdge(s.from,s.node,(allEdges.find(e=>e.from===s.from&&e.to===s.node)||{}).confirmations||1);
+    if(s.from){const ed=allEdges.find(e=>e.from===s.from&&e.to===s.node)||{};addEdge(s.from,s.node,ed.confirmations||1,ed.label);}
   },230);
 }
 function showFinal(){ if(buildTimer){clearInterval(buildTimer);buildTimer=null;}
-  resetMap(); allNodes.forEach(n=>addNode(n.id)); sharedSet.forEach(greenNode); allEdges.forEach(e=>addEdge(e.from,e.to,e.confirmations));
+  resetMap(); view={k:1,tx:0,ty:0};applyView(); allNodes.forEach(n=>addNode(n.id)); sharedSet.forEach(greenNode); allEdges.forEach(e=>addEdge(e.from,e.to,e.confirmations,e.label));
   spSet('gemini',SP.gemini.count);spSet('voyage',SP.voyage.count);spSet('atlas',SP.atlas.count);
   log('merge','✓',`whole app mapped. ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by 2+ agents`); }
 
@@ -259,7 +277,7 @@ function climbCold(){const vid=document.getElementById('coldvid');vid.currentTim
     document.getElementById('coldUsd').textContent='$'+((tok*1.25/1e6)).toFixed(3);
     document.getElementById('coldSteps').textContent=step;document.getElementById('coldTime').textContent=Math.round(ct)+'s';};}
 
-const cap=document.getElementById('caption'),actlabel=document.getElementById('actlabel'),herobadge=document.getElementById('herobadge');
+const cap=document.getElementById('caption'),actlabel=document.getElementById('actlabel'),herobadge=document.getElementById('herobadge'),coverage=document.getElementById('coverage');
 function showAct(id){document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id));document.getElementById('sponsors').classList.toggle('hide',id==='act3');}
 function stopBuild(){if(buildTimer){clearInterval(buildTimer);buildTimer=null;}}
 const BEATS=[
@@ -272,9 +290,14 @@ const BEATS=[
   {label:"<b>Act 2</b> · consensus",cap:`When a screen is seen by a <span class="ok">different agent</span>, Voyage recognizes it and merges it. The map converges by consensus.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);spPulse('voyage');}},
   {label:"<b>Act 2</b> · the overrule",cap:`Agents misread ~1 in 5. When one does, <span class="ok">the swarm overrules it</span>. K-agreement keeps the truth and drops the liar's trust.`,
-   run(){showAct('act2');stopBuild();showFinal();const rc=mapg.querySelector(`rect[data-rect="${heroNode}"]`);if(rc)rc.classList.add('hero');playGrid();spLive(['voyage','atlas']);log('over','a3',`misread a screen → OVERRULED, trust 0.50→0.33`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
+   run(){showAct('act2');stopBuild();showFinal();const p=pos[heroNode];
+     const rc=mapg.querySelector(`rect[data-rect="${heroNode}"]`);if(rc)rc.classList.add('hero');
+     mapg.appendChild(el('path',{d:`M ${p.x-22} ${p.y} C ${p.x-115} ${p.y+95},${p.x+115} ${p.y+115},${p.x+22} ${p.y+14}`,fill:'none',stroke:'#d11424','stroke-width':'4','stroke-dasharray':'9 6'}));
+     const t=el('text',{x:p.x,y:p.y+128,'text-anchor':'middle','font-size':'16','font-weight':'800',fill:'#d11424','paint-order':'stroke',stroke:'#fff','stroke-width':'5'});t.textContent='a3 misread here';mapg.appendChild(t);
+     view={k:1.9,tx:500-1.9*p.x,ty:380-1.9*p.y};applyView();
+     playGrid();spLive(['voyage','atlas']);log('over','a3',`misread the transition at ${heroNode} → OVERRULED, trust 0.50→0.33`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
   {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once.`,
-   run(){showAct('act2');herobadge.classList.remove('show');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);}},
+   run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');}},
   {label:"<b>Act 3</b> · cold vs map-guided",cap:`A <span class="em">frontier model</span> re-thinking every screen, vs a <span class="ok">tiny model just reading the map</span>. Same task, zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
@@ -283,7 +306,7 @@ const BEATS=[
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1,heroTimer;
-function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
+function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');coverage.classList.remove('show');bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
   document.querySelectorAll('.bd').forEach((d,k)=>{d.classList.toggle('on',k===bi);d.classList.toggle('done',k<bi);});}
 function advance(){if(bi<BEATS.length-1)goto(bi+1);}
 function retreat(){if(bi>0)goto(bi-1);}

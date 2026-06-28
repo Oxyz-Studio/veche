@@ -24,7 +24,6 @@ recordings/
 veche.md
 veche-spec.md
 
-# Heavy demo assets (regenerable via scripts/record_swarm.py + build_map.py)
-viz/recording/frames/
-viz/recording/videos/
+# demo assets (frames + videos) ARE committed so the demo runs straight from a clone
 viz/recording/recording_salvage.json
+viz/recording/videos/*.webm

@@ -1,0 +1,14 @@
+pillow
+imagehash
+numpy
+scipy
+pytest
+google-genai
+voyageai
+pymongo
+dnspython
+python-dotenv
+certifi
+playwright
+requests
+imageio-ffmpeg

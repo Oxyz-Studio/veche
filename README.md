@@ -57,15 +57,27 @@ measured compounding cost curve.
 - **Voyage AI** `voyage-multimodal-3` — pixel node-identity
 - **MongoDB Atlas** — the shared append-only log + consolidated graph + vector search
 
-## Run it
+## Watch the demo (no API keys needed)
+
+Open **`viz/index.html` in Chrome** — a real recorded swarm run (agent screen
+recordings + the consensus map) ships with the repo. Use **Space** or **← →** to
+move through the three acts; on the map you can zoom (wheel), pan (drag), and hover
+a node for its details.
+
+## Reproduce it from scratch
 
 ```bash
-uv venv && uv pip install --python .venv/bin/python \
-  pillow imagehash numpy scipy pytest google-genai voyageai "pymongo" python-dotenv playwright certifi requests
+uv venv && uv pip install --python .venv/bin/python -r requirements.txt
+.venv/bin/python -m playwright install chromium
 cp .env.example .env        # fill GEMINI_API_KEY, VOYAGE_API_KEY, MONGODB_URI
-.venv/bin/python -m pytest -q          # 19 passing, 1 live-network skip
-.venv/bin/python scripts/hero_swarm.py # the consensus overrule, on the OpenEMR demo
+.venv/bin/python -m pytest -q                 # consolidator + node-identity + Atlas tests
+.venv/bin/python scripts/record_swarm.py      # swarm explores OpenEMR -> raw capture (computer-use)
+.venv/bin/python scripts/build_map.py         # node-identity + consensus -> viz/recording/recording.json
 ```
+
+Get keys: [Gemini](https://aistudio.google.com/app/api-keys) (billing on for the
+computer-use preview), [Voyage](https://dashboard.voyageai.com), and a free
+[MongoDB Atlas](https://cloud.mongodb.com) M0 cluster.
 
 ## License
 
