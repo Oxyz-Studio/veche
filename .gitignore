@@ -23,3 +23,8 @@ recordings/
 # Internal strategy notes (kept local, not published)
 veche.md
 veche-spec.md
+
+# Heavy demo assets (regenerable via scripts/record_swarm.py + build_map.py)
+viz/recording/frames/
+viz/recording/videos/
+viz/recording/recording_salvage.json

@@ -13,11 +13,15 @@ OPENEMR = "https://demo.openemr.io/openemr"
 
 
 class Browser:
-    def __init__(self, viewport=(1440, 900), headless: bool = True):
+    def __init__(self, viewport=(1440, 900), headless: bool = True, video_dir=None):
         self.w, self.h = viewport
         self._pw = sync_playwright().start()
         self._browser = self._pw.chromium.launch(headless=headless)
-        self._ctx = self._browser.new_context(viewport={"width": self.w, "height": self.h})
+        kw = {"viewport": {"width": self.w, "height": self.h}}
+        if video_dir:
+            kw["record_video_dir"] = str(video_dir)
+            kw["record_video_size"] = {"width": self.w, "height": self.h}
+        self._ctx = self._browser.new_context(**kw)
         self.page = self._ctx.new_page()
         self.page.set_default_timeout(25000)
 
@@ -59,40 +63,88 @@ class Browser:
     def _px(self, x, y):
         return int(round((x or 0) / 1000 * self.w)), int(round((y or 0) / 1000 * self.h))
 
-    def execute(self, name: str, args: dict):
-        """Execute a computer-use action by its predefined name + args."""
+    @staticmethod
+    def _key(keys: str) -> str:
+        """Normalize a computer-use key string into Playwright's key syntax
+        ('enter' -> 'Enter', 'ctrl+a' -> 'Control+A')."""
+        alias = {"ctrl": "Control", "control": "Control", "cmd": "Meta", "command": "Meta",
+                 "meta": "Meta", "win": "Meta", "alt": "Alt", "option": "Alt", "opt": "Alt",
+                 "shift": "Shift", "esc": "Escape", "return": "Enter", "del": "Delete"}
+        parts = [p for p in str(keys).replace(" ", "").split("+") if p]
+        if not parts:
+            return "Enter"
+        out = []
+        for p in parts:
+            lp = p.lower()
+            if lp in alias:
+                out.append(alias[lp])
+            elif len(p) == 1:
+                out.append(p.upper() if p.isalpha() else p)
+            else:
+                out.append(p[:1].upper() + p[1:].lower())   # enter->Enter, tab->Tab, escape->Escape
+        return "+".join(out)
+
+    def execute(self, name: str, args: dict) -> bool:
+        """Execute a computer-use action. NEVER raises — a single bad action must
+        not crash a long capture; returns False on failure."""
         n = (name or "").lower()
-        if "click" in n and "double" not in n:
-            x, y = self._px(args.get("x"), args.get("y"))
-            self.page.mouse.click(x, y)
-        elif "double_click" in n:
-            x, y = self._px(args.get("x"), args.get("y"))
-            self.page.mouse.dblclick(x, y)
-        elif "type" in n:
-            x, y = self._px(args.get("x"), args.get("y"))
-            if args.get("x") is not None:
-                self.page.mouse.click(x, y)
-            self.page.keyboard.type(args.get("text") or "")
-        elif "key" in n or "press" in n:
-            keys = args.get("keys") or args.get("text") or ""
-            self.page.keyboard.press(keys.replace("+", "+") if keys else "Enter")
-        elif "scroll" in n:
-            dy = 600 if "down" in str(args).lower() else -600
-            self.page.mouse.wheel(0, dy)
-        elif "navigate" in n or "open_web" in n:
-            url = args.get("url")
-            if url:
-                self.goto(url)
-        elif "wait" in n:
-            time.sleep(2)
-        else:
+        try:
+            if "double_click" in n:
+                x, y = self._px(args.get("x"), args.get("y")); self.page.mouse.dblclick(x, y)
+            elif "click" in n:
+                x, y = self._px(args.get("x"), args.get("y")); self.page.mouse.click(x, y)
+            elif "type" in n:
+                x, y = self._px(args.get("x"), args.get("y"))
+                if args.get("x") is not None:
+                    self.page.mouse.click(x, y)
+                self.page.keyboard.type(args.get("text") or "")
+            elif "key" in n or "press" in n or "hotkey" in n:
+                self.page.keyboard.press(self._key(args.get("keys") or args.get("text") or "Enter"))
+            elif "scroll" in n:
+                self.page.mouse.wheel(0, 600 if "down" in str(args).lower() else -600)
+            elif "back" in n:
+                self.page.go_back()
+            elif "forward" in n:
+                self.page.go_forward()
+            elif "navigate" in n or "open_web" in n:
+                if args.get("url"):
+                    self.goto(args["url"])
+            elif "wait" in n:
+                time.sleep(1.5)
+            else:
+                return False
+            try:
+                self.page.wait_for_load_state("networkidle", timeout=8000)
+            except Exception:
+                pass
+            time.sleep(0.4)
+            return True
+        except Exception:
+            try:
+                self.page.wait_for_load_state("networkidle", timeout=4000)
+            except Exception:
+                pass
             return False
-        self.page.wait_for_load_state("networkidle")
-        time.sleep(0.5)
-        return True
 
     def close(self):
+        """Close everything. Returns the recorded video path (if video_dir was set)."""
+        video = None
         try:
-            self._ctx.close(); self._browser.close(); self._pw.stop()
+            video = self.page.video
+        except Exception:
+            video = None
+        try:
+            self._ctx.close()      # finalizes the video file
         except Exception:
             pass
+        vp = None
+        if video is not None:
+            try:
+                vp = video.path()
+            except Exception:
+                vp = None
+        try:
+            self._browser.close(); self._pw.stop()
+        except Exception:
+            pass
+        return vp

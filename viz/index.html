@@ -3,325 +3,256 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VECHE — consensus, live</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>VECHE — live demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#fcfcf9; --ink:#0c0c0c; --muted:#8c8a80;
-    --truth:#127a3e;            /* consensus / committed */
-    --truth-soft:#e3f1e7;
-    --wrong:#cf1726;            /* misread / quarantined */
-    --wrong-soft:#fbe5e6;
-    --line:#1212120f;
-    --edge:#15151522;
-  }
+  :root{ --paper:#fcfcf9; --ink:#0c0c0c; --muted:#8c8a80; --truth:#127a3e; --wrong:#cf1726; --line:#1212120f; }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{
-    background:var(--paper); color:var(--ink);
-    font-family:"JetBrains Mono",monospace;
-    overflow:hidden; height:100vh;
-    -webkit-font-smoothing:antialiased;
-  }
-  /* faint engineering dot-grid + bottom hairline, keeps the white alive without lowering contrast */
-  .stage{
-    position:fixed; inset:0; padding:2.4vh 3vw;
-    display:grid; grid-template-rows:auto 1fr auto;
-    background-image:radial-gradient(var(--line) 1.2px, transparent 1.2px);
-    background-size:34px 34px; background-position:-1px -1px;
-  }
-
-  /* ---- header ---- */
-  header{display:flex; align-items:flex-end; justify-content:space-between; gap:2rem}
-  .brand{display:flex; align-items:baseline; gap:1.1rem}
-  .wordmark{
-    font-family:"Fraunces",serif; font-weight:900; font-size:clamp(2.4rem,5.2vw,5.2rem);
-    line-height:.82; letter-spacing:-.02em;
-  }
+  body{background:var(--paper);color:var(--ink);font-family:"JetBrains Mono",monospace;overflow:hidden;height:100vh;-webkit-font-smoothing:antialiased}
+  .stage{position:fixed;inset:0;padding:2vh 2.4vw;display:grid;grid-template-rows:auto 1fr auto auto;gap:1.2vh;
+    background-image:radial-gradient(var(--line) 1.1px,transparent 1.1px);background-size:32px 32px}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:2rem}
+  .wordmark{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(1.8rem,3.6vw,3.4rem);line-height:.85;letter-spacing:-.02em}
   .wordmark .dot{color:var(--truth)}
-  .tag{font-size:clamp(.62rem,1.05vw,1rem); color:var(--muted); max-width:32ch; line-height:1.35; letter-spacing:.01em}
-  .tag b{color:var(--ink); font-weight:700}
-  .beats{display:flex; gap:.5rem; align-items:center}
-  .beat-dot{width:11px;height:11px;border:2px solid var(--ink);border-radius:50%; transition:.3s}
-  .beat-dot.on{background:var(--ink)}
-  .beat-dot.done{background:var(--truth); border-color:var(--truth)}
+  .actlabel{font-size:.74rem;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+  .actlabel b{color:var(--ink)}
+  .beats{display:flex;gap:.45rem}
+  .bd{width:9px;height:9px;border:2px solid var(--ink);border-radius:50%}
+  .bd.on{background:var(--ink)} .bd.done{background:var(--truth);border-color:var(--truth)}
 
-  /* ---- graph ---- */
-  .stagewrap{position:relative; overflow:hidden}
-  svg.edges{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
-  .node{
-    position:absolute; transform:translate(-50%,-50%);
-    border:2.5px solid var(--ink); background:var(--paper);
-    padding:.7rem 1rem; min-width:148px; text-align:center;
-    box-shadow:7px 7px 0 var(--ink);
-    transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .5s, box-shadow .3s, border-color .3s;
-    opacity:0;
-  }
-  .node.show{opacity:1}
-  .node .nid{font-size:.62rem; color:var(--muted); letter-spacing:.12em}
-  .node .nlabel{font-family:"Fraunces",serif; font-weight:600; font-size:clamp(1rem,1.5vw,1.45rem); margin-top:.15rem}
-  .node.start{box-shadow:9px 9px 0 var(--truth); border-color:var(--ink)}
-  .node.contested{border-color:var(--truth); box-shadow:9px 9px 0 var(--truth)}
-  .node.pulse{animation:pulse 1s ease}
-  @keyframes pulse{0%{transform:translate(-50%,-50%) scale(1)}40%{transform:translate(-50%,-50%) scale(1.08)}100%{transform:translate(-50%,-50%) scale(1)}}
+  .acts{position:relative;min-height:0;overflow:hidden}
+  .act{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .5s}
+  .act.show{opacity:1;pointer-events:auto}
 
-  /* edge labels */
-  .elabel{position:absolute; transform:translate(-50%,-50%); font-size:.7rem; font-weight:500;
-    background:var(--paper); padding:.18rem .5rem; border:1.5px solid var(--ink); white-space:nowrap; opacity:0; transition:.4s}
-  .elabel.show{opacity:1}
-  .elabel.truth{border-color:var(--truth); color:var(--truth)}
-  .elabel.wrong{border-color:var(--wrong); color:var(--wrong)}
-  .elabel.quar{border-color:var(--muted); color:var(--muted); text-decoration:line-through}
+  /* Act 1 — cold */
+  #act1{display:grid;grid-template-columns:1.55fr 1fr;gap:2vw;align-items:center}
+  .bigvideo{border:3px solid var(--ink);box-shadow:10px 10px 0 var(--ink);background:#000;height:100%;display:flex;align-items:center;overflow:hidden}
+  .bigvideo video{width:100%;height:100%;object-fit:cover}
+  .coldm .big{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(2.6rem,6vw,5.5rem);line-height:.9;color:var(--wrong)}
+  .coldm .lab{font-size:.72rem;color:var(--muted);letter-spacing:.08em;margin-top:.2rem}
+  .coldm .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem 2rem;margin-top:1.4rem}
+  .coldm .num{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(1.4rem,2.6vw,2.4rem)}
 
-  /* ---- assembly (agents) ---- */
-  .assembly{position:absolute; left:0; bottom:0; display:flex; gap:1.4rem; padding:1rem 0; opacity:0; transition:.5s}
-  .assembly.show{opacity:1}
-  .agent{min-width:150px}
-  .agent .who{display:flex; justify-content:space-between; font-size:.7rem; letter-spacing:.06em}
-  .agent .rname{font-weight:700}
-  .meter{height:12px; border:2px solid var(--ink); margin-top:.3rem; position:relative; overflow:hidden}
-  .meter > i{position:absolute; inset:0; transform-origin:left; transform:scaleX(.5); background:var(--ink); transition:transform 1s cubic-bezier(.2,.8,.2,1), background .5s}
-  .agent.bad .meter > i{background:var(--wrong)}
-  .agent.good .meter > i{background:var(--truth)}
-  .agent .val{font-size:.66rem; color:var(--muted); margin-top:.2rem}
-  .agent .verdict{font-size:.62rem; font-weight:700; margin-top:.1rem; min-height:1em}
-  .agent.bad .verdict{color:var(--wrong)} .agent.good .verdict{color:var(--truth)}
+  /* Act 2 — swarm + map */
+  #act2{display:grid;grid-template-columns:1fr 1.25fr;gap:1.6vw;height:100%;min-height:0}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,1fr);gap:.7vh .7vw;height:100%;min-height:0}
+  .cell{position:relative;border:2px solid var(--ink);background:#000;overflow:hidden;min-height:0}
+  .cell video{width:100%;height:100%;object-fit:cover}
+  .cell .tag{position:absolute;top:0;left:0;background:var(--ink);color:var(--paper);font-size:.6rem;padding:.12rem .4rem;letter-spacing:.05em}
+  .mapwrap{border:3px solid var(--ink);box-shadow:10px 10px 0 var(--truth);position:relative;overflow:hidden;background:var(--paper)}
+  #map{width:100%;height:100%;display:block}
+  .mapstat{position:absolute;top:.6rem;right:.7rem;text-align:right;font-size:.72rem;color:var(--muted)}
+  .mapstat b{font-family:"Fraunces",serif;color:var(--ink);font-size:1.5rem;font-weight:900}
+  .nodeimg{stroke:var(--ink);stroke-width:2.5}
+  .nodeimg.shared{stroke:var(--truth);stroke-width:5}
 
-  /* ---- cost module ---- */
-  .cost{position:absolute; left:50%; top:50%; transform:translate(-50%,-44%); text-align:center; opacity:0; transition:.6s; z-index:5; width:min(92%,1240px)}
-  .cost.show{opacity:1; transform:translate(-50%,-50%)}
-  .stagewrap.costmode .node,.stagewrap.costmode svg.edges,.stagewrap.costmode .elabel,.stagewrap.costmode .assembly{opacity:.06!important; transition:opacity .6s}
-  .cost .clabel{font-size:.66rem; color:var(--muted); letter-spacing:.1em}
-  .cost .row{display:flex; align-items:baseline; justify-content:center; gap:2.4rem; margin-top:.4rem}
-  .cost .num{font-family:"Fraunces",serif; font-weight:900; font-size:clamp(3.4rem,9vw,8rem); line-height:.86}
-  .cost .cold{color:var(--ink); position:relative}
-  .cost .cold.struck::after{content:""; position:absolute; left:-4%; right:-4%; top:52%; height:5px; background:var(--wrong); transform:scaleX(0); transform-origin:left; transition:transform .5s .2s}
-  .cost .cold.struck.go::after{transform:scaleX(1)}
-  .cost .arrow{font-size:1.6rem; color:var(--muted)}
-  .cost .mapped{color:var(--truth)}
-  .cost .unit{font-size:.7rem; color:var(--muted); display:block; letter-spacing:.06em}
-  .cost .note{font-size:.82rem; color:var(--muted); margin:.7rem auto 0; max-width:56ch}
-  .cost .clabel{font-size:.8rem}
+  /* Act 3 — map-guided */
+  #act3{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  #act3 .clabel{font-size:.8rem;letter-spacing:.14em;color:var(--muted)}
+  #act3 .row{display:flex;align-items:baseline;justify-content:center;gap:2.6rem;margin-top:1rem}
+  #act3 .num{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(3.6rem,11vw,9rem);line-height:.85}
+  #act3 .cold{position:relative} #act3 .cold::after{content:"";position:absolute;left:-3%;right:-3%;top:52%;height:6px;background:var(--wrong);transform:scaleX(0);transform-origin:left;transition:transform .6s .3s}
+  #act3.go .cold::after{transform:scaleX(1)}
+  #act3 .mapped{color:var(--truth)} #act3 .arrow{font-size:2rem;color:var(--muted)}
+  #act3 .unit{display:block;font-size:.72rem;color:var(--muted);letter-spacing:.05em}
+  #act3 .note{font-size:.82rem;color:var(--muted);margin-top:1rem;max-width:60ch}
 
-  /* ---- caption + controls ---- */
-  footer{display:flex; align-items:center; justify-content:space-between; gap:2rem}
-  .caption{font-family:"Fraunces",serif; font-size:clamp(1.1rem,2.3vw,2.1rem); font-weight:600; line-height:1.15; max-width:70%}
+  /* sponsor strip */
+  .sponsors{display:flex;gap:.7vw;align-items:stretch}
+  .sp{flex:1;border:2px solid var(--ink);padding:.5rem .7rem;display:flex;justify-content:space-between;align-items:center;opacity:.32;transition:.3s;background:var(--paper)}
+  .sp.live{opacity:1;box-shadow:4px 4px 0 var(--truth)}
+  .sp.pulse{animation:pulse .8s ease}
+  @keyframes pulse{0%{box-shadow:4px 4px 0 var(--truth)}50%{box-shadow:4px 4px 0 var(--wrong);transform:translateY(-2px)}100%{box-shadow:4px 4px 0 var(--truth)}}
+  .sp .nm{font-size:.66rem;font-weight:700;letter-spacing:.02em}
+  .sp .ct{font-family:"Fraunces",serif;font-weight:900;font-size:1.3rem}
+  .sp .mt{font-size:.54rem;color:var(--muted)}
+
+  footer{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+  .caption{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(1rem,2.1vw,1.9rem);line-height:1.12;max-width:74%}
   .caption .em{color:var(--wrong)} .caption .ok{color:var(--truth)}
-  .controls{display:flex; align-items:center; gap:1rem; flex-shrink:0}
-  .hint{font-size:.66rem; color:var(--muted)}
-  .next{font-family:"JetBrains Mono"; font-weight:700; font-size:.8rem; letter-spacing:.06em;
-    border:2.5px solid var(--ink); background:var(--ink); color:var(--paper); padding:.7rem 1.3rem; cursor:pointer; box-shadow:5px 5px 0 var(--truth)}
-  .next:active{transform:translate(2px,2px); box-shadow:3px 3px 0 var(--truth)}
+  .next{font-family:"JetBrains Mono";font-weight:700;font-size:.78rem;letter-spacing:.06em;border:2.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:.65rem 1.2rem;cursor:pointer;box-shadow:5px 5px 0 var(--truth)}
+  .hint{font-size:.64rem;color:var(--muted);margin-right:.8rem}
 </style>
 </head>
 <body>
 <div class="stage">
   <header>
-    <div class="brand">
-      <div class="wordmark">VECHE<span class="dot">.</span></div>
-      <div class="tag">A swarm of computer-use agents maps a GUI by <b>consensus</b> — operating the software that has <b>no API, no DOM</b>. <span id="appctx"></span></div>
-    </div>
+    <div class="wordmark">VECHE<span class="dot">.</span></div>
+    <div class="actlabel" id="actlabel"></div>
     <div class="beats" id="beats"></div>
   </header>
 
-  <div class="stagewrap" id="stagewrap">
-    <svg class="edges" id="edges" viewBox="0 0 1600 760" preserveAspectRatio="none"></svg>
-    <!-- nodes + labels injected -->
-    <div class="assembly" id="assembly"></div>
-    <div class="cost" id="cost">
-      <div class="clabel">COST · same task · same success</div>
-      <div class="row">
-        <div><span class="num cold struck" id="coldNum">0</span><span class="unit">cold · re-perceives every step</span></div>
-        <div class="arrow">→</div>
-        <div><span class="num mapped" id="mappedNum">0</span><span class="unit">map-guided · paid tokens</span></div>
+  <div class="acts">
+    <section class="act" id="act1">
+      <div class="bigvideo"><video id="coldvid" src="recording/videos/a1.webm" muted loop playsinline></video></div>
+      <div class="coldm">
+        <div class="big" id="coldTok">0</div><div class="lab">tokens · re-perceiving every screen</div>
+        <div class="grid2">
+          <div><div class="num" id="coldUsd" style="color:var(--wrong)">$0.00</div><div class="lab">cost</div></div>
+          <div><div class="num" id="coldTime">0s</div><div class="lab">time</div></div>
+          <div><div class="num" id="coldSteps">0</div><div class="lab">steps</div></div>
+          <div><div class="num" style="color:var(--wrong)">~1 in 5</div><div class="lab">wrong (UI-CUBE)</div></div>
+        </div>
       </div>
-      <div class="note" id="costNote"></div>
-    </div>
+    </section>
+
+    <section class="act" id="act2">
+      <div class="grid" id="grid"></div>
+      <div class="mapwrap">
+        <svg id="map" viewBox="0 0 1000 760" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="mapstat"><b id="mapNodes">0</b> screens mapped<br><span id="mapShared"></span></div>
+      </div>
+    </section>
+
+    <section class="act" id="act3">
+      <div class="clabel">SAME TASK · SAME SUCCESS</div>
+      <div class="row">
+        <div><span class="num cold" id="a3cold">0</span><span class="unit">cold · re-perceives every step</span></div>
+        <div class="arrow">→</div>
+        <div><span class="num mapped">0</span><span class="unit">map-guided · paid tokens</span></div>
+      </div>
+      <div class="note" id="a3note"></div>
+    </section>
   </div>
+
+  <div class="sponsors" id="sponsors"></div>
 
   <footer>
     <div class="caption" id="caption"></div>
-    <div class="controls">
-      <span class="hint">space / click →</span>
-      <button class="next" id="next">NEXT BEAT</button>
-    </div>
+    <div><span class="hint">space / click →</span><button class="next" id="next">NEXT</button></div>
   </footer>
 </div>
 
+<script src="recording/data.js"></script>
 <script>
-const DATA = {
-  app: "Live: the OpenEMR electronic health record.",
-  nodes: [
-    { id:"n0001", label:"Patient Dashboard", x:300, y:380, kind:"start" },
-    { id:"n0002", label:"History",   x:1140, y:170, kind:"screen" },
-    { id:"n0003", label:"Ledger",    x:1235, y:400, kind:"screen" },
-    { id:"n0004", label:"Documents", x:1140, y:620, kind:"screen" }
-  ],
-  edges: [
-    { from:"n0001", to:"n0002", action:"History" },
-    { from:"n0001", to:"n0003", action:"Ledger" },
-    { from:"n0001", to:"n0004", action:"Documents" }
-  ],
-  hero: { from:"n0001", action:"History", winner:"n0002", wrong:"n0001",
-          claims:[{to:"n0002",agents:"a1,a2",w:"1.00",ok:true},{to:"n0001",agents:"a3",w:"0.50",ok:false}] },
-  agents: [
-    { id:"a1", before:.5, after:.667, role:"good" },
-    { id:"a2", before:.5, after:.667, role:"good" },
-    { id:"a3", before:.5, after:.333, role:"bad" }
-  ],
-  cost: { cold:28794, mapped:0, note:"cost-per-task = 28,794 / (N+1)  →  ~11× cheaper at 10 reuses, ~100× at 100. The first traversal builds the route; every reuse is free." }
-};
+const R = window.RECORDING;
+const SP = R.sponsors, TOT = R.totals;
 
-// ---- layout helpers (SVG space 1600x760) ----
-const VB={w:1600,h:760};
-const wrap=document.getElementById('stagewrap');
-const svg=document.getElementById('edges');
-const N={}; DATA.nodes.forEach(n=>N[n.id]=n);
-function pct(n){ return { left:(n.x/VB.w*100), top:(n.y/VB.h*100) }; }
-
-// build nodes
-DATA.nodes.forEach(n=>{
-  const el=document.createElement('div');
-  el.className='node '+(n.kind);
-  el.id='node-'+n.id;
-  const p=pct(n);
-  el.style.left=p.left+'%'; el.style.top=p.top+'%';
-  el.innerHTML=`<div class="nid">${n.id}</div><div class="nlabel">${n.label}</div>`;
-  wrap.appendChild(el);
+// ---------- sponsor strip ----------
+const SPONS = [
+  ["gemini","Gemini 2.5 Computer Use", SP.gemini.count, SP.gemini.metric],
+  ["voyage","Voyage multimodal-3", SP.voyage.count, SP.voyage.metric],
+  ["atlas","MongoDB Atlas", SP.atlas.count, SP.atlas.metric],
+  ["gemma","Gemma 4 · operator", SP.gemma.count, SP.gemma.metric],
+  ["do","DigitalOcean", "host", SP.digitalocean.metric],
+];
+const spEl = document.getElementById('sponsors');
+SPONS.forEach(([k,nm,ct,mt])=>{
+  const d=document.createElement('div'); d.className='sp'; d.id='sp-'+k;
+  d.innerHTML=`<div><div class="nm">${nm}</div><div class="mt">${mt}</div></div><div class="ct">${typeof ct==='number'?'0':ct}</div>`;
+  spEl.appendChild(d);
 });
-function edgePath(a,b,bend=0){
-  const mx=(a.x+b.x)/2, my=(a.y+b.y)/2 - bend;
-  return `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`;
-}
-function addEdge(id,a,b,opts={}){
-  const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-  path.setAttribute('d',edgePath(a,b,opts.bend||0));
-  path.setAttribute('fill','none');
-  path.setAttribute('stroke',opts.stroke||'var(--edge)');
-  path.setAttribute('stroke-width',opts.w||4);
-  if(opts.dash) path.setAttribute('stroke-dasharray',opts.dash);
-  path.id=id; path.style.opacity=0; path.style.transition='opacity .5s, stroke .4s, stroke-width .4s';
-  svg.appendChild(path);
-  const len=path.getTotalLength();
-  path.style.strokeDasharray=opts.dash||len; path.style.strokeDashoffset=opts.dash?0:len;
-  path.style.transition='stroke-dashoffset .7s ease, opacity .4s, stroke .4s, stroke-width .4s';
-  return path;
-}
-function addELabel(id,a,b,text,cls,bend=0){
-  const el=document.createElement('div'); el.className='elabel '+cls; el.id=id;
-  const mx=(a.x+b.x)/2, my=(a.y+b.y)/2 - bend*0.55;
-  el.style.left=(mx/VB.w*100)+'%'; el.style.top=(my/VB.h*100)+'%'; el.textContent=text;
-  wrap.appendChild(el); return el;
-}
+function spLive(keys){ SPONS.forEach(([k])=>document.getElementById('sp-'+k).classList.toggle('live',keys.includes(k))); }
+function spPulse(k,val){ const e=document.getElementById('sp-'+k); e.classList.add('live'); e.classList.remove('pulse'); void e.offsetWidth; e.classList.add('pulse'); if(val!=null) e.querySelector('.ct').textContent=val; }
 
-// pre-create the three explore edges + the hero wrong-claim self-loop
-const E={};
-DATA.edges.forEach((e,i)=>{
-  E[e.action]=addEdge('e-'+e.action, N[e.from], N[e.to], {stroke:'var(--edge)', w:4});
-});
-// hero: wrong claim (a3) = a red self-loop bending off the dashboard
-const wrongLoop=(()=>{
-  const a=N.n0001;
-  const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-  path.setAttribute('d',`M ${a.x} ${a.y} C ${a.x-150} ${a.y+170}, ${a.x+150} ${a.y+210}, ${a.x+10} ${a.y+40}`);
-  path.setAttribute('fill','none'); path.setAttribute('stroke','var(--wrong)'); path.setAttribute('stroke-width',5);
-  path.id='e-wrong'; path.style.opacity=0; path.style.transition='opacity .5s';
-  svg.appendChild(path); return path;
+// ---------- map force layout (frozen) ----------
+const MW=1000, MH=760;
+const allNodes = R.nodes, allEdges = R.edges;
+const sharedSet = new Set(allNodes.filter(n=>n.seen_by.length>1).map(n=>n.id));
+const pos = {};
+allNodes.forEach((n,i)=>{ const a=i*2.39996; pos[n.id]={x:MW/2+Math.cos(a)*220+((i*37)%120-60), y:MH/2+Math.sin(a)*200+((i*61)%120-60), vx:0, vy:0}; });
+(function layout(){
+  const ids=allNodes.map(n=>n.id);
+  for(let it=0;it<320;it++){
+    for(let a=0;a<ids.length;a++)for(let b=a+1;b<ids.length;b++){
+      const p=pos[ids[a]],q=pos[ids[b]]; let dx=p.x-q.x,dy=p.y-q.y,d2=dx*dx+dy*dy||1,d=Math.sqrt(d2),f=9000/d2;
+      dx/=d;dy/=d; p.vx+=dx*f;p.vy+=dy*f;q.vx-=dx*f;q.vy-=dy*f;
+    }
+    allEdges.forEach(e=>{const p=pos[e.from],q=pos[e.to];if(!p||!q)return;let dx=q.x-p.x,dy=q.y-p.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-150)*0.03;dx/=d;dy/=d;p.vx+=dx*f;p.vy+=dy*f;q.vx-=dx*f;q.vy-=dy*f;});
+    ids.forEach(id=>{const p=pos[id];p.vx+=(MW/2-p.x)*0.004;p.vy+=(MH/2-p.y)*0.004;p.vx*=0.86;p.vy*=0.86;p.x+=p.vx;p.y+=p.vy;});
+  }
+  // clamp to bounds
+  const m=70; ids.forEach(id=>{const p=pos[id];p.x=Math.max(m,Math.min(MW-m,p.x));p.y=Math.max(m,Math.min(MH-m,p.y));});
 })();
 
-// ---- beats ----
-const cap=document.getElementById('caption');
-document.getElementById('appctx').textContent=DATA.app;
-const beatsEl=document.getElementById('beats');
+const svg=document.getElementById('map');
+const NS='http://www.w3.org/2000/svg';
+const TH=78; // thumbnail size
+function revealMap(nodeIds, edges){
+  svg.innerHTML='';
+  edges.forEach(e=>{ if(!nodeIds.includes(e.from)||!nodeIds.includes(e.to))return;
+    const p=pos[e.from],q=pos[e.to]; const ln=document.createElementNS(NS,'line');
+    ln.setAttribute('x1',p.x);ln.setAttribute('y1',p.y);ln.setAttribute('x2',q.x);ln.setAttribute('y2',q.y);
+    ln.setAttribute('stroke', e.confirmations>=2?'var(--truth)':'#0c0c0c33');
+    ln.setAttribute('stroke-width', e.confirmations>=2?4:2); svg.appendChild(ln);
+  });
+  nodeIds.forEach(id=>{ const p=pos[id]; const n=allNodes.find(x=>x.id===id); if(!n)return;
+    const img=document.createElementNS(NS,'image');
+    img.setAttributeNS('http://www.w3.org/1999/xlink','href','recording/frames/'+n.frame);
+    img.setAttribute('href','recording/frames/'+n.frame);
+    img.setAttribute('x',p.x-TH/2);img.setAttribute('y',p.y-TH/2);img.setAttribute('width',TH);img.setAttribute('height',TH);
+    img.setAttribute('preserveAspectRatio','xMidYMid slice');
+    img.setAttribute('class','nodeimg'+(sharedSet.has(id)?' shared':''));
+    svg.appendChild(img);
+  });
+  document.getElementById('mapNodes').textContent=nodeIds.length;
+  const sh=nodeIds.filter(i=>sharedSet.has(i)).length;
+  document.getElementById('mapShared').innerHTML = sh? `<span style="color:var(--truth)">${sh} confirmed by ≥2 agents</span>`:'';
+}
+
+// ---------- video grid (Act 2) ----------
+const grid=document.getElementById('grid');
+R.agents.forEach(a=>{ if(!a.video)return; const c=document.createElement('div'); c.className='cell';
+  c.innerHTML=`<video src="recording/videos/${a.video}" muted loop playsinline></video><span class="tag">${a.id} · Gemini</span>`;
+  grid.appendChild(c);
+});
+function playGrid(){ grid.querySelectorAll('video').forEach(v=>{v.currentTime=0;v.play().catch(()=>{});}); }
+function stopGrid(){ grid.querySelectorAll('video').forEach(v=>v.pause()); }
+
+// ---------- Act 1 cold metrics (real a1 timeline) ----------
+const a1ev = R.events.filter(e=>e.agent==='a1');
+const coldFinal = a1ev.length? a1ev[a1ev.length-1].tokens : 23000;
+const coldTime = a1ev.reduce((s,e)=>s+(e.latency||0),0);
+function climbCold(){
+  const vid=document.getElementById('coldvid'); vid.currentTime=0; vid.play().catch(()=>{});
+  let i=0; const steps=a1ev.length||8;
+  const t=setInterval(()=>{ i++; const e=a1ev[Math.min(i-1,a1ev.length-1)]||{};
+    document.getElementById('coldTok').textContent=(e.tokens||Math.round(coldFinal*i/steps)).toLocaleString();
+    document.getElementById('coldUsd').textContent='$'+(((e.tokens||0)*1.25/1e6)+((e.tokens||0)*0)).toFixed(3);
+    document.getElementById('coldSteps').textContent=i;
+    document.getElementById('coldTime').textContent=Math.round(coldTime*i/steps)+'s';
+    if(i>=steps){clearInterval(t);} }, 650);
+}
+
+// ---------- beats ----------
+const cap=document.getElementById('caption'), actlabel=document.getElementById('actlabel');
+function showAct(id){ document.querySelectorAll('.act').forEach(a=>a.classList.toggle('show',a.id===id)); }
 const BEATS=[
-  {  // 0 — title
-    cap:`Half the world's critical work runs on screens with <span class="em">no API</span>. Watch a swarm learn to operate one — together.`,
-    run(){ ['n0001'].forEach(id=>document.getElementById('node-'+id).classList.add('show')); }
-  },
-  {  // 1 — explore
-    cap:`The swarm explores. Every transition is confirmed by <span class="ok">two agents</span> and committed to one shared map.`,
-    run(){
-      DATA.nodes.forEach(n=>document.getElementById('node-'+n.id).classList.add('show'));
-      DATA.edges.forEach((e,i)=>setTimeout(()=>{
-        const p=E[e.action]; p.style.opacity=1; p.style.strokeDashoffset=0; p.style.stroke='var(--truth)'; p.style.strokeWidth=5;
-        addELabel('l-'+e.action,N[e.from],N[e.to],`${e.action}  ✓ 2 agents`,'truth show'+(e.action==='History'?'':''),0);
-      }, i*420));
-    }
-  },
-  {  // 2 — conflict
-    cap:`But on <b>History</b>, agent <span class="em">a3 misreads</span> — it acted on a stale screenshot. Two claims now disagree.`,
-    run(){
-      document.getElementById('node-n0002').classList.add('contested','pulse');
-      // recolor History edge to neutral-contested, show the two claims
-      const lt=document.getElementById('l-History'); if(lt){lt.textContent='History → History  ✓ a1,a2 · w 1.00'; lt.className='elabel truth show';}
-      wrongLoop.style.opacity=1;
-      addELabel('l-wrong',{x:N.n0001.x+30,y:N.n0001.y+170},{x:N.n0001.x+30,y:N.n0001.y+170},'History → Dashboard  ✗ a3 · w 0.50','wrong show');
-      showAssembly();
-    }
-  },
-  {  // 3 — overrule
-    cap:`<span class="ok">Consensus overrules a3.</span> Reliability-weighted K-agreement keeps the truth, quarantines the false claim — and a3's trust drops.`,
-    run(){
-      const p=E.History; p.style.stroke='var(--truth)'; p.style.strokeWidth=8;
-      document.getElementById('node-n0002').classList.add('pulse');
-      // quarantine the wrong claim
-      wrongLoop.style.stroke='var(--muted)'; wrongLoop.style.strokeDasharray='10 8'; wrongLoop.style.opacity=.5;
-      const lw=document.getElementById('l-wrong'); if(lw){lw.className='elabel quar show'; lw.textContent='a3 quarantined';}
-      // drop reliabilities to "after"
-      DATA.agents.forEach(a=>{
-        const m=document.querySelector('#ag-'+a.id+' .meter > i'); m.style.transform='scaleX('+a.after+')';
-        document.querySelector('#ag-'+a.id+' .val').textContent='reliability '+a.after.toFixed(3);
-        document.querySelector('#ag-'+a.id+' .verdict').textContent = a.role==='bad'?'OVERRULED':'confirmed';
-      });
-    }
-  },
-  {  // 4 — cost
-    cap:`Now a tiny model operates by <span class="ok">reading the map</span>. Same task, same success — and zero paid tokens.`,
-    run(){
-      document.getElementById('stagewrap').classList.add('costmode');
-      document.getElementById('cost').classList.add('show');
-      document.getElementById('costNote').textContent=DATA.cost.note;
-      rollNumber('coldNum',DATA.cost.cold,900);
-      setTimeout(()=>{ document.getElementById('coldNum').classList.add('go'); rollNumber('mappedNum',DATA.cost.mapped,500); },650);
-    }
-  }
+  { label:"The problem", act:'act1', spons:[],
+    cap:`Half the world's critical work runs on screens with <span class="em">no API</span>. Today you do it by hand — or let one AI agent try.`,
+    run(){ showAct('act1'); spLive([]); document.getElementById('coldTok').textContent='0'; } },
+  { label:"<b>Act 1</b> · cold", act:'act1', spons:['gemini'],
+    cap:`<span class="em">One agent, cold.</span> It re-perceives every screen — slow, expensive, and wrong ~1 in 5 times.`,
+    run(){ showAct('act1'); spLive(['gemini']); climbCold(); } },
+  { label:"<b>Act 2</b> · the swarm", act:'act2', spons:['gemini','atlas'],
+    cap:`So we put a <span class="ok">swarm</span> on it — ${R.agents.length} agents explore in parallel, every screen written to one shared memory.`,
+    run(){ showAct('act2'); playGrid(); const s=R.snapshots[1]; revealMap(s.nodes,s.edges); spLive(['gemini','atlas']); spPulse('gemini',SP.gemini.count); spPulse('atlas',SP.atlas.count); } },
+  { label:"<b>Act 2</b> · consensus", act:'act2', spons:['gemini','voyage','atlas'],
+    cap:`Voyage recognizes the <span class="ok">same screen seen by different agents</span> and merges it — the map converges by consensus.`,
+    run(){ showAct('act2'); playGrid(); const s=R.snapshots[4]; revealMap(s.nodes,s.edges); spLive(['gemini','voyage','atlas']); spPulse('voyage',SP.voyage.count); } },
+  { label:"<b>Act 2</b> · the map", act:'act2', spons:['voyage','atlas'],
+    cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${allNodes.filter(n=>n.seen_by.length>1).length} confirmed by multiple agents — for ~$${TOT.swarm_cost}, once.`,
+    run(){ showAct('act2'); playGrid(); const s=R.snapshots[R.snapshots.length-1]; revealMap(s.nodes,s.edges); spLive(['gemini','voyage','atlas']); } },
+  { label:"<b>Act 3</b> · map-guided", act:'act3', spons:['gemma','atlas'],
+    cap:`Now a tiny model operates by <span class="ok">reading the map</span>. Same task, same success — <span class="ok">zero paid tokens.</span>`,
+    run(){ showAct('act3'); stopGrid(); spLive(['gemma','atlas']); spPulse('gemma',SP.gemma.count);
+      const c=document.getElementById('a3cold'); let v=0,T=TOT.cold_tokens; const t=setInterval(()=>{v+=Math.ceil(T/30); if(v>=T){v=T;clearInterval(t);} c.textContent=v.toLocaleString();},30);
+      document.getElementById('a3note').textContent='cost-per-task = '+T.toLocaleString()+' / (N+1) → ~11× cheaper at 10 reuses, ~100× at 100. The map cost ~$'+TOT.swarm_cost+' once; every reuse is free.';
+      setTimeout(()=>document.getElementById('act3').classList.add('go'),700); } },
 ];
-
-function showAssembly(){
-  const a=document.getElementById('assembly');
-  if(a.dataset.built) { a.classList.add('show'); return; }
-  a.innerHTML=DATA.agents.map(ag=>`
-    <div class="agent ${ag.role}" id="ag-${ag.id}">
-      <div class="who"><span class="rname">${ag.id}</span><span>${ag.role==='bad'?'misread':'observer'}</span></div>
-      <div class="meter"><i style="transform:scaleX(${ag.before})"></i></div>
-      <div class="val">reliability ${ag.before.toFixed(3)}</div>
-      <div class="verdict"></div>
-    </div>`).join('');
-  a.dataset.built='1'; a.classList.add('show');
-}
-function rollNumber(id,target,dur){
-  const el=document.getElementById(id); const start=performance.now(); const from=0;
-  function tick(t){ const k=Math.min(1,(t-start)/dur); const v=Math.round(from+(target-from)*(1-Math.pow(1-k,3)));
-    el.textContent=v.toLocaleString(); if(k<1)requestAnimationFrame(tick); }
-  requestAnimationFrame(tick);
-}
-
-// beat controller
+const beatsEl=document.getElementById('beats');
+BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1;
-DATA && BEATS.forEach(()=>{const d=document.createElement('div');d.className='beat-dot';beatsEl.appendChild(d);});
-function render(){
-  document.querySelectorAll('.beat-dot').forEach((d,i)=>{ d.classList.toggle('on',i===bi); d.classList.toggle('done',i<bi); });
+function advance(){ if(bi>=BEATS.length-1)return; bi++; const b=BEATS[bi];
+  cap.innerHTML=b.cap; actlabel.innerHTML=b.label; b.run();
+  document.querySelectorAll('.bd').forEach((d,i)=>{d.classList.toggle('on',i===bi);d.classList.toggle('done',i<bi);});
 }
-function advance(){
-  if(bi>=BEATS.length-1) return;
-  bi++; const b=BEATS[bi]; cap.innerHTML=b.cap; b.run(); render();
-}
-document.getElementById('next').addEventListener('click',advance);
-window.addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();advance();} });
-window.addEventListener('click',e=>{ if(e.target.closest('.next'))return; advance(); });
-advance(); // show beat 0
+document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();advance();});
+window.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();advance();}});
+window.addEventListener('click',e=>{if(!e.target.closest('.next'))advance();});
+advance();
 </script>
 </body>
 </html>
