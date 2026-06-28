@@ -13,7 +13,7 @@ Citrix-streamed EHRs, mainframe green-screens, where vision is the only door and
 a single agent (≈80% reliable, [UI-CUBE](https://arxiv.org/abs/2511.17131)) is not
 trustworthy enough for money/compliance/safety work.
 
-> Built at the **AI Engineer World's Fair Hackathon 2026**, Continual Learning track. This repository is the hackathon submission: the demo and the experiments. A reusable, hackathon-free toolkit to run this on your own apps lives in a separate repository.
+> Built at the **AI Engineer World's Fair Hackathon 2026**, Continual Learning track. This repository is the hackathon submission: the demo and the experiments. A reusable, hackathon-free toolkit to run this on your own apps lives in a separate repository: **[computer-use-map](https://github.com/Oxyz-Studio/computer-use-map)** (`pip install computer-use-map`).
 
 ---
 
