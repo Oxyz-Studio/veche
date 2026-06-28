@@ -1,19 +1,19 @@
 # VECHE
 
-### A swarm that learns to operate software — and remembers it together.
+### A swarm that learns to operate software, and remembers it together.
 
 VECHE is a swarm of computer-use agents that explore a GUI and fuse their noisy
 observations into **one shared world-model by consensus**. A small model then
 operates the app by **reading the map** instead of re-perceiving the screen every
-step — so operation gets reliable through *agreement* and cheap through
+step, so operation gets reliable through *agreement* and cheap through
 *accumulation*: the more a route is used, the less it costs.
 
-It targets the surfaces that have **no API, no DOM, and no first-party agent** —
-Citrix-streamed EHRs, mainframe green-screens — where vision is the only door and
+It targets the surfaces that have **no API, no DOM, and no first-party agent**,
+Citrix-streamed EHRs, mainframe green-screens, where vision is the only door and
 a single agent (≈80% reliable, [UI-CUBE](https://arxiv.org/abs/2511.17131)) is not
 trustworthy enough for money/compliance/safety work.
 
-> Built for the AI Engineer World's Fair Hackathon 2026 (Continual Learning track).
+> Built at the **AI Engineer World's Fair Hackathon 2026**, Continual Learning track. This repository is the hackathon submission: the demo and the experiments. A reusable, hackathon-free toolkit to run this on your own apps lives in a separate repository.
 
 ---
 
@@ -46,16 +46,16 @@ The cost saving compounds: the first traversal builds the route, every reuse is
 ```
 
 The consensus/aggregation primitive is **cited commodity plumbing** (Dawid–Skene
-truth inference; self-consistency; multi-agent debate) — not a claimed invention.
+truth inference; self-consistency; multi-agent debate), not a claimed invention.
 The contribution is this stack running live on a noisy, pixels-only GUI with a
 measured compounding cost curve.
 
 ## Stack
 
-- **Gemini 2.5 Computer Use** — the exploration swarm
-- **Gemma 4** — the small operator that reads the map (free)
-- **Voyage AI** `voyage-multimodal-3` — pixel node-identity
-- **MongoDB Atlas** — the shared append-only log + consolidated graph + vector search
+- **Gemini 2.5 Computer Use**, the exploration swarm
+- **Gemma 4**, the small operator that reads the map (free)
+- **Voyage AI** `voyage-multimodal-3`, pixel node-identity
+- **MongoDB Atlas**, the shared append-only log + consolidated graph + vector search
 
 ## Watch the demo
 
