@@ -68,7 +68,9 @@
   .a3head{text-align:center;font-size:.92rem;font-weight:700;letter-spacing:.12em;color:var(--muted)}
   .a3grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6vw;flex:1;min-height:0}
   .a3panel{display:grid;grid-template-rows:auto 1fr auto;gap:.7vh;min-height:0}
-  .a3lbl{font-size:.86rem;font-weight:600;color:var(--muted)} .a3lbl b{font-weight:900} .a3lbl .em{color:var(--wrong)} .a3lbl .ok{color:var(--truth)}
+  .a3lbl{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}
+  .a3lbl .mname{font-size:1.2rem;font-weight:900} .a3lbl .mname.em{color:var(--wrong)} .a3lbl .mname.ok{color:var(--truth)}
+  .a3lbl .mtag{font-size:.78rem;font-weight:600;color:var(--muted)}
   .a3vid{border:1.5px solid var(--ink);background:#000;overflow:hidden;min-height:0}
   .a3vid video{width:100%;height:100%;object-fit:contain}
   .a3stats{display:flex;gap:2.4rem;align-items:flex-end}
@@ -131,7 +133,7 @@
       <div class="a3head">SAME TASK · SAME SUCCESS</div>
       <div class="a3grid">
         <div class="a3panel">
-          <div class="a3lbl"><b class="em">COLD</b> · Gemini re-perceives every screen</div>
+          <div class="a3lbl"><span class="mname em">Gemini 2.5 Computer Use</span><span class="mtag">frontier model · re-perceives every screen</span></div>
           <div class="a3vid"><video id="coldop" src="recording/videos/cold_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
             <div><span class="num cold" id="a3cold">0</span><span class="su">tokens</span></div>
@@ -140,7 +142,7 @@
           </div>
         </div>
         <div class="a3panel">
-          <div class="a3lbl"><b class="ok">MAP-GUIDED</b> · Gemma reads the shared map</div>
+          <div class="a3lbl"><span class="mname ok">Gemma 4</span><span class="mtag">lightweight model · just reads the shared map</span></div>
           <div class="a3vid"><video id="mapop" src="recording/videos/mapped_op.mp4" muted playsinline></video></div>
           <div class="a3stats">
             <div><span class="num mapped" id="a3map">0</span><span class="su">tokens</span></div>
@@ -273,7 +275,7 @@ const BEATS=[
    run(){showAct('act2');stopBuild();showFinal();const rc=mapg.querySelector(`rect[data-rect="${heroNode}"]`);if(rc)rc.classList.add('hero');playGrid();spLive(['voyage','atlas']);log('over','a3',`misread a screen → OVERRULED, trust 0.50→0.33`);heroTimer=setTimeout(()=>herobadge.classList.add('show'),250);}},
   {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents, for about $${TOT.swarm_cost}, once.`,
    run(){showAct('act2');herobadge.classList.remove('show');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);}},
-  {label:"<b>Act 3</b> · cold vs map-guided",cap:`Same task, side by side. <span class="em">Cold re-thinks every screen.</span> <span class="ok">Map-guided just reads the map</span>, and finishes for zero paid tokens.`,
+  {label:"<b>Act 3</b> · cold vs map-guided",cap:`A <span class="em">frontier model</span> re-thinking every screen, vs a <span class="ok">tiny model just reading the map</span>. Same task, zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
      if(cv){cv.loop=false;cv.currentTime=0;cv.play().catch(()=>{});cv.ontimeupdate=()=>{const p=cv.duration?cv.currentTime/cv.duration:0;document.getElementById('a3cold').textContent=Math.round(COLD*p).toLocaleString();document.getElementById('a3coldt').textContent=cv.currentTime.toFixed(1)+'s';document.getElementById('a3colds').textContent=Math.min(ST,Math.ceil(p*ST));};}
