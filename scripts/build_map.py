@@ -12,6 +12,7 @@ load_dotenv()
 from veche.node_identity import NodeRegistry, VoyageEmbedder
 from veche.types import Observation
 from veche.consolidator import consolidate
+from veche.portable_map import Map, MapNode, MapEdge
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 REC = ROOT / "viz" / "recording"
@@ -61,8 +62,9 @@ def main():
         if (i + 1) % 10 == 0:
             print(f"  {i+1}/{len(all_frames)}  ({len(reg.nodes)} nodes)")
 
-    # event intents keyed by (agent, frame) so we can label transitions
+    # events keyed by (agent, frame) so we can label transitions + carry replayable args
     intent_by = {(e["agent"], e["frame"]): (e.get("intent") or e["action"]) for e in raw["events"]}
+    ev_by = {(e["agent"], e["frame"]): e for e in raw["events"]}
 
     # 2. per-agent observed transitions (skip no-op self-loops)
     seen_by = collections.defaultdict(set)
@@ -78,7 +80,9 @@ def main():
             if a == b:
                 continue
             label = intent_by.get((ag["id"], frames[j]), "")
-            observations.append({"agent": ag["id"], "from": a, "to": b, "label": label})
+            ev = ev_by.get((ag["id"], frames[j]), {})
+            observations.append({"agent": ag["id"], "from": a, "to": b, "label": label,
+                                 "action": ev.get("action", ""), "args": ev.get("args", {})})
 
     def edges_from(obs):
         g = collections.defaultdict(lambda: {"agents": set(), "labels": collections.Counter()})
@@ -155,6 +159,30 @@ def main():
     (REC / "recording.json").write_text(json.dumps(recording, indent=2))
     print(f"\nMAP BUILT: {len(nodes)} nodes, {len(edges)} edges, {len(snapshots)} snapshots "
           f"(swarm: {swarm_tokens} tokens ~${swarm_cost}).  -> viz/recording/recording.json")
+
+    # also emit the portable, tool-agnostic map — download this to operate any app
+    action_by = collections.defaultdict(lambda: collections.Counter())
+    args_by = {}
+    for o in observations:
+        action_by[(o["from"], o["to"])][o.get("action") or o["label"]] += 1
+        if o.get("args"):
+            args_by[(o["from"], o["to"])] = o["args"]   # last seen replayable params
+    pm_nodes = {nid: MapNode(id=nid, phash=reg.nodes[nid]["phash"],
+                             embedding=reg.nodes[nid]["embedding"], thumbnail=node_rep[nid])
+                for nid in reg.nodes}
+    pm_edges = []
+    for e in edges:
+        key = (e["from"], e["to"])
+        act = action_by[key].most_common(1)[0][0] if action_by[key] else (e["label"] or "click_at")
+        pm_edges.append(MapEdge(from_node=e["from"], to_node=e["to"], action=act,
+                                args=args_by.get(key, {}),
+                                confirmations=e["confirmations"], committed=e["committed"]))
+    Map(pm_nodes, pm_edges,
+        meta={"app": "OpenEMR demo", "source": "swarm",
+              "screens": len(nodes), "committed_edges": sum(e["committed"] for e in edges)}
+        ).save(str(REC / "veche_map.json"))
+    print(f"  portable map -> viz/recording/veche_map.json "
+          f"({len(pm_nodes)} screens, {sum(e.committed for e in pm_edges)} committed transitions)")
 
 
 if __name__ == "__main__":

@@ -81,7 +81,8 @@ def explore_one(client, cfg, aid, start, goal):
                 print(f"  step {step}: done"); break
             args = dict(fc.args)
             events.append({"agent": aid, "step": step, "t": round(time.time() - t0, 2), "frame": cur,
-                           "action": fc.name, "intent": (args.get("intent") or "")[:90],
+                           "action": fc.name, "args": {k: v for k, v in args.items() if k != "intent"},
+                           "intent": (args.get("intent") or "")[:90],
                            "tokens": toks, "latency": round(lat, 1), "cost": round(cost, 4)})
             print(f"  step {step}: {fc.name} [{toks} tok, {lat:.1f}s]")
             br.execute(fc.name, args)
