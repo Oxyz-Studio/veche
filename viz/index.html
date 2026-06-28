@@ -41,7 +41,11 @@
   .cell video{width:100%;height:100%;object-fit:cover}
   .cell .tag{position:absolute;top:0;left:0;background:var(--ink);color:var(--paper);font-size:.62rem;font-weight:700;padding:.14rem .45rem;letter-spacing:.04em}
   .mapwrap{border:1.5px solid var(--ink);position:relative;overflow:hidden;background:var(--paper);display:grid;grid-template-rows:1fr 23%}
-  #map{width:100%;height:100%;display:block;min-height:0}
+  #map{width:100%;height:100%;display:block;min-height:0;cursor:grab}
+  .nodeinfo{position:absolute;pointer-events:none;background:var(--ink);color:#fff;padding:.5rem .65rem;font-size:.72rem;font-weight:600;opacity:0;transition:opacity .1s;z-index:5;max-width:230px}
+  .nodeinfo.show{opacity:1}
+  .nodeinfo .ni-id{font-weight:900;font-size:.95rem}
+  .nodeinfo .ni-r{color:#d4d4cd;margin-top:.15rem} .nodeinfo .ni-r b{color:#fff}
   .mapstat{position:absolute;top:.7rem;right:.9rem;text-align:right;font-size:.82rem;font-weight:600;color:var(--muted);z-index:2}
   .mapstat b{font-size:1.9rem;font-weight:900;color:var(--ink)}
   .nodeimg{stroke:var(--ink);stroke-width:2;opacity:0;animation:pop .45s forwards}
@@ -49,7 +53,7 @@
   .nodeimg.hero{stroke:var(--wrong);stroke-width:5;animation:heroflash 1.6s ease}
   @keyframes pop{from{opacity:0} to{opacity:1}}
   @keyframes heroflash{0%,100%{stroke:var(--wrong)}60%{stroke:var(--truth)}}
-  .maplog{border-top:1.5px solid var(--ink);background:var(--paper);overflow:hidden;padding:.4rem .7rem;display:flex;flex-direction:column;justify-content:flex-end}
+  .maplog{border-top:1.5px solid var(--ink);background:var(--paper);overflow-y:auto;padding:.4rem .7rem}
   .logline{font-size:.78rem;font-weight:600;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:slidein .25s}
   @keyframes slidein{from{opacity:0;transform:translateY(4px)}to{opacity:1}}
   .logline .ag{display:inline-block;background:var(--ink);color:var(--paper);font-weight:800;padding:0 .35rem;margin-right:.5rem;border-radius:2px}
@@ -117,6 +121,7 @@
           <div class="r">a3 trust&nbsp; <b>0.50</b> → <i>0.33</i></div>
         </div>
         <div class="maplog" id="maplog"></div>
+        <div class="nodeinfo" id="nodeinfo"></div>
       </div>
     </section>
 
@@ -134,7 +139,7 @@
   <div class="sponsors" id="sponsors"></div>
   <footer>
     <div class="caption" id="caption"></div>
-    <div><span class="hint">space / click →</span><button class="next" id="next">NEXT</button></div>
+    <div><span class="hint">← →</span><button class="next" id="prev" style="background:#fff;color:var(--ink);border:1.5px solid var(--ink);margin-right:.5rem">PREV</button><button class="next" id="next">NEXT</button></div>
   </footer>
 </div>
 
@@ -163,19 +168,36 @@ allNodes.forEach((n,i)=>{const a=i*2.39996;pos[n.id]={x:MW/2+Math.cos(a)*220+((i
   ids.forEach(id=>{const p=pos[id];p.vx+=(MW/2-p.x)*0.004;p.vy+=(MH/2-p.y)*0.004;p.vx*=0.86;p.vy*=0.86;p.x+=p.vx;p.y+=p.vy;});}
   const m=72;ids.forEach(id=>{const p=pos[id];p.x=Math.max(m,Math.min(MW-m,p.x));p.y=Math.max(m,Math.min(MH-m,p.y));});})();
 
-const svg=document.getElementById('map'),NS='http://www.w3.org/2000/svg',TH=80,maplog=document.getElementById('maplog');
+const svg=document.getElementById('map'),NS='http://www.w3.org/2000/svg',TH=80,maplog=document.getElementById('maplog'),nodeinfo=document.getElementById('nodeinfo');
 const drawn=new Set();
 function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+const mapg=el('g',{});svg.appendChild(mapg);
+let view={k:1,tx:0,ty:0},drag=null;
+function applyView(){mapg.setAttribute('transform',`translate(${view.tx} ${view.ty}) scale(${view.k})`);}
+// per-node metadata (for hover info)
+const nodeMeta={};allNodes.forEach(n=>nodeMeta[n.id]={seen_by:n.seen_by,out:0,in:0});
+allEdges.forEach(e=>{if(nodeMeta[e.from])nodeMeta[e.from].out++;if(nodeMeta[e.to])nodeMeta[e.to].in++;});
+function showInfo(id,cx,cy){const m=nodeMeta[id];if(!m)return;
+  nodeinfo.innerHTML=`<div class="ni-id">${id}</div><div class="ni-r">seen by <b>${m.seen_by.join(', ')}</b> · ${m.seen_by.length} agent${m.seen_by.length>1?'s':''}</div><div class="ni-r">${m.out} transitions out · ${m.in} in</div>`;
+  nodeinfo.style.left=Math.min(cx+14,svg.clientWidth-235)+'px';nodeinfo.style.top=Math.min(cy+14,svg.clientHeight-72)+'px';nodeinfo.classList.add('show');}
 function addEdge(from,to,conf){const p=pos[from],q=pos[to];if(!p||!q)return;
-  svg.insertBefore(el('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:conf>=2?'var(--truth)':'#0d0d0d2e','stroke-width':conf>=2?4:2}),svg.firstChild);}
+  mapg.insertBefore(el('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:conf>=2?'var(--truth)':'#0d0d0d2e','stroke-width':conf>=2?4:2}),mapg.firstChild);}
 function addNode(id,hero){if(drawn.has(id))return;drawn.add(id);const p=pos[id],n=allNodes.find(x=>x.id===id);if(!n)return;
   const img=el('image',{x:p.x-TH/2,y:p.y-TH/2,width:TH,height:TH,preserveAspectRatio:'xMidYMid slice',class:'nodeimg'+(sharedSet.has(id)?' shared':'')+(hero?' hero':'')});
-  img.setAttribute('href','recording/frames/'+n.frame);img.setAttributeNS('http://www.w3.org/1999/xlink','href','recording/frames/'+n.frame);svg.appendChild(img);
+  img.setAttribute('href','recording/frames/'+n.frame);img.setAttributeNS('http://www.w3.org/1999/xlink','href','recording/frames/'+n.frame);
+  img.addEventListener('mousemove',ev=>{if(drag)return;ev.stopPropagation();const r=svg.getBoundingClientRect();showInfo(id,ev.clientX-r.left,ev.clientY-r.top);});
+  img.addEventListener('mouseleave',()=>nodeinfo.classList.remove('show'));
+  mapg.appendChild(img);
   document.getElementById('mapNodes').textContent=drawn.size;
   const sh=[...drawn].filter(i=>sharedSet.has(i)).length;document.getElementById('mapShared').innerHTML=sh?`<span style="color:var(--truth)">${sh} confirmed by ≥2 agents</span>`:'';}
-function log(cls,ag,txt){const d=document.createElement('div');d.className='logline'+(cls?' '+cls:'');d.innerHTML=`<span class="ag">${ag}</span>${txt}`;maplog.appendChild(d);
-  while(maplog.children.length>6)maplog.removeChild(maplog.firstChild);}
-function resetMap(){svg.innerHTML='';drawn.clear();maplog.innerHTML='';document.getElementById('mapNodes').textContent='0';document.getElementById('mapShared').innerHTML='';}
+function log(cls,ag,txt){const d=document.createElement('div');d.className='logline'+(cls?' '+cls:'');d.innerHTML=`<span class="ag">${ag}</span>${txt}`;maplog.appendChild(d);maplog.scrollTop=maplog.scrollHeight;}
+function resetMap(){mapg.innerHTML='';drawn.clear();maplog.innerHTML='';document.getElementById('mapNodes').textContent='0';document.getElementById('mapShared').innerHTML='';}
+// zoom (wheel, around cursor) + pan (drag)
+svg.addEventListener('wheel',ev=>{ev.preventDefault();const r=svg.getBoundingClientRect();const sx=(ev.clientX-r.left)/r.width*1000,sy=(ev.clientY-r.top)/r.height*760;
+  const f=ev.deltaY<0?1.12:1/1.12,nk=Math.max(.6,Math.min(7,view.k*f));view.tx=sx-(sx-view.tx)*(nk/view.k);view.ty=sy-(sy-view.ty)*(nk/view.k);view.k=nk;applyView();},{passive:false});
+svg.addEventListener('mousedown',ev=>{drag={x:ev.clientX,y:ev.clientY,tx:view.tx,ty:view.ty};svg.style.cursor='grabbing';nodeinfo.classList.remove('show');});
+window.addEventListener('mousemove',ev=>{if(!drag)return;const r=svg.getBoundingClientRect();view.tx=drag.tx+(ev.clientX-drag.x)/r.width*1000;view.ty=drag.ty+(ev.clientY-drag.y)/r.height*760;applyView();});
+window.addEventListener('mouseup',()=>{if(drag){drag=null;svg.style.cursor='grab';}});
 
 // build sequence (in swarm order): new screen / recognized-merge, with edges
 const seen={};const seq=[];
@@ -227,7 +249,7 @@ const BEATS=[
   {label:"<b>Act 2</b> · consensus",cap:`When a screen is seen by a <span class="ok">different agent</span>, Voyage recognizes it and merges it — the map converges by consensus.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();spLive(['gemini','voyage','atlas']);spPulse('voyage');}},
   {label:"<b>Act 2</b> · the overrule",cap:`Agents misread ~1 in 5. When one does, <span class="ok">the swarm overrules it</span> — K-agreement keeps the truth and drops the liar's trust.`,
-   run(){showAct('act2');stopBuild();showFinal();const im=svg.querySelector(`image[href$="${(allNodes.find(n=>n.id===heroNode)||{}).frame}"]`);if(im)im.classList.add('hero');playGrid();spLive(['voyage','atlas']);log('over','a3',`misread a screen → OVERRULED, trust 0.50→0.33`);setTimeout(()=>herobadge.classList.add('show'),250);}},
+   run(){showAct('act2');stopBuild();showFinal();const im=mapg.querySelector(`image[href$="${(allNodes.find(n=>n.id===heroNode)||{}).frame}"]`);if(im)im.classList.add('hero');playGrid();spLive(['voyage','atlas']);log('over','a3',`misread a screen → OVERRULED, trust 0.50→0.33`);setTimeout(()=>herobadge.classList.add('show'),250);}},
   {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents — for ~$${TOT.swarm_cost}, once.`,
    run(){showAct('act2');herobadge.classList.remove('show');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);}},
   {label:"<b>Act 3</b> · map-guided",cap:`Now a tiny model operates by <span class="ok">reading the map</span>. Same task, same success — <span class="ok">zero paid tokens.</span>`,
@@ -238,12 +260,14 @@ const BEATS=[
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1;
-function advance(){if(bi>=BEATS.length-1)return;bi++;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
-  document.querySelectorAll('.bd').forEach((d,i)=>{d.classList.toggle('on',i===bi);d.classList.toggle('done',i<bi);});}
+function goto(i){bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
+  document.querySelectorAll('.bd').forEach((d,k)=>{d.classList.toggle('on',k===bi);d.classList.toggle('done',k<bi);});}
+function advance(){if(bi<BEATS.length-1)goto(bi+1);}
+function retreat(){if(bi>0)goto(bi-1);}
 document.getElementById('next').addEventListener('click',e=>{e.stopPropagation();advance();});
-window.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();advance();}});
-window.addEventListener('click',e=>{if(!e.target.closest('.next'))advance();});
-advance();
+document.getElementById('prev').addEventListener('click',e=>{e.stopPropagation();retreat();});
+window.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowRight'){e.preventDefault();advance();}else if(e.code==='ArrowLeft'||e.code==='Backspace'){e.preventDefault();retreat();}});
+goto(0);
 </script>
 </body>
 </html>
