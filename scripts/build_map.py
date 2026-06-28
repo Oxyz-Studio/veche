@@ -110,32 +110,44 @@ def main():
              for nid in sorted(reg.nodes.keys())]
     edges = edges_from(observations)
 
-    # ---- REAL consensus: run the consolidator on the real observations ----
+    # ---- REAL consensus: pick the most legible HONEST overrule ----
+    # The trust numbers shown on stage (badge + per-agent panel) are the SAME global
+    # reliabilities the consolidator outputs, so nothing on screen contradicts anything else.
     cobs = [Observation(o["agent"], o["from"], o["label"], o["to"]) for o in observations]
     cres = consolidate(cobs, k=2)
-    hero = None  # a genuine conflict in the data (one agent diverged, majority agreed)
+    grel = cres.reliability  # global reliability == what the per-agent trust panel displays
+
+    candidates = []
     for e in cres.edges:
         if not (e.is_conflict and e.committed and e.confirmations >= 2):
             continue
+        backers = sorted({o["agent"] for o in observations
+                          if o["from"] == e.from_node and o["label"] == e.action and o["to"] == e.to_node})
         for tn in e.quarantined:
-            ags = sorted({o["agent"] for o in observations
-                          if o["from"] == e.from_node and o["label"] == e.action and o["to"] == tn})
-            if len(ags) == 1:                       # a clean lone dissenter vs a majority
-                hero = {"from": e.from_node, "action": e.action, "winner": e.to_node,
-                        "winner_count": e.confirmations, "dissenter": ags[0], "dissenter_to": tn}
-                break
-        if hero:
-            break
-    if hero:                                        # real, isolated reliability impact of THIS conflict
-        grp = [Observation(o["agent"], o["from"], o["label"], o["to"]) for o in observations
-               if o["from"] == hero["from"] and o["label"] == hero["action"]]
-        g = consolidate(grp, k=2)
-        hero["rel_dissenter"] = round(g.reliability.get(hero["dissenter"], 0.5), 3)
-        maj = [a for a in g.reliability if a != hero["dissenter"]]
-        hero["rel_majority"] = round(g.reliability.get(maj[0], 0.5), 3) if maj else 0.667
+            diss = sorted({o["agent"] for o in observations
+                           if o["from"] == e.from_node and o["label"] == e.action and o["to"] == tn})
+            # a CLEAN lone dissenter: exactly one agent took the wrong branch and that agent
+            # did NOT also report the winner (so "X diverged" is honest, not "X saw both").
+            clean = [d for d in diss if d not in backers]
+            if len(clean) != 1:
+                continue
+            d = clean[0]
+            maj_rel = min(grel[m] for m in backers)
+            candidates.append({
+                "from": e.from_node, "action": e.action, "winner": e.to_node,
+                "winner_count": e.confirmations, "winner_agents": backers,
+                "dissenter": d, "dissenter_to": tn,
+                "rel_dissenter": round(grel[d], 3), "rel_majority": round(maj_rel, 3),
+                "_gap": round(maj_rel - grel[d], 3), "_conf": e.confirmations,
+            })
+    hero = None
+    if candidates:
+        # most agreeing agents, then the widest honest trust gap, then the least-trusted dissenter
+        hero = max(candidates, key=lambda c: (c["_conf"], c["_gap"], -c["rel_dissenter"]))
+        hero = {k: v for k, v in hero.items() if not k.startswith("_")}
         print(f"  real hero conflict: {hero['from']} --{hero['action']}--> winner {hero['winner']} "
-              f"({hero['winner_count']} agents) vs {hero['dissenter']}->{hero['dissenter_to']} "
-              f"(trust {hero['rel_dissenter']})")
+              f"({hero['winner_count']} agents {hero['winner_agents']}, trust {hero['rel_majority']}+) "
+              f"vs {hero['dissenter']}->{hero['dissenter_to']} (trust {hero['rel_dissenter']})")
 
     swarm_tokens = sum(e.get("tokens", 0) for e in raw["events"])
     swarm_cost = round(sum(e.get("cost", 0) for e in raw["events"]), 2)
@@ -156,11 +168,26 @@ def main():
         "hero_conflict": hero,
         "reliability": {a: round(r, 3) for a, r in cres.reliability.items()},
     }
+    # Preserve enrichments from sibling scripts so a plain rebuild does not drop them.
+    # Re-run scripts/label_nodes.py + scripts/build_twin_test.py if node identity changed.
+    prev_path = REC / "recording.json"
+    if prev_path.exists():
+        try:
+            prev = json.loads(prev_path.read_text())
+            if prev.get("twin_test"):
+                recording["twin_test"] = prev["twin_test"]
+            prev_labels = {n["id"]: n.get("label", "") for n in prev.get("nodes", []) if n.get("label")}
+            for n in recording["nodes"]:
+                if n["id"] in prev_labels:
+                    n["label"] = prev_labels[n["id"]]
+        except Exception as e:
+            print(f"  (could not carry forward prior enrichments: {str(e)[:60]})")
     (REC / "recording.json").write_text(json.dumps(recording, indent=2))
+    (REC / "data.js").write_text("window.RECORDING = " + json.dumps(recording) + ";")  # what the viz loads
     print(f"\nMAP BUILT: {len(nodes)} nodes, {len(edges)} edges, {len(snapshots)} snapshots "
-          f"(swarm: {swarm_tokens} tokens ~${swarm_cost}).  -> viz/recording/recording.json")
+          f"(swarm: {swarm_tokens} tokens ~${swarm_cost}).  -> {REC / 'recording.json'} (+ data.js)")
 
-    # also emit the portable, tool-agnostic map — download this to operate any app
+    # also emit the portable, tool-agnostic map - download this to operate any app
     action_by = collections.defaultdict(lambda: collections.Counter())
     args_by = {}
     for o in observations:
@@ -181,7 +208,7 @@ def main():
         meta={"app": "OpenEMR demo", "source": "swarm",
               "screens": len(nodes), "committed_edges": sum(e["committed"] for e in edges)}
         ).save(str(REC / "veche_map.json"))
-    print(f"  portable map -> viz/recording/veche_map.json "
+    print(f"  portable map -> {REC / 'veche_map.json'} "
           f"({len(pm_nodes)} screens, {sum(e.committed for e in pm_edges)} committed transitions)")
 
 
