@@ -53,6 +53,24 @@
   .tt-foot{flex:none;text-align:center;font-size:.84rem;font-weight:600;color:var(--ink);padding:0 2vw;line-height:1.3}
   .tt-foot b{color:var(--truth)} .tt-foot i{font-style:normal;color:var(--wrong)}
 
+  /* Consolidator (3-step) + the loop overlays */
+  #consolidator,#loop{position:absolute;inset:0;background:var(--paper);z-index:6;display:none;flex-direction:column;padding:1vh 1.6vw 1.4vh;gap:1.2vh}
+  #consolidator.show,#loop.show{display:flex}
+  .ov-title{font-size:.82rem;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;text-align:center}
+  .ov-title b{color:var(--ink)}
+  .cs-row{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;min-height:0}
+  .cs-step{border:1.5px solid var(--ink);display:flex;flex-direction:column;padding:1.4vh 1.2vw;min-height:0}
+  .cs-step .n{font-size:.82rem;font-weight:800;letter-spacing:.05em;color:var(--truth)}
+  .cs-step h3{font-size:clamp(1.05rem,1.8vw,1.6rem);font-weight:900;letter-spacing:-.01em;margin:.2rem 0 .45rem;line-height:1.02}
+  .cs-step p{font-size:.9rem;font-weight:500;color:#2c2f2b;line-height:1.4}
+  .cs-step p b{font-weight:800;color:var(--ink)}
+  .cs-step .vis{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin-top:.5rem}
+  .cs-step .vis svg{width:100%;height:auto;max-height:22vh}
+  .ov-foot{flex:none;text-align:center;font-size:.84rem;font-weight:600;color:var(--ink);padding:0 2vw;line-height:1.3}
+  .ov-foot b{color:var(--truth)}
+  .loopwrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+  .loopwrap svg{width:auto;height:100%;max-height:64vh;max-width:100%}
+
   #act1{display:grid;grid-template-columns:1.5fr 1fr;gap:2.4vw;align-items:center;height:100%}
   .bigvideo{border:1.5px solid var(--ink);background:#000;height:100%;overflow:hidden;display:flex;align-items:center}
   .bigvideo video{width:100%;height:100%;object-fit:contain}
@@ -202,6 +220,93 @@
       <div class="tt-title">node identity <b>· the twin test</b> &nbsp;·&nbsp; same screen, or not? decided from pixels alone</div>
       <div class="tt-row" id="ttrow"></div>
       <div class="tt-foot" id="ttfoot"></div>
+    </div>
+
+    <div id="consolidator">
+      <div class="ov-title">the consolidator <b>· how the swarm agrees on one map</b> &nbsp;·&nbsp; one pure function, three steps</div>
+      <div class="cs-row">
+        <div class="cs-step">
+          <div class="n">1 · node identity</div>
+          <h3>Same screen, one node.</h3>
+          <p>Two screenshots collapse to <b>one node</b> when their pixel fingerprints match. Different data, same screen, still one node.</p>
+          <div class="vis"><svg viewBox="0 0 230 124">
+            <rect x="6" y="16" width="56" height="38" rx="3" fill="#fff" stroke="#0d0d0d" stroke-width="2"/>
+            <rect x="6" y="70" width="56" height="38" rx="3" fill="#fff" stroke="#0d0d0d" stroke-width="2"/>
+            <text x="34" y="11" text-anchor="middle" font-size="9" fill="#7c7c74">patient A</text>
+            <text x="34" y="121" text-anchor="middle" font-size="9" fill="#7c7c74">patient B</text>
+            <path d="M62 38 L126 58" stroke="#0f7a3a" stroke-width="2" fill="none"/>
+            <path d="M62 90 L126 66" stroke="#0f7a3a" stroke-width="2" fill="none"/>
+            <text x="150" y="44" text-anchor="middle" font-size="9" fill="#0f7a3a">cosine ≥ 0.55</text>
+            <circle cx="190" cy="62" r="19" fill="#fff" stroke="#0f7a3a" stroke-width="3"/>
+            <text x="190" y="66" text-anchor="middle" font-size="11" font-weight="800" fill="#0f7a3a">1 node</text>
+          </svg></div>
+        </div>
+        <div class="cs-step">
+          <div class="n">2 · K-agreement</div>
+          <h3>Keep what agents agree on.</h3>
+          <p>A transition is committed only when <b>K agents agree</b>, weighted by earned trust. The dissenter is overruled and quarantined.</p>
+          <div class="vis"><svg viewBox="0 0 230 124">
+            <rect x="6" y="46" width="50" height="32" rx="3" fill="#fff" stroke="#0d0d0d" stroke-width="2"/>
+            <text x="31" y="66" text-anchor="middle" font-size="12" font-weight="800">A</text>
+            <rect x="158" y="10" width="64" height="32" rx="3" fill="#fff" stroke="#0f7a3a" stroke-width="3"/>
+            <text x="190" y="30" text-anchor="middle" font-size="11" font-weight="800" fill="#0f7a3a">B ✓</text>
+            <rect x="158" y="84" width="64" height="32" rx="3" fill="#fff" stroke="#d11424" stroke-width="2" opacity=".5"/>
+            <text x="190" y="104" text-anchor="middle" font-size="11" font-weight="800" fill="#d11424" opacity=".7">C</text>
+            <path d="M56 56 L156 28" stroke="#0f7a3a" stroke-width="3" fill="none"/>
+            <path d="M56 62 L156 31" stroke="#0f7a3a" stroke-width="3" fill="none"/>
+            <text x="104" y="36" text-anchor="middle" font-size="9" fill="#0f7a3a">2 agree</text>
+            <path d="M56 70 L156 100" stroke="#d11424" stroke-width="2" stroke-dasharray="6 5" fill="none" opacity=".6"/>
+            <text x="104" y="96" text-anchor="middle" font-size="9" fill="#d11424">1 diverged</text>
+          </svg></div>
+        </div>
+        <div class="cs-step">
+          <div class="n">3 · decay and re-learn</div>
+          <h3>Stay current over time.</h3>
+          <p>A screen that goes stale or changes loses its votes and is <b>re-learned</b>, so the map keeps matching the live app.</p>
+          <div class="vis"><svg viewBox="0 0 230 124">
+            <circle cx="48" cy="62" r="21" fill="#fff" stroke="#b9b9b0" stroke-width="2.5" stroke-dasharray="5 4"/>
+            <text x="48" y="66" text-anchor="middle" font-size="10" fill="#8a8a82">stale</text>
+            <path d="M76 62 L150 62" stroke="#0f7a3a" stroke-width="2" fill="none" marker-end="url(#csar)"/>
+            <text x="113" y="52" text-anchor="middle" font-size="9" fill="#0f7a3a">re-learn</text>
+            <circle cx="184" cy="62" r="21" fill="#fff" stroke="#0f7a3a" stroke-width="3"/>
+            <text x="184" y="66" text-anchor="middle" font-size="10" font-weight="800" fill="#0f7a3a">fresh</text>
+            <defs><marker id="csar" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L5,3 L0,6 Z" fill="#0f7a3a"/></marker></defs>
+          </svg></div>
+        </div>
+      </div>
+      <div class="ov-foot">Recomputed each tick from an append-only log: <b>identity</b>, then <b>agreement</b>, then <b>decay</b>. Same noisy observations in, one reliable map out.</div>
+    </div>
+
+    <div id="loop">
+      <div class="ov-title">the loop <b>· the map heals while it is used</b> &nbsp;·&nbsp; hit something unknown and it does not fail</div>
+      <div class="loopwrap"><svg viewBox="0 0 720 470" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="lpar" markerWidth="11" markerHeight="11" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 Z" fill="#0d0d0d"/></marker></defs>
+        <!-- top: operator reads map -->
+        <rect x="248" y="20" width="224" height="78" rx="5" fill="#fff" stroke="#0f7a3a" stroke-width="2.5"/>
+        <text x="360" y="50" text-anchor="middle" font-size="16" font-weight="800" fill="#0d0d0d">1 · operator reads the map</text>
+        <text x="360" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#0f7a3a">cheap, 0 paid tokens</text>
+        <!-- right: map-miss -->
+        <rect x="486" y="196" width="216" height="78" rx="5" fill="#fff" stroke="#d11424" stroke-width="2.5"/>
+        <text x="594" y="226" text-anchor="middle" font-size="16" font-weight="800" fill="#0d0d0d">2 · map-miss</text>
+        <text x="594" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#d11424">a screen scores below 0.55</text>
+        <!-- bottom: swarm re-explores -->
+        <rect x="248" y="372" width="224" height="78" rx="5" fill="#fff" stroke="#0d0d0d" stroke-width="2.5"/>
+        <text x="360" y="402" text-anchor="middle" font-size="16" font-weight="800" fill="#0d0d0d">3 · a swarm is launched</text>
+        <text x="360" y="426" text-anchor="middle" font-size="13" font-weight="700" fill="#6f746c">re-explores just that one path</text>
+        <!-- left: consensus updates -->
+        <rect x="18" y="196" width="216" height="78" rx="5" fill="#fff" stroke="#0f7a3a" stroke-width="2.5"/>
+        <text x="126" y="226" text-anchor="middle" font-size="16" font-weight="800" fill="#0d0d0d">4 · consensus updates it</text>
+        <text x="126" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#0f7a3a">promoted, K=2, for everyone</text>
+        <!-- clockwise arrows -->
+        <path d="M472 72 C 560 96, 600 150, 596 192" stroke="#0d0d0d" stroke-width="2.5" fill="none" marker-end="url(#lpar)"/>
+        <path d="M594 274 C 590 322, 540 360, 474 388" stroke="#0d0d0d" stroke-width="2.5" fill="none" marker-end="url(#lpar)"/>
+        <path d="M248 404 C 168 378, 130 330, 126 278" stroke="#0d0d0d" stroke-width="2.5" fill="none" marker-end="url(#lpar)"/>
+        <path d="M126 196 C 130 150, 178 100, 246 76" stroke="#0d0d0d" stroke-width="2.5" fill="none" marker-end="url(#lpar)"/>
+        <!-- center -->
+        <text x="360" y="228" text-anchor="middle" font-size="17" font-weight="900" letter-spacing="1" fill="#0d0d0d">THE LOOP</text>
+        <text x="360" y="250" text-anchor="middle" font-size="12" font-weight="600" fill="#6f746c">every reuse can make the map better</text>
+      </svg></div>
+      <div class="ov-foot">An agent using the map hits a screen it does not know, so it does not guess. It <b>launches a swarm</b> on that one path, consensus promotes the result, and the map comes back richer. We showed one real promotion on the last screen.</div>
     </div>
   </div>
 
@@ -356,6 +461,12 @@ function showHeal(){const h=R.heal;if(!h)return;const id=h.node,p=pos[id];
     healbadge.innerHTML=`<div class="h">✓ a second independent agent confirmed it</div><div class="s">agent ${h.confirm_agent} re-explored and landed on <b>${h.label}</b> too. Consensus promotes it: <b>K=1 → K=2</b>, now trusted and in the map for everyone.</div><div class="r"><b>re-explore once</b>, then free &nbsp;·&nbsp; <i>it pays for itself by the third use</i></div>`;
   },1700);}
 function hideHeal(){healbadge.classList.remove('show');clearTimeout(healTimer);R.agents.forEach(a=>{const c=document.getElementById('cell-'+a.id);if(c)c.classList.remove('confirming');});}
+// static explainer overlays: the 3-step consolidator + the self-healing loop
+const consolidatorEl=document.getElementById('consolidator'),loopEl=document.getElementById('loop');
+function showConsolidator(){consolidatorEl.classList.add('show');}
+function hideConsolidator(){consolidatorEl.classList.remove('show');}
+function showLoop(){loopEl.classList.add('show');}
+function hideLoop(){loopEl.classList.remove('show');}
 const BEATS=[
   {label:"The problem",cap:`Half the world's critical work runs on screens with <span class="em">no API, no page to read</span>. Today you do it by hand, or you let one AI agent try.`,
    run(){showAct('act1');spLive([]);herobadge.classList.remove('show');document.getElementById('coldTok').textContent='0';document.getElementById('coldSteps').textContent='0';}},
@@ -363,6 +474,8 @@ const BEATS=[
    run(){showAct('act1');spLive(['gemini']);climbCold();}},
   {label:"<b>Act 2</b> · the map builds",cap:`So we put a <span class="ok">swarm</span> on it. Watch ${R.agents.length} agents map the app, screen by screen, into one shared memory.`,
    run(){showAct('act2');herobadge.classList.remove('show');playGrid();resetTrust();spLive(['gemini','voyage','atlas']);playBuild();}},
+  {label:"<b>Act 2</b> · the consolidator",cap:`How do noisy observations become one reliable map? <span class="ok">Three steps</span>, run as one function: identify the same screen, keep only what agents agree on, and decay what goes stale. This is the consensus mechanism.`,
+   run(){showAct('act2');stopBuild();showFinal();spLive(['voyage','atlas']);showConsolidator();}},
   {label:"<b>Act 2</b> · node identity",cap:`How does the swarm know two agents saw the <span class="ok">same screen</span>? Not the pixels (different patients), and there is <span class="em">no DOM</span> to read. One Voyage embedding decides, and <span class="ok">that</span> is what lets observations merge.`,
    run(){showAct('act2');stopBuild();showFinal();herobadge.classList.remove('show');spLive(['voyage','atlas']);spPulse('voyage');showTwin();}},
   {label:"<b>Act 2</b> · the overrule",cap:`Agents don't always agree. Here <span class="em">one agent diverged</span> on a real transition. Votes are <span class="ok">weighted by each agent's earned trust</span>, so K-agreement keeps the majority and quarantines the lone claim. Straight from the captured data.`,
@@ -382,6 +495,8 @@ const BEATS=[
    run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);coverage.classList.add('show');setTrust();}},
   {label:"<b>Act 2</b> · it keeps learning",cap:`The map is never finished, and it <span class="ok">knows what it is unsure of</span>: ${R.heal?R.heal.confirmed_total:''} screens confirmed, ${R.heal?R.heal.provisional_total:''} seen only once. Hit a half-known screen and it does not guess, it re-explores just that path and <span class="ok">consensus promotes it</span>. The same loop heals the map when the software changes.`,
    run(){showAct('act2');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);setTrust();showHeal();}},
+  {label:"<b>Act 2</b> · the loop",cap:`Put it together. An agent operates from the map; when it hits a screen the map does not know, a <span class="ok">swarm is launched</span> on just that path, consensus updates the map, and operation resumes. <span class="ok">The loop closes</span>, and the map heals while it is used.`,
+   run(){showAct('act2');stopBuild();showFinal();spLive(['gemini','voyage','atlas']);showLoop();}},
   {label:"<b>Act 3</b> · cold vs map-guided",cap:`Both sides receive <span class="em">only the screenshot</span>. The <span class="em">frontier model</span> re-thinks every screen; the <span class="ok">tiny model just reads the map</span>. Same task, zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
@@ -390,7 +505,7 @@ const BEATS=[
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1,heroTimer,healTimer;
-function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');coverage.classList.remove('show');hideTwin();hideHeal();bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
+function goto(i){clearTimeout(heroTimer);herobadge.classList.remove('show');coverage.classList.remove('show');hideTwin();hideHeal();hideConsolidator();hideLoop();bi=i;const b=BEATS[bi];cap.innerHTML=b.cap;actlabel.innerHTML=b.label;b.run();
   document.querySelectorAll('.bd').forEach((d,k)=>{d.classList.toggle('on',k===bi);d.classList.toggle('done',k<bi);});}
 function advance(){if(bi<BEATS.length-1)goto(bi+1);}
 function retreat(){if(bi>0)goto(bi-1);}
