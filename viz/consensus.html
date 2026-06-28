@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VECHE · why agreement works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --paper:#ffffff; --ink:#0d0d0d; --muted:#7c7c74; --hair:#e4e4dd; --truth:#0f7a3a; --wrong:#d11424; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;height:100vh;overflow:hidden;font-weight:500;-webkit-font-smoothing:antialiased}
+  .slide{position:fixed;inset:0;padding:5vh 6vw;display:grid;grid-template-rows:auto 1fr auto;gap:3.4vh}
+  .kicker{font-size:1.05rem;font-weight:800;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+  h1{font-size:clamp(2.2rem,4.6vw,4rem);font-weight:900;letter-spacing:-.02em;line-height:1.02;max-width:22ch}
+  h1 .g{color:var(--truth)}
+  .main{display:grid;grid-template-columns:1.15fr 1fr;gap:5vw;align-items:center}
+
+  /* vote diagram */
+  .vote svg{width:100%;height:auto;display:block}
+  .nbox{fill:#fff;stroke:var(--ink);stroke-width:2.5}
+  .nbox.g{stroke:var(--truth)} .nbox.r{stroke:var(--wrong)}
+  .nlab{font-weight:800;font-size:22px;fill:var(--ink)}
+  .nlab.g{fill:var(--truth)} .nlab.r{fill:var(--wrong)}
+  .alab{font-weight:800;font-size:19px}
+  .agree{fill:var(--truth)} .diss{fill:var(--wrong)}
+  .struck{opacity:.45}
+
+  /* stat block */
+  .stat{display:flex;flex-direction:column;gap:1.4vh}
+  .one{font-size:1.15rem;font-weight:700;color:var(--muted)}
+  .one b{color:var(--wrong);font-weight:900}
+  .arrowdn{font-size:1.05rem;font-weight:700;color:var(--ink);letter-spacing:.01em}
+  .big{font-size:clamp(4rem,11vw,10rem);font-weight:900;line-height:.86;color:var(--truth);font-variant-numeric:tabular-nums}
+  .bigsub{font-size:1.3rem;font-weight:800}
+  .method{font-size:.95rem;color:var(--muted);font-weight:600;max-width:34ch;margin-top:.6vh}
+
+  /* footer coverage */
+  .foot{display:flex;align-items:center;gap:1.4vw;border-top:2px solid var(--ink);padding-top:2.4vh}
+  .foot .t{font-size:1.05rem;font-weight:800;white-space:nowrap}
+  .foot .t span{color:var(--muted);font-weight:600}
+  .cov{display:flex;gap:1vw;flex:1}
+  .cv{flex:1;border:1.6px solid var(--hair);padding:.7vh 1vw;display:flex;align-items:baseline;justify-content:space-between}
+  .cv b{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}
+  .cv span{font-size:.9rem;color:var(--muted);font-weight:700}
+  .cv .bar{height:8px;background:var(--truth);align-self:center}
+</style>
+</head>
+<body>
+  <div class="slide">
+    <div>
+      <div class="kicker">reliability-weighted K-agreement</div>
+      <h1>You don't need a smarter agent. You need a <span class="g">second one that agrees.</span></h1>
+    </div>
+
+    <div class="main">
+      <div class="vote">
+        <svg viewBox="0 0 620 420" xmlns="http://www.w3.org/2000/svg">
+          <!-- screen A -->
+          <rect class="nbox" x="20" y="160" width="170" height="100" rx="4"/>
+          <text class="nlab" x="105" y="205" text-anchor="middle">Screen A</text>
+          <text class="nlab" x="105" y="234" text-anchor="middle" font-size="15" fill="#7c7c74" font-weight="600">click ?</text>
+
+          <!-- screen B (consensus) -->
+          <rect class="nbox g" x="420" y="40" width="180" height="100" rx="4"/>
+          <text class="nlab g" x="510" y="86" text-anchor="middle">Screen B</text>
+          <text class="nlab g" x="510" y="114" text-anchor="middle" font-size="15" font-weight="800">✓ consensus</text>
+
+          <!-- screen C (overruled) -->
+          <rect class="nbox r struck" x="420" y="280" width="180" height="100" rx="4"/>
+          <text class="nlab r struck" x="510" y="326" text-anchor="middle">Screen C</text>
+          <text class="nlab r struck" x="510" y="354" text-anchor="middle" font-size="15" font-weight="800">overruled</text>
+
+          <!-- arrows A->B (two agree) -->
+          <path d="M190 196 L416 96" stroke="#0f7a3a" stroke-width="4" fill="none" marker-end="url(#ag)"/>
+          <path d="M190 214 L416 110" stroke="#0f7a3a" stroke-width="4" fill="none" marker-end="url(#ag)"/>
+          <text class="alab agree" x="300" y="128" text-anchor="middle">a1, a2 agree</text>
+
+          <!-- arrow A->C (one diverges) -->
+          <path class="struck" d="M190 232 L416 322" stroke="#d11424" stroke-width="4" stroke-dasharray="9 7" fill="none" marker-end="url(#di)"/>
+          <text class="alab diss" x="300" y="300" text-anchor="middle">a3 diverged</text>
+
+          <defs>
+            <marker id="ag" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#0f7a3a"/></marker>
+            <marker id="di" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#d11424"/></marker>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="stat">
+        <div class="one">1 computer-use agent, per step: <b>80%</b> <span style="font-weight:600;color:var(--muted)">(UI-CUBE)</span></div>
+        <div class="arrowdn">↓ once two agents independently agree</div>
+        <div class="big" id="big">99.7%</div>
+        <div class="bigsub g" style="color:var(--truth)">of confirmed transitions are correct</div>
+        <div class="method">Measured on the real VECHE consolidator. Two agreeing kills random errors; correlated misreads need a higher K.</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="t">more agents buy <span>coverage, not precision</span> &nbsp;→ share of the map confirmed:</div>
+      <div class="cov">
+        <div class="cv"><span>2 agents</span><div class="bar" style="width:64%"></div><b>64%</b></div>
+        <div class="cv"><span>3 agents</span><div class="bar" style="width:90%"></div><b>90%</b></div>
+        <div class="cv"><span>5 agents</span><div class="bar" style="width:99%"></div><b>99%</b></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // gentle count-up to 99.7 so the number lands
+    const big=document.getElementById('big');
+    let v=80.0; big.textContent='80.0%';
+    const t=setInterval(()=>{v+=1.6; if(v>=99.7){v=99.7;clearInterval(t);} big.textContent=v.toFixed(1)+'%';},28);
+  </script>
+</body>
+</html>
