@@ -193,7 +193,7 @@
     </section>
 
     <section class="act" id="act3">
-      <div class="a3head">SAME TASK · SAME SUCCESS</div>
+      <div class="a3head">SAME REQUEST · <b style="color:var(--ink)">open the patient's History, then Issues, then Ledger tabs</b></div>
       <div class="a3grid">
         <div class="a3panel">
           <div class="a3lbl"><span class="mname em">Gemini 2.5 Computer Use</span><span class="mtag">frontier model · re-perceives every screen</span></div>
@@ -500,8 +500,9 @@ const BEATS=[
   {label:"<b>Act 3</b> · cold vs map-guided",cap:`Both sides receive <span class="em">only the screenshot</span>. The <span class="em">frontier model</span> re-thinks every screen; the <span class="ok">tiny model just reads the map</span>. Same task, zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();
      const cv=document.getElementById('coldop'),mv=document.getElementById('mapop'),COLD=TOT.cold_tokens,ST=4;
-     if(cv){cv.loop=false;cv.currentTime=0;cv.play().catch(()=>{});cv.ontimeupdate=()=>{const p=cv.duration?cv.currentTime/cv.duration:0;document.getElementById('a3cold').textContent=Math.round(COLD*p).toLocaleString();document.getElementById('a3coldt').textContent=cv.currentTime.toFixed(1)+'s';document.getElementById('a3colds').textContent=Math.min(ST,Math.ceil(p*ST));};}
-     if(mv){mv.loop=false;mv.currentTime=0;mv.play().catch(()=>{});mv.ontimeupdate=()=>{const p=mv.duration?mv.currentTime/mv.duration:0;document.getElementById('a3mapt').textContent=mv.currentTime.toFixed(1)+'s';document.getElementById('a3maps').textContent=Math.min(ST,Math.ceil(p*ST));};mv.onended=()=>{document.getElementById('a3mapt').textContent=mv.duration.toFixed(1)+'s';};}}},
+     // 3x replay; cold tokens SNAP per step (real total over real steps), not a smooth ramp
+     if(cv){cv.loop=false;cv.currentTime=0;cv.playbackRate=3;cv.play().catch(()=>{});cv.ontimeupdate=()=>{const p=cv.duration?cv.currentTime/cv.duration:0;const stp=Math.min(ST,Math.ceil(p*ST));document.getElementById('a3cold').textContent=Math.round(COLD*stp/ST).toLocaleString();document.getElementById('a3coldt').textContent=cv.currentTime.toFixed(1)+'s';document.getElementById('a3colds').textContent=stp;};}
+     if(mv){mv.loop=false;mv.currentTime=0;mv.playbackRate=3;mv.play().catch(()=>{});mv.ontimeupdate=()=>{const p=mv.duration?mv.currentTime/mv.duration:0;document.getElementById('a3mapt').textContent=mv.currentTime.toFixed(1)+'s';document.getElementById('a3maps').textContent=Math.min(ST,Math.ceil(p*ST));};mv.onended=()=>{document.getElementById('a3mapt').textContent=mv.duration.toFixed(1)+'s';};}}},
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1,heroTimer,healTimer;
