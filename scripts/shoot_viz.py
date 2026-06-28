@@ -12,12 +12,12 @@ def main():
         b = pw.chromium.launch(headless=True)
         page = b.new_context(viewport={"width": 1600, "height": 900}).new_page()
         page.goto(URL, wait_until="networkidle")
-        time.sleep(2.0)
+        time.sleep(3.5)
         names = ["d0_problem", "d1_cold", "d2_swarm", "d3_consensus", "d4_overrule", "d5_map", "d6_mapguided"]
         page.screenshot(path=str(OUT / f"{names[0]}.png"))
         for n in names[1:]:
             page.keyboard.press("Space")
-            time.sleep(2.0)
+            time.sleep(3.5)
             page.screenshot(path=str(OUT / f"{n}.png"))
         print("shot:", names)
         b.close()
