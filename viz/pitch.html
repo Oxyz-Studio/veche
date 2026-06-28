@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VECHE — the MCP you never write</title>
+<title>VECHE · the MCP you never write</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -110,7 +110,7 @@
       <div class="kick hl hl1">Collective continual learning // vision-only computer use</div>
       <h1 class="hl hl2">VECHE<span class="dot">.</span></h1>
       <div class="tag hl hl3">One agent learns an app alone.<br>A <span class="g">swarm learns it together.</span></div>
-      <div class="sub hl hl4">Many vision agents continually build and correct one shared map of an app, by consensus, from pixels alone, no API, no DOM. The knowledge compounds across agents and sessions, and a small model just reads the map. The MCP you never write.</div>
+      <div class="sub hl hl4">Many vision agents build and correct one shared map of an app by consensus, from pixels alone. The memory gets more reliable and cheaper the more it is used, and it re-learns the parts that change. A small model just reads the map. The MCP you never write.</div>
       <div class="scrollhint hl hl5"><span class="a">↓</span> scroll</div>
     </header>
 
@@ -156,7 +156,8 @@
     <section>
       <div class="kick rev">Continual learning, together</div>
       <h2 class="rev d1">Memory isn't new. <span class="g">Agreeing on one shared map is.</span></h2>
-      <p class="lede rev d2">Agents are starting to keep memory, but each keeps its own. VECHE's map is <b>shared</b>: a swarm agrees into one model that persists and grows the more it's used. Hit an unmapped screen and it learns it on the spot. Continual learning that compounds across a whole swarm, not one agent at a time.</p>
+      <p class="lede rev d2">Agents are starting to keep memory, but each keeps its own. VECHE's map is <b>shared</b>, and it stays correct by the same agreement that built it. A screen seen once is <b>provisional</b> until an independent agent confirms it. When the software changes, the operator lands where the map expected something else, so it does not guess: it re-explores just that path, and consensus promotes the new screen. It re-learns <b>the delta, not the app</b>, and never forgets the rest.</p>
+      <p class="lede rev d3" style="font-size:1.02rem;color:var(--muted);margin-top:1.1rem">Honest scope: we show a provisional screen promoted to confirmed on real captured data. The always-on online loop and staleness decay are designed on top of an append-only log, not yet run at deployment scale. We would rather show the mechanism than fake the outcome.</p>
     </section>
 
     <section class="close">

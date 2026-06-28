@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VECHE — how it works</title>
+<title>VECHE · how it works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -70,7 +70,7 @@
   <header class="top wrap">
     <div class="kick">How it works · no bullshit</div>
     <h1>A swarm learns to drive software it can only <span style="color:var(--green)">see.</span></h1>
-    <p class="lede">No magic, four mechanisms. It works from pixels, it trusts agreement over any single agent, it stores the result as a reusable map, and it gets cheaper the more it's used. Here is each part, plainly.</p>
+    <p class="lede">No magic. It works from pixels, it trusts agreement over any single agent, it stores the result as a reusable map, it stays correct as the software changes, and it gets cheaper the more it's used. Here is each part, plainly.</p>
   </header>
 
   <main class="wrap">
@@ -81,6 +81,7 @@
         <h2 class="rev">It only ever sees a picture.</h2>
         <p class="rev">Every agent's single input is a <b>screenshot</b>. No DOM, no HTML, no accessibility tree, no API. To decide whether two screenshots are the same screen, it does not read any text on them: it turns each image into a numeric <b>fingerprint</b> (a multimodal embedding) and compares the fingerprints.</p>
         <p class="rev">The same screen showing different data still matches; a genuinely different screen does not. That is why it works on a Citrix stream or a mainframe green-screen, where pixels are the only thing on the wire.</p>
+        <div class="note rev">Measured: the same screen re-rendered at half size, larger, a squished aspect ratio, or a different window canvas all score 0.94 to 0.99 against the original, far above the match threshold. So it does not need a fixed resolution. The check itself is near-free, a hash or one embedding, not the expensive per-screen reasoning.</div>
       </div>
       <div class="fig rev">
         <figure>
@@ -167,11 +168,11 @@
 
     <section class="block">
       <div>
-        <div class="num rev">04 · Reuse and continual learning</div>
+        <div class="num rev">04 · Reuse</div>
         <h2 class="rev">It gets cheaper the more it's used.</h2>
         <p class="rev">Once the map exists, you drop the expensive frontier model. A small cheap model just locates which screen it is on and follows the route, with <b>no per-screen reasoning</b>. The first traversal pays for the route; every reuse after is essentially free.</p>
-        <p class="rev">And the map keeps learning. It persists, it is shared, and it grows: hit a screen nobody mapped and that seeds new exploration. The knowledge <b>accumulates instead of resetting</b> each session. That is the continual-learning part.</p>
-        <div class="note rev">Cost per task falls roughly as the cold cost divided by the number of reuses, so a route that is expensive once becomes near-free at scale.</div>
+        <p class="rev">Cost per task falls roughly as the cold cost divided by the number of reuses, so a route that costs real money once becomes near-free at scale. And when the app changes, you only pay to re-learn <b>the part that changed</b>.</p>
+        <div class="note rev">A screen the operator does not recognize triggers one targeted re-exploration, about the cost of a single cold run, paid once. After roughly the third reuse of that path, it has paid for itself.</div>
       </div>
       <div class="fig rev">
         <figure>
@@ -193,7 +194,35 @@
 
     <section class="block">
       <div>
-        <div class="num rev">05 · What's ours, what's borrowed</div>
+        <div class="num rev">05 · Staying correct over time</div>
+        <h2 class="rev">The map heals itself.</h2>
+        <p class="rev">The map tracks its own confidence. A screen seen once is <b>provisional</b> and not trusted; it becomes <b>confirmed</b> only when a second independent agent agrees. So the map always knows what it is sure of, and what it is not.</p>
+        <p class="rev">When the software changes, the operator lands on a screen that matches nothing it knows, caught by the same fingerprint. It does not guess. It re-explores just that path, and consensus <b>promotes</b> the new screen once an independent agent confirms it; a transition that no longer holds loses votes as new evidence contradicts it. It re-learns <b>the delta, not the app</b>.</p>
+        <div class="note rev">We show a provisional screen promoted to confirmed on real captured data (K=1 to K=2). The always-on online loop and the staleness decay run on an append-only log and are designed, not yet demonstrated at deployment scale. We would rather show the mechanism than fake the outcome.</div>
+      </div>
+      <div class="fig rev">
+        <figure>
+          <svg viewBox="0 0 360 200">
+            <circle cx="66" cy="96" r="26" fill="#fff" stroke="#b9b9b0" stroke-width="2.5" stroke-dasharray="6 5"/>
+            <text class="ntext" x="66" y="101" text-anchor="middle" fill="#8a8a82">K=1</text>
+            <text class="svglab" x="66" y="146" text-anchor="middle">provisional</text>
+            <text class="svglab" x="66" y="162" text-anchor="middle">seen once</text>
+            <path d="M104 96 L250 96" stroke="#0f7a3a" stroke-width="2.5" fill="none" marker-end="url(#h)"/>
+            <text class="svglab" x="178" y="86" text-anchor="middle" fill="#0f7a3a">independent agent confirms</text>
+            <circle cx="292" cy="96" r="26" fill="#fff" stroke="#0f7a3a" stroke-width="4"/>
+            <text class="ntext" x="292" y="101" text-anchor="middle" fill="#0f7a3a">K=2</text>
+            <text class="svglab" x="292" y="146" text-anchor="middle" fill="#0f7a3a">confirmed</text>
+            <text class="svglab" x="292" y="162" text-anchor="middle" fill="#0f7a3a">trusted</text>
+            <defs><marker id="h" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0f7a3a"/></marker></defs>
+          </svg>
+          <figcaption>a provisional screen, promoted by an independent confirmation</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="block">
+      <div>
+        <div class="num rev">06 · What's ours, what's borrowed</div>
         <h2 class="rev">Honest about the novelty.</h2>
         <p class="rev">Fusing noisy votes into truth is <b>well-established</b>: Dawid-Skene truth inference, self-consistency, redundancy for reliability. We did not invent consensus, and we say so.</p>
         <p class="rev">And here is the honest novelty. Pixels-only perception and per-agent memory are both <b>commodity now</b> (Agent S2 is vision-only with memory; AppAgent and Voyager accumulate reusable skills). What no one else does is the <b>conjunction</b>: a swarm that reaches <b>consensus</b> to merge one <b>shared, model-agnostic map</b> a small model reuses at amortized cost. Everyone else gives a single agent its own memory; VECHE makes many agents agree on one map anyone can use.</p>
