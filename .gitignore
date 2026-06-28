@@ -1,0 +1,25 @@
+# Secrets — NEVER commit
+.env
+.env.local
+*.key
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# Data / scratch
+*.log
+data/
+captures/
+recordings/
+
+# Internal strategy notes (kept local, not published)
+veche.md
+veche-spec.md
