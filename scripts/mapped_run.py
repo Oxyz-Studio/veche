@@ -3,7 +3,7 @@ in the map. Per step the operator does CHEAP perception (a Voyage node-identity
 embedding, free tier) + a map lookup + execute. ZERO computer-use (vision-reasoning)
 tokens. This is the amortized cost of every reuse after a route is mapped once.
 """
-import sys, pathlib, json, time
+import sys, pathlib, json, time, shutil
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
@@ -27,7 +27,8 @@ def embed_safe(emb, shot):
 def main():
     trace = json.loads((ROOT / "captures" / "cold_trace.json").read_text())
     emb = VoyageEmbedder()
-    br = Browser(headless=True)
+    VID = ROOT / "viz" / "recording" / "videos"; VID.mkdir(parents=True, exist_ok=True)
+    br = Browser(headless=True, video_dir=VID)
     print("login + open patient dashboard...")
     br.login_openemr()
     br.open_patient(1)
@@ -47,7 +48,9 @@ def main():
     success = "ledger" in br.text().lower()
     print(f"\n=== MAP-GUIDED RESULT ===")
     print(f"  steps={steps}  computer_use_tokens={cu_tokens}  voyage_embeds={voyage_embeds} (free tier)  success={success}")
-    br.close()
+    vp = br.close()
+    if vp and pathlib.Path(vp).exists():
+        shutil.move(vp, VID / "mapped_op.webm"); print("  video -> videos/mapped_op.webm")
 
 
 if __name__ == "__main__":

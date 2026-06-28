@@ -2,8 +2,9 @@
 scratch, re-perceiving every step. Measures steps + tokens. Saves the action trace
 so the MAP-GUIDED replay can reuse the discovered route.
 """
-import sys, pathlib, json, time
+import sys, pathlib, json, time, shutil
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+VID = pathlib.Path(__file__).resolve().parent.parent / "viz" / "recording" / "videos"; VID.mkdir(parents=True, exist_ok=True)
 from dotenv import load_dotenv
 load_dotenv()
 from google import genai
@@ -28,7 +29,7 @@ def main():
     cfg = types.GenerateContentConfig(
         tools=[types.Tool(computer_use=types.ComputerUse(environment=types.Environment.ENVIRONMENT_BROWSER))]
     )
-    br = Browser(headless=True)
+    br = Browser(headless=True, video_dir=VID)
     print("login + open patient dashboard...")
     br.login_openemr()
     br.open_patient(1)
@@ -65,7 +66,9 @@ def main():
     print(f"\n=== COLD RESULT ===\n  steps={steps}  input_tokens={total_in}  output_tokens={total_out}  TOTAL={total_in + total_out}")
     (pathlib.Path(__file__).resolve().parent.parent / "captures" / "cold_trace.json").write_text(json.dumps(trace, indent=2))
     print("  trace saved -> captures/cold_trace.json")
-    br.close()
+    vp = br.close()
+    if vp and pathlib.Path(vp).exists():
+        shutil.move(vp, VID / "cold_op.webm"); print("  video -> videos/cold_op.webm")
 
 
 if __name__ == "__main__":

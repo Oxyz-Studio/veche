@@ -29,7 +29,7 @@
 
   #act1{display:grid;grid-template-columns:1.5fr 1fr;gap:2.4vw;align-items:center;height:100%}
   .bigvideo{border:1.5px solid var(--ink);background:#000;height:100%;overflow:hidden;display:flex;align-items:center}
-  .bigvideo video{width:100%;height:100%;object-fit:cover}
+  .bigvideo video{width:100%;height:100%;object-fit:contain}
   .coldm .big{font-weight:900;font-size:clamp(2.8rem,7vw,6rem);line-height:.9;color:var(--wrong);letter-spacing:-.02em}
   .coldm .lab{font-size:.8rem;font-weight:600;color:var(--muted);margin-top:.3rem}
   .coldm .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem 2.4rem;margin-top:1.8rem}
@@ -38,7 +38,7 @@
   #act2{display:grid;grid-template-columns:1fr 1.32fr;gap:1.8vw;height:100%;min-height:0}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,1fr);gap:.7vh .7vw;height:100%;min-height:0}
   .cell{position:relative;border:1.5px solid var(--ink);background:#000;overflow:hidden;min-height:0}
-  .cell video{width:100%;height:100%;object-fit:cover}
+  .cell video{width:100%;height:100%;object-fit:contain}
   .cell .tag{position:absolute;top:0;left:0;background:var(--ink);color:var(--paper);font-size:.62rem;font-weight:700;padding:.14rem .45rem;letter-spacing:.04em}
   .mapwrap{border:1.5px solid var(--ink);position:relative;overflow:hidden;background:var(--paper);display:grid;grid-template-rows:1fr 23%}
   #map{width:100%;height:100%;display:block;min-height:0;cursor:grab}
@@ -65,15 +65,16 @@
   .herobadge .s{font-size:.76rem;color:var(--ink);font-weight:500;margin-top:.25rem;line-height:1.35}
   .herobadge .r{font-weight:800;margin-top:.4rem;font-size:.86rem} .herobadge .r b{color:var(--wrong)} .herobadge .r i{color:var(--truth);font-style:normal}
 
-  #act3{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%}
-  #act3 .clabel{font-size:.86rem;font-weight:700;letter-spacing:.14em;color:var(--muted)}
-  #act3 .row{display:flex;align-items:baseline;justify-content:center;gap:2.8rem;margin-top:1.1rem}
-  #act3 .num{font-weight:900;font-size:clamp(4rem,12vw,9.5rem);line-height:.82;letter-spacing:-.02em}
-  #act3 .cold{position:relative} #act3 .cold::after{content:"";position:absolute;left:-3%;right:-3%;top:50%;height:7px;background:var(--wrong);transform:scaleX(0);transform-origin:left;transition:transform .6s .3s}
-  #act3.go .cold::after{transform:scaleX(1)}
-  #act3 .mapped{color:var(--truth)} #act3 .arrow{font-size:2.2rem;color:var(--muted)}
-  #act3 .unit{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-top:.3rem}
-  #act3 .note{font-size:.9rem;font-weight:500;color:var(--muted);margin-top:1.4rem;max-width:62ch;line-height:1.4}
+  #act3{display:flex;flex-direction:column;height:100%;gap:1.4vh;justify-content:center}
+  .a3grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8vw;flex:1;min-height:0}
+  .a3panel{display:grid;grid-template-rows:auto 1fr auto;gap:.7vh;min-height:0}
+  .a3lbl{font-size:.86rem;font-weight:600;color:var(--muted)} .a3lbl b{font-weight:900} .a3lbl .em{color:var(--wrong)} .a3lbl .ok{color:var(--truth)}
+  .a3vid{border:1.5px solid var(--ink);background:#000;overflow:hidden;min-height:0}
+  .a3m{display:flex;align-items:baseline;gap:.8rem}
+  .a3m .num{font-weight:900;font-size:clamp(2.4rem,5vw,4rem);line-height:1}
+  .a3m .num.cold{color:var(--wrong)} .a3m .num.mapped{color:var(--truth)}
+  .a3m .u{font-size:.76rem;font-weight:600;color:var(--muted)}
+  .a3foot{text-align:center;font-size:1rem;font-weight:600;color:var(--muted)} .a3foot b{color:var(--ink)}
 
   .sponsors{display:flex;gap:.7vw}
   .sp{flex:1;border:1.5px solid var(--hair);padding:.55rem .8rem;display:flex;justify-content:space-between;align-items:center;opacity:.5;transition:.3s;background:var(--paper)}
@@ -126,13 +127,19 @@
     </section>
 
     <section class="act" id="act3">
-      <div class="clabel">SAME TASK · SAME SUCCESS</div>
-      <div class="row">
-        <div><span class="num cold" id="a3cold">0</span><span class="unit">cold · re-perceives every step</span></div>
-        <div class="arrow">→</div>
-        <div><span class="num mapped">0</span><span class="unit">map-guided · paid tokens</span></div>
+      <div class="a3grid">
+        <div class="a3panel">
+          <div class="a3lbl"><b class="em">COLD</b> · Gemini Computer Use re-perceives every screen</div>
+          <div class="a3vid"><video id="coldop" src="recording/videos/cold_op.mp4" muted playsinline></video></div>
+          <div class="a3m"><span class="num cold" id="a3cold">0</span><span class="u">paid tokens · <span id="a3coldt">0s</span></span></div>
+        </div>
+        <div class="a3panel">
+          <div class="a3lbl"><b class="ok">MAP-GUIDED</b> · Gemma 4 reads the shared map</div>
+          <div class="a3vid"><video id="mapop" src="recording/videos/mapped_op.mp4" muted playsinline></video></div>
+          <div class="a3m"><span class="num mapped">0</span><span class="u">paid tokens · <span id="a3mapt">running</span></span></div>
+        </div>
       </div>
-      <div class="note" id="a3note"></div>
+      <div class="a3foot">Same task, same success — <b>28,794 → 0 paid tokens.</b> <span id="a3note"></span></div>
     </section>
   </div>
 
@@ -252,11 +259,12 @@ const BEATS=[
    run(){showAct('act2');stopBuild();showFinal();const im=mapg.querySelector(`image[href$="${(allNodes.find(n=>n.id===heroNode)||{}).frame}"]`);if(im)im.classList.add('hero');playGrid();spLive(['voyage','atlas']);log('over','a3',`misread a screen → OVERRULED, trust 0.50→0.33`);setTimeout(()=>herobadge.classList.add('show'),250);}},
   {label:"<b>Act 2</b> · the map",cap:`<span class="ok">The whole app, mapped.</span> ${TOT.nodes} screens, ${[...sharedSet].length} confirmed by multiple agents — for ~$${TOT.swarm_cost}, once.`,
    run(){showAct('act2');herobadge.classList.remove('show');stopBuild();showFinal();playGrid();spLive(['gemini','voyage','atlas']);}},
-  {label:"<b>Act 3</b> · map-guided",cap:`Now a tiny model operates by <span class="ok">reading the map</span>. Same task, same success — <span class="ok">zero paid tokens.</span>`,
+  {label:"<b>Act 3</b> · cold vs map-guided",cap:`Same task, side by side. <span class="em">Cold re-thinks every screen</span>; <span class="ok">map-guided just reads the map</span> — and finishes for zero paid tokens.`,
    run(){showAct('act3');stopGrid();stopBuild();spLive(['gemma','atlas']);spPulse('gemma');spSet('gemma',SP.gemma.count);
-     const c=document.getElementById('a3cold');let v=0,T=TOT.cold_tokens;const t=setInterval(()=>{v+=Math.ceil(T/30);if(v>=T){v=T;clearInterval(t);}c.textContent=v.toLocaleString();},30);
-     document.getElementById('a3note').textContent='cost-per-task = '+T.toLocaleString()+' / (N+1) → ~11× cheaper at 10 reuses, ~100× at 100. The map cost ~$'+TOT.swarm_cost+' once; every reuse is free.';
-     setTimeout(()=>document.getElementById('act3').classList.add('go'),700);}},
+     const cv=document.getElementById('coldop'),mv=document.getElementById('mapop');
+     if(cv){cv.loop=false;cv.currentTime=0;cv.play().catch(()=>{});cv.ontimeupdate=()=>{const p=cv.duration?cv.currentTime/cv.duration:0;document.getElementById('a3cold').textContent=Math.round(TOT.cold_tokens*p).toLocaleString();document.getElementById('a3coldt').textContent=Math.round(cv.currentTime)+'s';};}
+     if(mv){mv.loop=false;mv.currentTime=0;mv.play().catch(()=>{});mv.onended=()=>{document.getElementById('a3mapt').textContent='done';};}
+     document.getElementById('a3note').textContent='cost-per-task → 0 as the map is reused — '+TOT.cold_tokens.toLocaleString()+' / (N+1). The map cost ~$'+TOT.swarm_cost+' once.';}},
 ];
 const beatsEl=document.getElementById('beats');BEATS.forEach(()=>{const d=document.createElement('div');d.className='bd';beatsEl.appendChild(d);});
 let bi=-1;
